@@ -29,7 +29,7 @@ import urllib.request
 from moleculekit.molecule import Molecule
 from moleculekit.tools.atomtyper import prepareProteinForAtomtyping
 from moleculekit.tools.voxeldescriptors import getCenters, getVoxelDescriptors
-from .data import CHANNELS_DICT
+from data import CHANNELS_DICT
 
 
 def download_pdb(pdbcode: str, datadir: str,

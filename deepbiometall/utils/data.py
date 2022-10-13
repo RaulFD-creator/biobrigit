@@ -6,6 +6,15 @@ information required by other modules within the package.
 
 Copyright by Raúl Fernández Díaz
 """
+import os
+import json
+
+
+def read_stats() -> dict:
+    current_dir = os.path.dirname(__file__)
+    path = os.path.join(current_dir, 'residue_statistics.json')
+    with open(path) as reader:
+        return json.load(reader)
 
 
 ALL_CHANNELS = ['hydrophobic', 'aromatic', 'hbond_acceptor', 'hbond_donor',
@@ -102,6 +111,7 @@ RESNAME2LETTER_DICT = {
     'TYR': 'Y', 'ARG': 'R', 'LYS': 'K', 'SER': 'S', 'THR': 'T',
     'MET': 'M', 'ALA': 'A', 'GLY': 'G', 'PRO': 'P', 'CYS': 'C'
 }
+
 
 if __name__ == '__main__':
     print('File with different data stored to be used as global variables.')

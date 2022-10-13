@@ -15,11 +15,9 @@ solves some of the problems with BioPython.
 Copyrigth by Raúl Fernández Díaz
 """
 import os
-
 import numpy as np
-
-from .data import NEW_METALS, METAL_RESNAMES
-from .tools import download_pdb
+from data import ATOMIC_MASSES, METAL_RESNAMES, NEW_METALS
+from tools import download_pdb
 
 
 def res2letter(residue: str):
@@ -58,7 +56,7 @@ class atom():
         self.entry_type = 'ATOM' if line[:4] == 'ATOM' else 'HETATM'
         self.id = int(line[6:11])
         self.name = _remove_blank_spaces(line[12:16])
-        self.element = _remove_blank_spaces(atom.line[76:80])
+        self.element = _remove_blank_spaces(line[76:80])
         self.resname = _remove_blank_spaces(line[17:20])
         self.res_ID = f'{self.resname}_{int(line[22:26])}({line[21]})'
         self.coordinates = np.array(
@@ -86,11 +84,14 @@ class residue():
         self.name = atoms[0].resname
         self.id = atoms[0].res_ID
         self.atoms = atoms
-        self.coordinates = self.center_of_mass()
-        self.alpha = None
-        self.beta = None
+        alpha, beta, center, o, n = self.coordinates()
+        self.alpha = alpha
+        self.beta = beta
+        self.center = center
+        self.o = o
+        self.n = n
 
-    def center_of_mass(self):
+    def coordinates(self):
         """
         Calculates the center of mass of the residue.
 
@@ -98,14 +99,12 @@ class residue():
         are then rounded as per the significant numbers. Takes advantage of a
         global variable, i.e., `ATOMIC_MASSES` that contains the atomic masses
         of the main atoms that might comprise in the residue.
-
-        Returns:
-            center_of_mass (np.array): 3D array with the spatial coordinates of
-                the center of mass of the residue.
         """
         global ATOMIC_MASSES
         atom_coordinates = []
         atomic_masses = []
+        if self.name == 'GLY':
+            beta = None
 
         for atom in self.atoms:
             try:
@@ -116,23 +115,30 @@ class residue():
             atomic_masses.append(mass)
             atom_coordinates.append(atom.coordinates)
 
-            if atom.atom_type == 'CA' and atom.element == 'C':
-                self.alpha = atom
-            elif atom.atom_type == 'CB' and atom.element == 'C':
-                self.beta = atom
+            if atom.name == 'CA' and atom.element == 'C':
+                alpha = atom
+            elif (
+                atom.name == 'CB' and
+                atom.element == 'C'
+            ):
+                beta = atom
+            elif atom.name == 'O':
+                o = atom
+            elif atom.name == 'N':
+                n = atom
 
         atom_coordinates = np.array(atom_coordinates)
         atomic_masses = np.array(atomic_masses)
         center = np.average(atom_coordinates, axis=0, weights=atomic_masses)
-        coordinates = np.zeros(9)
-        coordinates[0:3] = np.round(self.alpha.coordinates, decimals=3)
-        coordinates[0:6] = np.round(self.beta.coordinates, decimals=3)
-        coordinates[6:] = np.round_(center, decimals=3)
+        center = np.round_(center, decimals=3)
 
-        return coordinates
+        return alpha, beta, center, o, n
 
     def __str__(self):
         return f'{self.name}'
+
+    def __repr__(self):
+        return f'{self.alpha}'
 
     def __sub__(self, other):
         return self.coordinates - other.coordinates
@@ -168,7 +174,6 @@ class protein():
             pdb_code (str): Path to a PDB file.
         """
         self.name = pdb_code
-        self.metals = []
         self.atoms = []
         self.hetatms = []
         self.residues = []
@@ -219,6 +224,8 @@ class protein():
     def find_metals(self):
         to_remove = []
         metals = []
+        self.metals = []
+
         for hetatm in self.hetatms:
             if (
                 hetatm.atom_type in NEW_METALS and
@@ -238,6 +245,30 @@ class protein():
                     metal.companions.append(metal2.atom_type)
                     to_remove.append(idx2)
             self.metals.append(metal)
+
+    def parse_molecule(self):
+        alphas = []
+        betas = []
+        centers = []
+        o = []
+        n = []
+
+        for idx, residue in enumerate(self.residues):
+            alphas.append(residue.alpha.coordinates)
+            o.append(residue.o.coordinates)
+            n.append(residue.n.coordinates)
+            if residue != 'GLY':
+                continue
+            betas.append(residue.beta.coordinates)
+            centers.append(residue.center)
+
+        self.info = {
+            'alphas': np.array(alphas).reshape(len(alphas), 3),
+            'betas': np.array(betas).reshape(len(betas), 3),
+            'centers': np.array(centers).reshape(len(centers), 3),
+            'backbone_O': np.array(o).reshape(len(o), 3),
+            'backbone_N': np.array(n).reshape(len(n), 3)
+        }
 
     def __str__(self):
         return f'Protein Structure of PDB ID: {self.name}'
