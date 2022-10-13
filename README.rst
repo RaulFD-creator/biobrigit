@@ -1,5 +1,5 @@
 ===============
-BrigitPredictor
+DeepBioMetAll
 ===============
 
 
@@ -20,7 +20,7 @@ Prediction of protein-metal binding regions
 
 
 * Free software: BSD license
-* Documentation: https://brigitpredictor.readthedocs.io.
+* Documentation: https://deepbiometall.readthedocs.io.
 
 
 Features
