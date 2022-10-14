@@ -8,23 +8,26 @@ def parse_cli() -> dict:
     p = argparse.ArgumentParser()
     p.add_argument("target", type=str,
                    help="Molecule PDB file to be analysed.")
-    p.add_argument("--model", type=str, default='BrigitCNN.ckpt',
+    p.add_argument("metal", type=str,
+                   help="Symbol of the metal that is to be located.")
+    p.add_argument("--model", type=str, default='NewBrigit_2.ckpt',
                    help="Name of the model to be used.")
     p.add_argument("--device", type=str, default='cuda',
                    help="Device in which calculations will be run.")
     p.add_argument("--device_id", type=int, default=0,
                    help="GPU ID in which the calculations will be run.")
-    p.add_argument("--outputfile", type=str, default='.',
+    p.add_argument("--outputfile", type=str, default=None,
                    help='Path where the output should be written.')
-    p.add_argument(
-        "--candidates", type=str, default=None,
-        help='Path to where a file with candidate coordinates is stored.'
-    )
+    p.add_argument("--min_coordinators", type=int, default=4,
+                   help="Number of residues that need to be coordinating a\
+                   given metal.")
+    p.add_argument("--num_possible_residues", type=int, default=5,
+                   help="Number of most likely residues to consider.")
     p.add_argument(
         "--stride", type=int, default=1,
         help="Step of the sliding window when evaluating the protein."
     )
-    p.add_argument("--threshold", type=float, default=0.75,
+    p.add_argument("--threshold", type=float, default=0.5,
                    help="Threshold for considering predictions positive.")
     p.add_argument("--voxelsize", type=float, default=1.0,
                    help="Resolution of the 3D representation. In Arnstrongs.")

@@ -2,15 +2,19 @@
 import os
 import time
 import torch
+import psutil
 import numpy as np
 from moleculekit.molecule import Molecule
 from moleculekit.tools.voxeldescriptors import getVoxelDescriptors, getCenters
 from moleculekit.tools.atomtyper import prepareProteinForAtomtyping
-from deepbiometall.utils.models import BaseModel, BrigitCNN
-from deepbiometall.utils.data import CHANNELS
-from deepbiometall.utils.tools import (
-    get_undesired_channels, select_desired_channels
+from .utils.models import BaseModel, BrigitCNN, DeepSite
+from .utils.data import CHANNELS
+from .utils.tools import (
+    get_undesired_channels,
+    select_desired_channels,
+    find_most_likely_coordinators
 )
+from .utils.pdb_parser import protein
 
 
 class DeepBioMetAll():
@@ -30,7 +34,7 @@ class DeepBioMetAll():
     def create_PDB(
         self,
         target: str,
-        outputdir: str,
+        outputfile: str,
         scores: np.array,
         threshold: float = 0.5,
         **kwargs
@@ -53,8 +57,9 @@ class DeepBioMetAll():
         threshold : float, optional
             Minimum value to consider a prediction as positive.
         """
-        output_path = os.path.join(outputdir, target+'_brigit_results.pdb')
-        with open(output_path, "w") as fo:
+        if outputfile is None:
+            outputfile = os.path.join('.', target+'_brigit_results.pdb')
+        with open(outputfile, "w") as fo:
             num_at = 0
             num_res = 0
             for entry in scores:
@@ -182,7 +187,9 @@ class DeepBioMetAll():
     def predict(
         self,
         target: str,
-        outputdir: str = '.',
+        metal: str,
+        min_coordinators: int = 4,
+        outputfile: str = None,
         threshold: float = 0.5,
         verbose: int = 1,
         **kwargs
@@ -202,10 +209,30 @@ class DeepBioMetAll():
             print(f'\n\nEvaluating target: {target}', end='\n\n')
 
         scores = self.evaluate(vox, p_centers, **kwargs)
-        self.create_PDB(target, outputdir, scores, threshold)
+        scores = self.biometall_run(
+            target, min_coordinators, metal, scores, threshold,
+            **kwargs
+        )
+        self.create_PDB(target, outputfile, scores, threshold)
 
         end = time.time()
         print(f'Computation took {end-start} s.', end='\n\n')
+        return scores
+
+    def biometall_run(
+        self, target, min_coordinators, metal, scores, threshold,
+        **kwargs
+    ):
+        molecule = protein(target, True)
+        residues, metal_stats = find_most_likely_coordinators(metal, 5)
+        molecule.set_stats(metal_stats, min_coordinators)
+        molecule.parse_residues(residues)
+        for idx, probe in enumerate(scores):
+            if probe[3] > threshold:
+                response = molecule.can_be_coordinated(probe[:3])
+            else:
+                response = False
+            scores[idx, 3] = probe[3] if response else 0.0
         return scores
 
 
@@ -215,7 +242,7 @@ def load_model(model: str, device: str, **kwargs) -> BaseModel:
         path,
         map_location=device,
         learning_rate=2e-4,
-        neurons_layer=32,
+        neurons_layer=64,
         size=12,
         num_dimns=6
     )

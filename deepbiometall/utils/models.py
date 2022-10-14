@@ -157,6 +157,44 @@ class BrigitCNN(BaseModel):
         return self.classifier2(x)
 
 
+class DeepSite(BaseModel):
+    def __init__(
+        self,
+        learning_rate: float,
+        include: list = None,
+        exclude: list = None,
+        **kwargs
+    ):
+        super().__init__()
+        self.save_hyperparameters('learning_rate', 'include', 'exclude')
+
+        self.convolutional = nn.Sequential(
+            conv3D(6, 32, 8, 3, nn.ELU),
+            conv3D(32, 48, 4, 1, nn.ELU),
+            nn.MaxPool3d(2),
+            nn.Dropout(0.25),
+            conv3D(48, 64, 4, 1, nn.ELU),
+            conv3D(64, 96, 4, 1, nn.ELU),
+            nn.MaxPool3d(2),
+            nn.Dropout(0.25),
+            nn.Flatten()
+        )
+        self.classifier1 = nn.Sequential(
+            linear(96*1**3, 256, 0.5)
+        )
+        self.classifier2 = nn.Sequential(
+            linear(256, 1, 0.0, nn.Sigmoid)
+        )
+        self.learning_rate = learning_rate
+        self.example_input_array = torch.rand(
+            6*12*12*12, 1).view(1, 6, 12, 12, 12)
+
+    def forward(self, x):
+        x = self.convolutional(x)
+        x = self.classifier1(x)
+        return self.classifier2(x)
+
+
 if __name__ == '__main__':
     help(BaseModel)
     help(BrigitCNN)

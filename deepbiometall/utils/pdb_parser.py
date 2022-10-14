@@ -16,8 +16,8 @@ Copyrigth by Raúl Fernández Díaz
 """
 import os
 import numpy as np
-from data import ATOMIC_MASSES, METAL_RESNAMES, NEW_METALS
-from tools import download_pdb
+from .data import ATOMIC_MASSES, METAL_RESNAMES, NEW_METALS
+from .tools import download_pdb, geometric_relations
 
 
 def res2letter(residue: str):
@@ -138,7 +138,7 @@ class residue():
         return f'{self.name}'
 
     def __repr__(self):
-        return f'{self.alpha}'
+        return f'{self.name}'
 
     def __sub__(self, other):
         return self.coordinates - other.coordinates
@@ -246,29 +246,101 @@ class protein():
                     to_remove.append(idx2)
             self.metals.append(metal)
 
-    def parse_molecule(self):
-        alphas = []
-        betas = []
-        centers = []
-        o = []
-        n = []
+    def parse_residues(self, coordinators: list):
+        self.coordinators = coordinators
+        indexes = {residue: [] for residue in coordinators}
+        alphas = {residue: [] for residue in coordinators}
+        betas = {residue: [] for residue in coordinators}
+        # center = {residue: [] for residue in coordinators}
+        # o = {residue: [] for residue in coordinators}
+        # n = {residue: [] for residue in coordinators}
 
         for idx, residue in enumerate(self.residues):
-            alphas.append(residue.alpha.coordinates)
-            o.append(residue.o.coordinates)
-            n.append(residue.n.coordinates)
-            if residue != 'GLY':
+            if residue.name not in self.coordinators:
                 continue
-            betas.append(residue.beta.coordinates)
-            centers.append(residue.center)
+            indexes[residue.name].append(idx)
+            alphas[residue.name].append(residue.alpha.coordinates)
+            # o[residue].append(residue.o.coordinates)
+            # n[residue].append(residue.n.coordinates)
+            if residue.name == 'GLY':
+                continue
+            betas[residue.name].append(residue.beta.coordinates)
+            # center[residue].append(residue.center)
 
-        self.info = {
-            'alphas': np.array(alphas).reshape(len(alphas), 3),
-            'betas': np.array(betas).reshape(len(betas), 3),
-            'centers': np.array(centers).reshape(len(centers), 3),
-            'backbone_O': np.array(o).reshape(len(o), 3),
-            'backbone_N': np.array(n).reshape(len(n), 3)
+        alphas = {
+            residue: np.array(alphas[residue]).reshape(len(alphas[residue]), 3)
+            for residue in coordinators
         }
+        betas = {
+            residue: np.array(betas[residue]).reshape(len(betas[residue]), 3)
+            for residue in coordinators
+        }
+        """center = {
+            residue: np.array(center[residue]).reshape(len(center[residue]), 3)
+            for residue in coordinators
+        }
+        o = {
+            residue: np.array(o[residue]).reshape(len(o[residue]), 3)
+            for residue in coordinators
+        }
+        n = {
+            residue: np.array(n[residue]).reshape(len(n[residue]), 3)
+            for residue in coordinators
+        }"""
+        self.info = {
+            'indexes': indexes,
+            'alphas': alphas,
+            'betas': betas,
+            # 'centers': center,
+            # 'backbone_O': o,
+            # 'backbone_N': n
+        }
+
+    def set_stats(self, stats: dict, min_coordinators: int):
+        self.stats = {}
+        self.min_coordinators = min_coordinators
+        for key, res_stats in stats.items():
+            median_adistance = res_stats['adistance']['median']
+            std_adistance = res_stats['adistance']['std']
+            median_bdistance = res_stats['bdistance']['median']
+            std_bdistance = res_stats['bdistance']['std']
+            median_angle = res_stats['angle']['median']
+            std_angle = res_stats['angle']['std']
+            self.stats[key] = {
+                'amin': median_adistance - std_adistance,
+                'amax': median_adistance + std_adistance,
+                'bmin': median_bdistance - std_bdistance,
+                'bmax': median_bdistance + std_bdistance,
+                'abmin': median_angle - std_angle,
+                'abmax': median_angle + std_angle
+            }
+
+    def can_be_coordinated(self, probe):
+        possible_coordinators = 0
+        for residue in self.coordinators:
+            alphas = probe - self.info['alphas'][residue]
+            betas = probe - self.info['betas'][residue]
+            alpha_dists, beta_dists, ab_angles = geometric_relations(
+                alphas, betas
+            )
+            alpha_trues = np.argwhere(
+                (alpha_dists > self.stats[residue]['amin']) &
+                (alpha_dists < self.stats[residue]['amax'])
+            )
+            beta_trues = np.argwhere(
+                (beta_dists > self.stats[residue]['bmin']) &
+                (beta_dists < self.stats[residue]['bmax'])
+            )
+            ab_trues = np.argwhere(
+                (ab_angles > self.stats[residue]['abmin']) &
+                (ab_angles < self.stats[residue]['abmax'])
+            )
+            for true in alpha_trues:
+                if true in beta_trues and true in ab_trues:
+                    possible_coordinators += 1
+                    if possible_coordinators >= self.min_coordinators:
+                        return True
+        return False
 
     def __str__(self):
         return f'Protein Structure of PDB ID: {self.name}'

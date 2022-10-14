@@ -29,7 +29,42 @@ import urllib.request
 from moleculekit.molecule import Molecule
 from moleculekit.tools.atomtyper import prepareProteinForAtomtyping
 from moleculekit.tools.voxeldescriptors import getCenters, getVoxelDescriptors
-from data import CHANNELS_DICT
+from .data import CHANNELS_DICT, read_stats
+
+
+class ordered_list():
+    def __init__(self):
+        self.list = []
+        self.dict = {}
+
+    def add(self, other, counts):
+        for idx, item in enumerate(self.list):
+            if self.dict[item] < counts:
+                self.list.insert(idx, other)
+                self.dict[other] = counts
+                return
+
+        self.list.append(other)
+        self.dict[other] = counts
+
+    def pop(self, idx):
+        del self.dict[self.list[idx]]
+        self.list.pop(idx)
+
+    def counts(self, idx):
+        return self.dict[self.list[idx]]
+
+    def to_list(self):
+        return self.list
+
+    def __len__(self):
+        return len(self.list)
+
+    def __str__(self):
+        return str(self.list)
+
+    def __repr__(self):
+        return str(self.list)
 
 
 def download_pdb(pdbcode: str, datadir: str,
@@ -199,8 +234,38 @@ def voxelize(
                  center_voxel[3]-radius:center_voxel[3]+radius,
                  center_voxel[4]-radius:center_voxel[4]+radius]
         )
-
     return voxelized
+
+
+def find_most_likely_coordinators(metal, num_residues: int = 5):
+    stats = read_stats()
+    metal_stats = stats[metal]
+    residues = ordered_list()
+    for residue, res_stats in metal_stats.items():
+        if len(residues) < num_residues:
+            residues.add(residue, res_stats['counts'])
+
+        elif (
+            res_stats['counts'] > residues.counts(-1) and
+            len(residues) == num_residues
+        ):
+            residues.pop(-1)
+            residues.add(residue, res_stats['counts'])
+    return residues.to_list(), metal_stats
+
+
+def geometric_relations(alphas, betas):
+    alpha_distances = np.linalg.norm(alphas, axis=1)
+    beta_distances = np.linalg.norm(betas, axis=1)
+    alpha_beta_distances = np.linalg.norm(alphas - betas, axis=1)
+    ab_angles = np.arccos(
+        (
+            np.square(alpha_distances) + np.square(alpha_beta_distances) -
+            np.square(beta_distances)
+        ) /
+        (2 * alpha_distances * alpha_beta_distances)
+    )
+    return alpha_distances, beta_distances, ab_angles
 
 
 if __name__ == '__main__':
