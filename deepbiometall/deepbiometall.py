@@ -190,7 +190,8 @@ class DeepBioMetAll():
         metal: str,
         min_coordinators: int = 4,
         outputfile: str = None,
-        threshold: float = 0.5,
+        cnn_threshold: float = 0.5,
+        combined_threshold: float = 0.5,
         verbose: int = 1,
         **kwargs
     ) -> np.array:
@@ -210,10 +211,10 @@ class DeepBioMetAll():
 
         scores = self.evaluate(vox, p_centers, **kwargs)
         scores = self.biometall_run(
-            target, min_coordinators, metal, scores, threshold,
+            target, min_coordinators, metal, scores, cnn_threshold,
             **kwargs
         )
-        self.create_PDB(target, outputfile, scores, threshold)
+        self.create_PDB(target, outputfile, scores, combined_threshold)
 
         end = time.time()
         print(f'Computation took {end-start} s.', end='\n\n')
@@ -224,15 +225,11 @@ class DeepBioMetAll():
         **kwargs
     ):
         molecule = protein(target, True)
-        residues, metal_stats = find_most_likely_coordinators(metal, 5)
+        residues, metal_stats = find_most_likely_coordinators(metal, 15)
         molecule.set_stats(metal_stats, min_coordinators)
         molecule.parse_residues(residues)
         for idx, probe in enumerate(scores):
-            if probe[3] > threshold:
-                response = molecule.can_be_coordinated(probe[:3])
-            else:
-                response = False
-            scores[idx, 3] = probe[3] if response else 0.0
+            scores[idx, 3] = molecule.coordination_score(probe)
         return scores
 
 

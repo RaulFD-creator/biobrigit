@@ -297,29 +297,24 @@ class protein():
         }
 
     def set_stats(self, stats: dict, min_coordinators: int):
-        self.stats = {}
+        self.stats = stats
         self.min_coordinators = min_coordinators
-        for key, res_stats in stats.items():
-            median_adistance = res_stats['adistance']['median']
-            std_adistance = res_stats['adistance']['std']
-            median_bdistance = res_stats['bdistance']['median']
-            std_bdistance = res_stats['bdistance']['std']
-            median_angle = res_stats['angle']['median']
-            std_angle = res_stats['angle']['std']
-            self.stats[key] = {
-                'amin': median_adistance - std_adistance,
-                'amax': median_adistance + std_adistance,
-                'bmin': median_bdistance - std_bdistance,
-                'bmax': median_bdistance + std_bdistance,
-                'abmin': median_angle - std_angle,
-                'abmax': median_angle + std_angle
-            }
 
-    def can_be_coordinated(self, probe):
+    def coordination_score(
+        self,
+        probe,
+        biometall_weight: float = 0.5,
+        cnn_weight: float = 0.5
+    ):
+        fitness_score = 0
         possible_coordinators = 0
+
+        # TODO: There will be three tiers of coordination
+        # highest_tier = (3/4) * np.pi * 3**3 * 6
+
         for residue in self.coordinators:
-            alphas = probe - self.info['alphas'][residue]
-            betas = probe - self.info['betas'][residue]
+            alphas = probe[:3] - self.info['alphas'][residue]
+            betas = probe[:3] - self.info['betas'][residue]
             alpha_dists, beta_dists, ab_angles = geometric_relations(
                 alphas, betas
             )
@@ -337,10 +332,11 @@ class protein():
             )
             for true in alpha_trues:
                 if true in beta_trues and true in ab_trues:
+                    b_score = self.stats[residue]['fitness'] * biometall_weight
+                    cnn_score = probe[3] * cnn_weight
+                    fitness_score += b_score + cnn_score
                     possible_coordinators += 1
-                    if possible_coordinators >= self.min_coordinators:
-                        return True
-        return False
+        return fitness_score
 
     def __str__(self):
         return f'Protein Structure of PDB ID: {self.name}'

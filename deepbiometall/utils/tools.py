@@ -39,7 +39,7 @@ class ordered_list():
 
     def add(self, other, counts):
         for idx, item in enumerate(self.list):
-            if self.dict[item] < counts:
+            if self.dict[item] < counts and counts > 0.0:
                 self.list.insert(idx, other)
                 self.dict[other] = counts
                 return
@@ -237,20 +237,20 @@ def voxelize(
     return voxelized
 
 
-def find_most_likely_coordinators(metal, num_residues: int = 5):
+def find_most_likely_coordinators(metal, num_residues: int = 20):
     stats = read_stats()
     metal_stats = stats[metal]
     residues = ordered_list()
     for residue, res_stats in metal_stats.items():
         if len(residues) < num_residues:
-            residues.add(residue, res_stats['counts'])
+            residues.add(residue, res_stats['fitness'])
 
         elif (
             res_stats['counts'] > residues.counts(-1) and
             len(residues) == num_residues
         ):
             residues.pop(-1)
-            residues.add(residue, res_stats['counts'])
+            residues.add(residue, res_stats['fitness'])
     return residues.to_list(), metal_stats
 
 

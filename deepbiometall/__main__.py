@@ -27,8 +27,12 @@ def parse_cli() -> dict:
         "--stride", type=int, default=1,
         help="Step of the sliding window when evaluating the protein."
     )
-    p.add_argument("--threshold", type=float, default=0.5,
-                   help="Threshold for considering predictions positive.")
+    p.add_argument("--cnn_threshold", type=float, default=0.5,
+                   help="Threshold for considering CNN points as possible\
+                    coordinations.")
+    p.add_argument("--combined_threshold", type=float, default=0.5,
+                   help="Threshold for considering predictions positive\
+                    combining BioMetAll and CNN scores.")
     p.add_argument("--voxelsize", type=float, default=1.0,
                    help="Resolution of the 3D representation. In Arnstrongs.")
     p.add_argument(
