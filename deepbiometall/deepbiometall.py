@@ -2,12 +2,12 @@
 import os
 import time
 import torch
-import psutil
 import numpy as np
+from sklearn.cluster import Birch
 from moleculekit.molecule import Molecule
 from moleculekit.tools.voxeldescriptors import getVoxelDescriptors, getCenters
 from moleculekit.tools.atomtyper import prepareProteinForAtomtyping
-from .utils.models import BaseModel, BrigitCNN, DeepSite
+from .utils.models import BaseModel, BrigitCNN
 from .utils.data import CHANNELS
 from .utils.tools import (
     get_undesired_channels,
@@ -36,7 +36,8 @@ class DeepBioMetAll():
         target: str,
         outputfile: str,
         scores: np.array,
-        threshold: float = 0.5,
+        threshold: float,
+        centers: np.array,
         **kwargs
     ) -> None:
         """
@@ -77,6 +78,7 @@ class DeepBioMetAll():
                             prb_str += prb_center
                         else:
                             prb_str += prb_center
+
                     atom = "NE"
                     blank = " "*(7-len(str(num_at)))
                     fo.write("ATOM" + blank + "%s  %s  SLN %s" %
@@ -86,6 +88,33 @@ class DeepBioMetAll():
                     score = score if len(score) == 4 else score + '0'
                     fo.write(blank + "%s     %s  1.00  %s          %s\n" %
                              (num_res, prb_str, score, atom))
+
+            for entry in centers:
+                num_at += 1
+                num_res = 1
+                ch = "A"
+                prb_str = ""
+
+                for idx in range(3):
+                    number = str(round(float(entry[idx]), 3))
+                    prb_center = "{:.8s}".format(number)
+                    if len(prb_center) < 8:
+                        prb_center = " "*(8-len(prb_center)) + prb_center
+                        prb_str += prb_center
+                    else:
+                        prb_str += prb_center
+
+                atom = "HE"
+                blank = " "*(7-len(str(num_at)))
+                fo.write("ATOM" + blank + "%s  %s  SLN %s" %
+                         (num_at, atom, ch))
+                blank = " "*(3-len(str(num_res)))
+                score = str(round(0.50, 2))
+                score = score if len(score) == 4 else score + '0'
+                fo.write(blank + "%s     %s  1.00  %s          %s\n" %
+                         (num_res, prb_str, score, atom))
+
+
 
     def voxelize(
         self,
@@ -195,6 +224,7 @@ class DeepBioMetAll():
         cnn_threshold: float = 0.5,
         combined_threshold: float = 0.5,
         verbose: int = 1,
+        clustering_threshold: float = 4.0,
         **kwargs
     ) -> np.array:
         start = time.time()
@@ -212,29 +242,48 @@ class DeepBioMetAll():
             print(f'\n\nEvaluating target: {target}', end='\n\n')
 
         scores = self.evaluate(vox, p_centers, **kwargs)
-        scores = self.biometall_run(
+        scores, molecule = self.coordination_analysis(
             target, max_coordinators, metal, scores, cnn_threshold,
             **kwargs
         )
-        self.create_PDB(target, outputfile, scores, combined_threshold)
 
+        best_scores = np.argwhere(scores[:, 3] > combined_threshold)
+        new_scores = np.zeros((len(best_scores), 4))
+        for idx, idx_score in enumerate(best_scores):
+            new_scores[idx, :] = scores[idx_score, :]
+
+        centers = self.clusterize(
+            new_scores[:, :3], molecule, clustering_threshold
+        )
+        self.create_PDB(
+            target, outputfile, new_scores, combined_threshold, centers
+        )
         end = time.time()
         print(f'Computation took {end-start} s.', end='\n\n')
         return scores
 
-    def biometall_run(
+    def coordination_analysis(
         self, target, max_coordinators, metal, scores, threshold, cnn_weight,
         **kwargs
     ):
         molecule = protein(target, True)
-        residues, metal_stats = find_most_likely_coordinators(metal, 30)
+        residues, o_residues, metal_stats = find_most_likely_coordinators(
+            metal, kwargs['residues']
+        )
         molecule.set_stats(metal_stats, max_coordinators)
-        molecule.parse_residues(residues)
+        molecule.parse_residues(residues, o_residues)
 
         for idx, probe in enumerate(scores):
             if probe[3] > threshold:
                 scores[idx, 3] = molecule.coordination_score(probe, cnn_weight)
-        return scores
+        return scores, molecule
+
+    def clusterize(
+        self, scores, molecule, clustering_threshold
+    ):
+        clustering = Birch(threshold=clustering_threshold, n_clusters=None)
+        clustering.fit(scores)
+        return clustering.subcluster_centers_
 
 
 def load_model(model: str, device: str, **kwargs) -> BaseModel:
@@ -263,6 +312,22 @@ def run(args: dict):
     deepbiometall = DeepBioMetAll(**args)
     deepbiometall.predict(**args)
 
+"""
+# Might be a useful solution for silencing all
+# annoying outputs
+from contextlib import contextmanager
+import sys, os
+
+@contextmanager
+def suppress_stdout():
+    with open(os.devnull, "w") as devnull:
+        old_stdout = sys.stdout
+        sys.stdout = devnull
+        try:  
+            yield
+        finally:
+            sys.stdout = old_stdout
+"""
 
 if __name__ == '__main__':
     help(DeepBioMetAll)

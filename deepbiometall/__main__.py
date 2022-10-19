@@ -18,15 +18,17 @@ def parse_cli() -> dict:
                    help="GPU ID in which the calculations will be run.")
     p.add_argument("--outputfile", type=str, default=None,
                    help='Path where the output should be written.')
-    p.add_argument("--max_coordinators", type=int, default=4,
+    p.add_argument("--max_coordinators", type=int, default=6,
                    help="Number of residues that need to be coordinating a\
                    given metal.")
-    p.add_argument("--num_possible_residues", type=int, default=15,
+    p.add_argument("--residues", type=int, default=7,
                    help="Number of most likely residues to consider.")
     p.add_argument(
         "--stride", type=int, default=1,
         help="Step of the sliding window when evaluating the protein."
     )
+    p.add_argument("--clustering_threshold", type=float, default=4.0,
+                   help="Threshold used for the Birch clustering algorithm.")
     p.add_argument("--cnn_threshold", type=float, default=0.5,
                    help="Threshold for considering CNN points as possible\
                     coordinations.")

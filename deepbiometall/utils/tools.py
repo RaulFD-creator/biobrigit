@@ -241,38 +241,38 @@ def find_most_likely_coordinators(metal, num_residues: int = 20):
     stats = read_stats()
     metal_stats = stats[metal]
     residues = ordered_list()
+    o_residues = ordered_list()
+
     for residue, res_stats in metal_stats.items():
         if len(residues) < num_residues:
-            residues.add(residue, res_stats['fitness'])
-            residues.add(residue+'O', res_stats['o_fitness'])
-        else:
-            if (
-                res_stats['fitness'] > residues.counts(-1) and
-                len(residues) == num_residues
-            ):
-                residues.pop(-1)
+            if res_stats['fitness'] > 0.0:
                 residues.add(residue, res_stats['fitness'])
-            if (
-                res_stats['o_fitness'] > residues.counts(-1) and
-                len(residues) == num_residues
-            ):
-                residues.pop(-1)
-                residues.add(residue, res_stats['o_fitness'])
-    return residues.to_list(), metal_stats
+        elif res_stats['fitness'] > residues.counts(-1):
+            residues.pop(-1)
+            residues.add(residue, res_stats['fitness'])
+
+        if len(o_residues) < num_residues:
+            if res_stats['o_fitness'] > 0.0:
+                o_residues.add(residue, res_stats['o_fitness'])
+        elif res_stats['o_fitness'] > o_residues.counts(-1):
+            o_residues.pop(-1)
+            o_residues.add(residue, res_stats['o_fitness'])
+
+    return residues.to_list(), o_residues.to_list(), metal_stats
 
 
-def geometric_relations(alphas, betas):
-    alpha_distances = np.linalg.norm(alphas, axis=1)
-    beta_distances = np.linalg.norm(betas, axis=1)
-    alpha_beta_distances = np.linalg.norm(alphas - betas, axis=1)
-    ab_angles = np.arccos(
+def geometric_relations(v1, v2):
+    v1_distances = np.linalg.norm(v1, axis=1)
+    v2_distances = np.linalg.norm(v2, axis=1)
+    v1_v2_distances = np.linalg.norm(v1 - v2, axis=1)
+    v1v2_angles = np.arccos(
         (
-            np.square(alpha_distances) + np.square(alpha_beta_distances) -
-            np.square(beta_distances)
+            np.square(v1_distances) + np.square(v1_v2_distances) -
+            np.square(v2_distances)
         ) /
-        (2 * alpha_distances * alpha_beta_distances)
+        (2 * v1_distances * v1_v2_distances)
     )
-    return alpha_distances, beta_distances, ab_angles
+    return v1_distances, v2_distances, v1v2_angles
 
 
 if __name__ == '__main__':
