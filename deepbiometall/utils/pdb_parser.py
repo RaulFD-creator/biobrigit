@@ -84,10 +84,9 @@ class residue():
         self.name = atoms[0].resname
         self.id = atoms[0].res_ID
         self.atoms = atoms
-        alpha, beta, center, o, n = self.coordinates()
+        alpha, beta, o, n = self.coordinates()
         self.alpha = alpha
         self.beta = beta
-        self.center = center
         self.o = o
         self.n = n
 
@@ -101,38 +100,22 @@ class residue():
         of the main atoms that might comprise in the residue.
         """
         global ATOMIC_MASSES
-        atom_coordinates = []
-        atomic_masses = []
-        if self.name == 'GLY':
-            beta = None
+        alpha = None
+        beta = None
+        o = None
+        n = None
 
         for atom in self.atoms:
-            try:
-                mass = ATOMIC_MASSES[atom.element]
-            except KeyError:
-                print(f"Warning: Atom {atom.element} not supported.")
-                continue
-            atomic_masses.append(mass)
-            atom_coordinates.append(atom.coordinates)
-
-            if atom.name == 'CA' and atom.element == 'C':
+            if atom.name == 'CA':
                 alpha = atom
-            elif (
-                atom.name == 'CB' and
-                atom.element == 'C'
-            ):
+            elif (atom.name == 'CB'):
                 beta = atom
             elif atom.name == 'O':
                 o = atom
             elif atom.name == 'N':
                 n = atom
 
-        atom_coordinates = np.array(atom_coordinates)
-        atomic_masses = np.array(atomic_masses)
-        center = np.average(atom_coordinates, axis=0, weights=atomic_masses)
-        center = np.round_(center, decimals=3)
-
-        return alpha, beta, center, o, n
+        return alpha, beta, o, n
 
     def __str__(self):
         return f'{self.name}'
@@ -296,18 +279,19 @@ class protein():
             # 'backbone_N': n
         }
 
-    def set_stats(self, stats: dict, min_coordinators: int):
+    def set_stats(self, stats: dict, max_coordinators: int):
         self.stats = stats
-        self.min_coordinators = min_coordinators
+        self.max_coordinators = max_coordinators
 
     def coordination_score(
         self,
         probe,
-        biometall_weight: float = 0.5,
         cnn_weight: float = 0.5
     ):
-        fitness_score = 0
+        cnn_score = probe[3] * cnn_weight
         possible_coordinators = 0
+        biometall_weight = 1 - cnn_weight
+        fitness_score = 0
 
         # TODO: There will be three tiers of coordination
         # highest_tier = (3/4) * np.pi * 3**3 * 6
@@ -333,9 +317,11 @@ class protein():
             for true in alpha_trues:
                 if true in beta_trues and true in ab_trues:
                     b_score = self.stats[residue]['fitness'] * biometall_weight
-                    cnn_score = probe[3] * cnn_weight
-                    fitness_score += b_score + cnn_score
+                    fitness_score += b_score
                     possible_coordinators += 1
+        fitness_score = (fitness_score + cnn_score) * (
+            possible_coordinators / self.max_coordinators
+        )
         return fitness_score
 
     def __str__(self):
@@ -400,7 +386,7 @@ def write_site(
 def _remove_blank_spaces(sentence):
     atom_type = ""
     for char in sentence:
-        if char != " ":
+        if char not in [" ", "\t", "\n"]:
             atom_type += char
     return atom_type
 

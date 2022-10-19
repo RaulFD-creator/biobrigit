@@ -18,10 +18,10 @@ def parse_cli() -> dict:
                    help="GPU ID in which the calculations will be run.")
     p.add_argument("--outputfile", type=str, default=None,
                    help='Path where the output should be written.')
-    p.add_argument("--min_coordinators", type=int, default=4,
+    p.add_argument("--max_coordinators", type=int, default=4,
                    help="Number of residues that need to be coordinating a\
                    given metal.")
-    p.add_argument("--num_possible_residues", type=int, default=5,
+    p.add_argument("--num_possible_residues", type=int, default=15,
                    help="Number of most likely residues to consider.")
     p.add_argument(
         "--stride", type=int, default=1,
@@ -35,6 +35,8 @@ def parse_cli() -> dict:
                     combining BioMetAll and CNN scores.")
     p.add_argument("--voxelsize", type=float, default=1.0,
                    help="Resolution of the 3D representation. In Arnstrongs.")
+    p.add_argument("--cnn_weight", type=float, default=0.5,
+                   help='Weight assigned to CNN.')
     p.add_argument(
         "--verbose", type=int, default=1,
         help="Information that will be displayed. 0: Only Moleculekit, 1: All."

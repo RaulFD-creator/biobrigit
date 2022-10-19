@@ -82,8 +82,10 @@ class DeepBioMetAll():
                     fo.write("ATOM" + blank + "%s  %s  SLN %s" %
                              (num_at, atom, ch))
                     blank = " "*(3-len(str(num_res)))
-                    fo.write(blank + "%s     %s  1.00  0.00          %s\n" %
-                             (num_res, prb_str, atom))
+                    score = str(round(entry[3], 2))
+                    score = score if len(score) == 4 else score + '0'
+                    fo.write(blank + "%s     %s  1.00  %s          %s\n" %
+                             (num_res, prb_str, score, atom))
 
     def voxelize(
         self,
@@ -168,11 +170,11 @@ class DeepBioMetAll():
 
                     if (counter % (num_points // 30) == 0):
                         print(f'{round((counter/num_points)*100, 2)}%')
-                    x1, x2 = x-border, x+border
-                    y1, y2 = y-border, y+border
-                    z1, z2 = z-border, z+border
+                    x1, x2 = x - border, x + border
+                    y1, y2 = y - border, y + border
+                    z1, z2 = z - border, z + border
                     output = self.model(
-                        vox[:, :, x1:x2, y1:y2, z1:z2]
+                        vox[:, :, x1: x2, y1: y2, z1: z2]
                         ).detach().cpu()
                     scores[x, y, z] = output
 
@@ -188,7 +190,7 @@ class DeepBioMetAll():
         self,
         target: str,
         metal: str,
-        min_coordinators: int = 4,
+        max_coordinators: int = 4,
         outputfile: str = None,
         cnn_threshold: float = 0.5,
         combined_threshold: float = 0.5,
@@ -211,7 +213,7 @@ class DeepBioMetAll():
 
         scores = self.evaluate(vox, p_centers, **kwargs)
         scores = self.biometall_run(
-            target, min_coordinators, metal, scores, cnn_threshold,
+            target, max_coordinators, metal, scores, cnn_threshold,
             **kwargs
         )
         self.create_PDB(target, outputfile, scores, combined_threshold)
@@ -221,15 +223,17 @@ class DeepBioMetAll():
         return scores
 
     def biometall_run(
-        self, target, min_coordinators, metal, scores, threshold,
+        self, target, max_coordinators, metal, scores, threshold, cnn_weight,
         **kwargs
     ):
         molecule = protein(target, True)
-        residues, metal_stats = find_most_likely_coordinators(metal, 15)
-        molecule.set_stats(metal_stats, min_coordinators)
+        residues, metal_stats = find_most_likely_coordinators(metal, 30)
+        molecule.set_stats(metal_stats, max_coordinators)
         molecule.parse_residues(residues)
+
         for idx, probe in enumerate(scores):
-            scores[idx, 3] = molecule.coordination_score(probe)
+            if probe[3] > threshold:
+                scores[idx, 3] = molecule.coordination_score(probe, cnn_weight)
         return scores
 
 

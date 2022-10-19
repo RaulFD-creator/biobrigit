@@ -244,13 +244,20 @@ def find_most_likely_coordinators(metal, num_residues: int = 20):
     for residue, res_stats in metal_stats.items():
         if len(residues) < num_residues:
             residues.add(residue, res_stats['fitness'])
-
-        elif (
-            res_stats['counts'] > residues.counts(-1) and
-            len(residues) == num_residues
-        ):
-            residues.pop(-1)
-            residues.add(residue, res_stats['fitness'])
+            residues.add(residue+'O', res_stats['o_fitness'])
+        else:
+            if (
+                res_stats['fitness'] > residues.counts(-1) and
+                len(residues) == num_residues
+            ):
+                residues.pop(-1)
+                residues.add(residue, res_stats['fitness'])
+            if (
+                res_stats['o_fitness'] > residues.counts(-1) and
+                len(residues) == num_residues
+            ):
+                residues.pop(-1)
+                residues.add(residue, res_stats['o_fitness'])
     return residues.to_list(), metal_stats
 
 
