@@ -242,6 +242,7 @@ def find_most_likely_coordinators(metal, num_residues: int = 20):
     metal_stats = stats[metal]
     residues = ordered_list()
     o_residues = ordered_list()
+    n_residues = ordered_list()
 
     for residue, res_stats in metal_stats.items():
         if len(residues) < num_residues:
@@ -258,13 +259,27 @@ def find_most_likely_coordinators(metal, num_residues: int = 20):
             o_residues.pop(-1)
             o_residues.add(residue, res_stats['o_fitness'])
 
-    return residues.to_list(), o_residues.to_list(), metal_stats
+        if len(n_residues) < num_residues:
+            if res_stats['n_fitness'] > 0.0:
+                n_residues.add(residue, res_stats['n_fitness'])
+        elif res_stats['n_fitness'] > n_residues.counts(-1):
+            n_residues.pop(-1)
+            n_residues.add(residue, res_stats['n_fitness'])
+
+    return (
+        residues.to_list(),
+        o_residues.to_list(),
+        n_residues.to_list(),
+        metal_stats
+    )
 
 
 def geometric_relations(v1, v2):
     v1_distances = np.linalg.norm(v1, axis=1)
     v2_distances = np.linalg.norm(v2, axis=1)
     v1_v2_distances = np.linalg.norm(v1 - v2, axis=1)
+    if np.any(v1_v2_distances[:] == 0.0):
+        return None, None, None
     v1v2_angles = np.arccos(
         (
             np.square(v1_distances) + np.square(v1_v2_distances) -

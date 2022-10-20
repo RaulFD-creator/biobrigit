@@ -10,7 +10,7 @@ def parse_cli() -> dict:
                    help="Molecule PDB file to be analysed.")
     p.add_argument("metal", type=str,
                    help="Symbol of the metal that is to be located.")
-    p.add_argument("--model", type=str, default='NewBrigit_2.ckpt',
+    p.add_argument("--model", type=str, default='NewBrigit_2',
                    help="Name of the model to be used.")
     p.add_argument("--device", type=str, default='cuda',
                    help="Device in which calculations will be run.")
@@ -27,7 +27,7 @@ def parse_cli() -> dict:
         "--stride", type=int, default=1,
         help="Step of the sliding window when evaluating the protein."
     )
-    p.add_argument("--clustering_threshold", type=float, default=4.0,
+    p.add_argument("--clustering_threshold", type=float, default=5.0,
                    help="Threshold used for the Birch clustering algorithm.")
     p.add_argument("--cnn_threshold", type=float, default=0.5,
                    help="Threshold for considering CNN points as possible\

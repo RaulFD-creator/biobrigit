@@ -7,7 +7,7 @@ from sklearn.cluster import Birch
 from moleculekit.molecule import Molecule
 from moleculekit.tools.voxeldescriptors import getVoxelDescriptors, getCenters
 from moleculekit.tools.atomtyper import prepareProteinForAtomtyping
-from .utils.models import BaseModel, BrigitCNN
+from .utils.models import BaseModel, BrigitCNN, DeepSite
 from .utils.data import CHANNELS
 from .utils.tools import (
     get_undesired_channels,
@@ -38,6 +38,7 @@ class DeepBioMetAll():
         scores: np.array,
         threshold: float,
         centers: np.array,
+        molecule: protein,
         **kwargs
     ) -> None:
         """
@@ -58,12 +59,19 @@ class DeepBioMetAll():
         threshold : float, optional
             Minimum value to consider a prediction as positive.
         """
-        if outputfile is None:
-            outputfile = os.path.join('.', target+'_brigit_results.pdb')
+        outputfile = f'{outputfile}_brigit.pdb'
         with open(outputfile, "w") as fo:
             num_at = 0
             num_res = 0
             for entry in scores:
+                close2protein = False
+                for atom in molecule.atoms:
+                    if np.linalg.norm(atom.coordinates - entry[:3]) < 3.5:
+                        close2protein = True
+
+                if not close2protein:
+                    continue
+
                 if entry[3] > threshold:
                     num_at += 1
                     num_res = 1
@@ -79,7 +87,7 @@ class DeepBioMetAll():
                         else:
                             prb_str += prb_center
 
-                    atom = "NE"
+                    atom = "HE"
                     blank = " "*(7-len(str(num_at)))
                     fo.write("ATOM" + blank + "%s  %s  SLN %s" %
                              (num_at, atom, ch))
@@ -89,14 +97,14 @@ class DeepBioMetAll():
                     fo.write(blank + "%s     %s  1.00  %s          %s\n" %
                              (num_res, prb_str, score, atom))
 
-            for entry in centers:
+            for entry in centers.values():
                 num_at += 1
                 num_res = 1
                 ch = "A"
                 prb_str = ""
 
                 for idx in range(3):
-                    number = str(round(float(entry[idx]), 3))
+                    number = str(round(float(entry['center_coors'][idx]), 3))
                     prb_center = "{:.8s}".format(number)
                     if len(prb_center) < 8:
                         prb_center = " "*(8-len(prb_center)) + prb_center
@@ -104,17 +112,15 @@ class DeepBioMetAll():
                     else:
                         prb_str += prb_center
 
-                atom = "HE"
+                atom = "AR"
                 blank = " "*(7-len(str(num_at)))
                 fo.write("ATOM" + blank + "%s  %s  SLN %s" %
                          (num_at, atom, ch))
                 blank = " "*(3-len(str(num_res)))
-                score = str(round(0.50, 2))
+                score = str(entry['score'])
                 score = score if len(score) == 4 else score + '0'
                 fo.write(blank + "%s     %s  1.00  %s          %s\n" %
                          (num_res, prb_str, score, atom))
-
-
 
     def voxelize(
         self,
@@ -233,6 +239,9 @@ class DeepBioMetAll():
             message += '  b) path to local PDB file.'
             raise TypeError(message)
 
+        if combined_threshold > cnn_threshold:
+            cnn_threshold = combined_threshold
+
         if verbose == 1:
             print(f'Voxelizing target: {target}', end='\n\n')
 
@@ -246,18 +255,24 @@ class DeepBioMetAll():
             target, max_coordinators, metal, scores, cnn_threshold,
             **kwargs
         )
-
         best_scores = np.argwhere(scores[:, 3] > combined_threshold)
         new_scores = np.zeros((len(best_scores), 4))
         for idx, idx_score in enumerate(best_scores):
             new_scores[idx, :] = scores[idx_score, :]
-
         centers = self.clusterize(
-            new_scores[:, :3], molecule, clustering_threshold
+            new_scores, molecule, clustering_threshold
         )
+
+        if outputfile is None:
+            if target.endswith('.pdb'):
+                outputfile = target.split('.')[0]
+            else:
+                outputfile = target
         self.create_PDB(
-            target, outputfile, new_scores, combined_threshold, centers
+            target, outputfile, new_scores, combined_threshold, centers,
+            molecule
         )
+        self.check_clusters(centers, molecule, outputfile, kwargs['args'])
         end = time.time()
         print(f'Computation took {end-start} s.', end='\n\n')
         return scores
@@ -267,11 +282,11 @@ class DeepBioMetAll():
         **kwargs
     ):
         molecule = protein(target, True)
-        residues, o_residues, metal_stats = find_most_likely_coordinators(
-            metal, kwargs['residues']
+        residues, o_residues, n_residues, metal_stats = (
+            find_most_likely_coordinators(metal, kwargs['residues'])
         )
         molecule.set_stats(metal_stats, max_coordinators)
-        molecule.parse_residues(residues, o_residues)
+        molecule.parse_residues(residues, o_residues, n_residues)
 
         for idx, probe in enumerate(scores):
             if probe[3] > threshold:
@@ -282,20 +297,80 @@ class DeepBioMetAll():
         self, scores, molecule, clustering_threshold
     ):
         clustering = Birch(threshold=clustering_threshold, n_clusters=None)
-        clustering.fit(scores)
-        return clustering.subcluster_centers_
+        try:
+            labels = clustering.fit_predict(scores[:, :3])
+        except ValueError:
+            print('There are not enough predicted points as to properly\
+                  \nclusterize.')
+            exit()
+        clusters = {}
+        result = {}
+        for idx, score in enumerate(scores):
+            try:
+                clusters[labels[idx]].append(score)
+            except KeyError:
+                clusters[labels[idx]] = []
+
+        for name, cluster in clusters.items():
+            cluster = np.array(cluster)
+            if len(cluster) == 0:
+                continue
+            cluster_mean = np.average(
+                cluster[:, :3], axis=0, weights=cluster[:, 3]
+            )
+            score_mean = np.average(cluster[:, 3])
+            result[name] = {
+                'center_coors': cluster_mean,
+                'score': score_mean
+            }
+
+        return result
+
+    def check_clusters(self, clusters, molecule, outputfile, args):
+        outputfile_name = outputfile + '.clusters'
+        with open(outputfile_name, 'w') as writer:
+            writer.write(f'{args}\n')
+            writer.write('cluster,coordinators,score\n')
+            for name, center in clusters.items():
+                coordinator_found = False
+                for residue in molecule.residues:
+                    for atom in residue.atoms:
+                        if atom.element not in ['N', 'O']:
+                            continue
+                        if (
+                            np.linalg.norm(
+                                clusters[name]['center_coors'] -
+                                atom.coordinates
+                            ) < 3.5
+                        ):
+                            if not coordinator_found:
+                                writer.write(f'{name},')
+                            coordinator_found = True
+                            writer.write(f'{atom.name}_{residue.id};')
+                if coordinator_found:
+                    writer.write(f",{clusters[name]['score']}\n")
 
 
 def load_model(model: str, device: str, **kwargs) -> BaseModel:
-    path = os.path.join(os.path.dirname(__file__), "trained_models", model)
-    model = BrigitCNN.load_from_checkpoint(
-        path,
-        map_location=device,
-        learning_rate=2e-4,
-        neurons_layer=64,
-        size=12,
-        num_dimns=6
+    path = os.path.join(
+        os.path.dirname(__file__), "trained_models", f'{model}.ckpt'
     )
+    if model == 'NewBrigit_2':
+        model = BrigitCNN.load_from_checkpoint(
+            path,
+            map_location=device,
+            learning_rate=2e-4,
+            neurons_layer=64,
+            size=12,
+            num_dimns=6
+        )
+    elif model == 'DeepSite':
+        model = DeepSite.load_from_checkpoint(
+            path,
+            map_location=device,
+            learning_rate=2e-4
+        )
+
     model.to(device)
     model.eval()
     return model
@@ -309,8 +384,10 @@ def set_up_cuda(device_id: int) -> None:
 
 def run(args: dict):
     print(args, end="\n\n")
+    args['args'] = args
     deepbiometall = DeepBioMetAll(**args)
     deepbiometall.predict(**args)
+
 
 """
 # Might be a useful solution for silencing all
@@ -323,7 +400,7 @@ def suppress_stdout():
     with open(os.devnull, "w") as devnull:
         old_stdout = sys.stdout
         sys.stdout = devnull
-        try:  
+        try:
             yield
         finally:
             sys.stdout = old_stdout

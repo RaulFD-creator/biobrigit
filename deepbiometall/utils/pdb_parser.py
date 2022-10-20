@@ -71,7 +71,10 @@ class atom():
         return f'{self.id}_{self.name}'
 
     def __sub__(self, other):
-        return self.coordinates - other.coordinates
+        if isinstance(other, atom):
+            return self.coordinates - other.coordinates
+        else:
+            return self.coordinates - other
 
 
 class residue():
@@ -84,10 +87,11 @@ class residue():
         self.name = atoms[0].resname
         self.id = atoms[0].res_ID
         self.atoms = atoms
-        alpha, beta, o = self.coordinates()
+        alpha, beta, o, n = self.coordinates()
         self.alpha = alpha
         self.beta = beta
         self.o = o
+        self.n = n
 
     def coordinates(self):
         """
@@ -102,6 +106,7 @@ class residue():
         alpha = None
         beta = None
         o = None
+        n = None
 
         for atom in self.atoms:
             if atom.name == 'CA':
@@ -110,8 +115,10 @@ class residue():
                 beta = atom
             elif atom.name == 'O':
                 o = atom
+            elif atom.name == 'N':
+                n = atom
 
-        return alpha, beta, o
+        return alpha, beta, o, n
 
     def __str__(self):
         return f'{self.name}'
@@ -225,14 +232,22 @@ class protein():
                     to_remove.append(idx2)
             self.metals.append(metal)
 
-    def parse_residues(self, coordinators: list, o_coordinators: list):
+    def parse_residues(
+        self,
+        coordinators: list,
+        o_coordinators: list,
+        n_coordinators: list
+    ):
         self.coordinators = coordinators
         self.o_coordinators = o_coordinators
+        self.n_coordinators = n_coordinators
         indexes = {residue: [] for residue in coordinators}
         alphas = {residue: [] for residue in coordinators}
         betas = {residue: [] for residue in coordinators}
         o_alphas = {residue: [] for residue in o_coordinators}
         o = {residue: [] for residue in o_coordinators}
+        n_alphas = {residue: [] for residue in n_coordinators}
+        n = {residue: [] for residue in n_coordinators}
 
         for idx, residue in enumerate(self.residues):
             if residue.name in self.coordinators:
@@ -242,6 +257,9 @@ class protein():
             elif residue.name in self.o_coordinators:
                 o_alphas[residue.name].append(residue.alpha.coordinates)
                 o[residue.name].append(residue.o.coordinates)
+            elif residue.name in self.n_coordinators:
+                n_alphas[residue.name].append(residue.alpha.coordinates)
+                n[residue.name].append(residue.n.coordinates)
 
         alphas = {
             residue: np.array(alphas[residue]).reshape(len(alphas[residue]), 3)
@@ -252,18 +270,31 @@ class protein():
             for residue in coordinators
         }
         o_alphas = {
-            residue: np.array(o[residue]).reshape(len(o[residue]), 3)
-            for residue in o_coordinators
+            residue: np.array(o_alphas[residue]).reshape(
+                len(o_alphas[residue]), 3
+            ) for residue in o_coordinators
         }
         o = {
             residue: np.array(o[residue]).reshape(len(o[residue]), 3)
             for residue in o_coordinators
+        }
+        n_alphas = {
+            residue: np.array(n_alphas[residue]).reshape(
+                len(n_alphas[residue]), 3
+            ) for residue in n_coordinators
+        }
+        n = {
+            residue: np.array(n[residue]).reshape(
+                len(n[residue]), 3
+            ) for residue in n_coordinators
         }
         self.info = {
             'alphas': alphas,
             'betas': betas,
             'o_alphas': o_alphas,
             'backbone_O': o,
+            'n_alphas': n_alphas,
+            'backbone_N': n
         }
 
     def set_stats(self, stats: dict, max_coordinators: int):
@@ -307,11 +338,12 @@ class protein():
         for residue in self.o_coordinators:
             o_alphas = probe[:3] - self.info['o_alphas'][residue]
             os = probe[:3] - self.info['backbone_O'][residue]
-            if len(o_alphas) == 0 or len(os) == 0:
-                continue
             o_alpha_dists, o_dists, mao_angles = geometric_relations(
                 o_alphas, os
             )
+            if o_alpha_dists is None:
+                continue
+
             o_alpha_trues = np.argwhere(
                 (o_alpha_dists > self.stats[residue]['aomin']) &
                 (o_alpha_dists < self.stats[residue]['aomax'])
@@ -326,13 +358,43 @@ class protein():
             )
             for true in o_alpha_trues:
                 if true in o_trues and true in mao_trues:
-                    coor_score = self.stats[residue]['fitness'] * stats_weight
+                    coor_score = (
+                        self.stats[residue]['o_fitness'] * stats_weight
+                    )
                     fitness_score += coor_score
                     possible_coordinators += 1
 
-        fitness_score = (fitness_score + cnn_score) * (
-            possible_coordinators / self.max_coordinators
-        )
+        for residue in self.n_coordinators:
+            n_alphas = probe[:3] - self.info['n_alphas'][residue]
+            ns = probe[:3] - self.info['backbone_N'][residue]
+            n_alpha_dists, n_dists, man_angles = geometric_relations(
+                n_alphas, ns
+            )
+            if n_alpha_dists is None:
+                continue
+
+            n_alpha_trues = np.argwhere(
+                (n_alpha_dists > self.stats[residue]['anmin']) &
+                (n_alpha_dists < self.stats[residue]['anmax'])
+            )
+            n_trues = np.argwhere(
+                (n_dists > self.stats[residue]['nmin']) &
+                (n_dists < self.stats[residue]['nmax'])
+            )
+            man_trues = np.argwhere(
+                (man_angles > self.stats[residue]['manmin']) &
+                (man_angles < self.stats[residue]['manmax'])
+            )
+            for true in n_alpha_trues:
+                if true in n_trues and true in man_trues:
+                    coor_score = (
+                        self.stats[residue]['n_fitness'] * stats_weight
+                    )
+                    fitness_score += coor_score
+                    possible_coordinators += 1
+        coor_bonus = (possible_coordinators / self.max_coordinators) ** 0.5
+        coor_bonus = coor_bonus if coor_bonus >= 1.0 else 1.0
+        fitness_score = (fitness_score + cnn_score) * coor_bonus
         return fitness_score
 
     def __str__(self):
