@@ -77,7 +77,7 @@ class ordered_list():
             self.n += 1
         else:
             raise StopIteration
-        
+
         return result
 
 

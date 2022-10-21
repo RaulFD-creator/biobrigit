@@ -153,7 +153,6 @@ class DeepBioMetAll():
         uchannels, undesired_channels = get_undesired_channels(
             uchannels, channels
         )
-
         vox, p_centers, p_N = getVoxelDescriptors(
             protein,
             voxelsize=voxelsize,
@@ -388,23 +387,6 @@ def run(args: dict):
     deepbiometall = DeepBioMetAll(**args)
     deepbiometall.predict(**args)
 
-
-"""
-# Might be a useful solution for silencing all
-# annoying outputs
-from contextlib import contextmanager
-import sys, os
-
-@contextmanager
-def suppress_stdout():
-    with open(os.devnull, "w") as devnull:
-        old_stdout = sys.stdout
-        sys.stdout = devnull
-        try:
-            yield
-        finally:
-            sys.stdout = old_stdout
-"""
 
 if __name__ == '__main__':
     help(DeepBioMetAll)
