@@ -18,7 +18,7 @@ def parse_cli() -> dict:
                    help="GPU ID in which the calculations will be run.")
     p.add_argument("--outputfile", type=str, default=None,
                    help='Path where the output should be written.')
-    p.add_argument("--max_coordinators", type=int, default=6,
+    p.add_argument("--max_coordinators", type=int, default=4,
                    help="Number of residues that need to be coordinating a\
                    given metal.")
     p.add_argument("--residues", type=int, default=7,

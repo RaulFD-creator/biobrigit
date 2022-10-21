@@ -252,12 +252,16 @@ class DeepBioMetAll():
         vox, p_centers, nvoxels = self.voxelize(target, **kwargs)
 
         if verbose == 1:
-            print(f'\n\nEvaluating target: {target}', end='\n\n')
+            print(f'\nCNN evaluation of target: {target}', end='\n\n')
 
         scores = self.evaluate(vox, p_centers, **kwargs)
+
+        if verbose == 1:
+            print(f'\nCoordination analysis of target: {target}', end='\n\n')
+
         scores, molecule = self.coordination_analysis(
             target, max_coordinators, metal, scores, cnn_threshold,
-            **kwargs
+            verbose, **kwargs
         )
         best_scores = np.argwhere(scores[:, 3] > combined_threshold)
         new_scores = np.zeros((len(best_scores), 4))
@@ -283,7 +287,7 @@ class DeepBioMetAll():
 
     def coordination_analysis(
         self, target, max_coordinators, metal, scores, threshold, cnn_weight,
-        **kwargs
+        verbose, **kwargs
     ):
         molecule = protein(target, True)
         residues, o_residues, n_residues, metal_stats = (
@@ -291,10 +295,12 @@ class DeepBioMetAll():
         )
         molecule.set_stats(metal_stats, max_coordinators)
         molecule.parse_residues(residues, o_residues, n_residues)
-
+        num_points = len(scores)
         for idx, probe in enumerate(scores):
             if probe[3] > threshold:
                 scores[idx, 3] = molecule.coordination_score(probe, cnn_weight)
+            if (idx % (num_points // 30) == 0) and verbose == 1:
+                print(f'{round((idx/num_points)*100, 2)}%')
         return scores, molecule
 
     def clusterize(
@@ -327,7 +333,7 @@ class DeepBioMetAll():
         return result
 
     def check_clusters(self, clusters, molecule, outputfile, args):
-        outputfile_name = outputfile + '.clusters'
+        outputfile_name = f'{outputfile}.clusters'
         with open(outputfile_name, 'w') as writer:
             writer.write(f'{args}\n')
             writer.write('cluster,coordinators,score\n')
