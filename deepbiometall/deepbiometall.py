@@ -12,7 +12,8 @@ from .utils.data import CHANNELS
 from .utils.tools import (
     get_undesired_channels,
     select_desired_channels,
-    find_most_likely_coordinators
+    find_most_likely_coordinators,
+    ordered_list
 )
 from .utils.pdb_parser import protein
 
@@ -66,8 +67,12 @@ class DeepBioMetAll():
             for entry in scores:
                 close2protein = False
                 for atom in molecule.atoms:
-                    if np.linalg.norm(atom.coordinates - entry[:3]) < 3.5:
+                    if (
+                        np.linalg.norm(atom - entry[:3]) < 3. and
+                        atom.element not in ['H']
+                    ):
                         close2protein = True
+                        break
 
                 if not close2protein:
                     continue
@@ -97,14 +102,14 @@ class DeepBioMetAll():
                     fo.write(blank + "%s     %s  1.00  %s          %s\n" %
                              (num_res, prb_str, score, atom))
 
-            for entry in centers.values():
+            for name, entry in enumerate(centers):
                 num_at += 1
                 num_res = 1
                 ch = "A"
                 prb_str = ""
 
                 for idx in range(3):
-                    number = str(round(float(entry['center_coors'][idx]), 3))
+                    number = str(round(float(entry[idx]), 3))
                     prb_center = "{:.8s}".format(number)
                     if len(prb_center) < 8:
                         prb_center = " "*(8-len(prb_center)) + prb_center
@@ -117,7 +122,7 @@ class DeepBioMetAll():
                 fo.write("ATOM" + blank + "%s  %s  SLN %s" %
                          (num_at, atom, ch))
                 blank = " "*(3-len(str(num_res)))
-                score = str(entry['score'])
+                score = str(centers.counts(name))
                 score = score if len(score) == 4 else score + '0'
                 fo.write(blank + "%s     %s  1.00  %s          %s\n" %
                          (num_res, prb_str, score, atom))
@@ -304,7 +309,7 @@ class DeepBioMetAll():
                   \nclusterize.')
             exit()
         clusters = {}
-        result = {}
+        result = ordered_list()
         for idx, score in enumerate(scores):
             try:
                 clusters[labels[idx]].append(score)
@@ -319,11 +324,7 @@ class DeepBioMetAll():
                 cluster[:, :3], axis=0, weights=cluster[:, 3]
             )
             score_mean = np.average(cluster[:, 3])
-            result[name] = {
-                'center_coors': cluster_mean,
-                'score': score_mean
-            }
-
+            result.add(cluster_mean, score_mean)
         return result
 
     def check_clusters(self, clusters, molecule, outputfile, args):
@@ -331,7 +332,7 @@ class DeepBioMetAll():
         with open(outputfile_name, 'w') as writer:
             writer.write(f'{args}\n')
             writer.write('cluster,coordinators,score\n')
-            for name, center in clusters.items():
+            for name, center in enumerate(clusters):
                 coordinator_found = False
                 for residue in molecule.residues:
                     for atom in residue.atoms:
@@ -339,8 +340,7 @@ class DeepBioMetAll():
                             continue
                         if (
                             np.linalg.norm(
-                                clusters[name]['center_coors'] -
-                                atom.coordinates
+                                atom - center
                             ) < 3.5
                         ):
                             if not coordinator_found:
@@ -348,7 +348,7 @@ class DeepBioMetAll():
                             coordinator_found = True
                             writer.write(f'{atom.name}_{residue.id};')
                 if coordinator_found:
-                    writer.write(f",{clusters[name]['score']}\n")
+                    writer.write(f",{clusters.counts(name)}\n")
 
 
 def load_model(model: str, device: str, **kwargs) -> BaseModel:

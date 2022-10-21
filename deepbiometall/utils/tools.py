@@ -39,20 +39,20 @@ class ordered_list():
 
     def add(self, other, counts):
         for idx, item in enumerate(self.list):
-            if self.dict[item] < counts and counts > 0.0:
+            if self.counts(idx) < counts and counts > 0.0:
                 self.list.insert(idx, other)
-                self.dict[other] = counts
+                self.dict[str(other)] = counts
                 return
 
         self.list.append(other)
-        self.dict[other] = counts
+        self.dict[str(other)] = counts
 
     def pop(self, idx):
-        del self.dict[self.list[idx]]
+        del self.dict[str(self.list[idx])]
         self.list.pop(idx)
 
     def counts(self, idx):
-        return self.dict[self.list[idx]]
+        return self.dict[str(self.list[idx])]
 
     def to_list(self):
         return self.list
@@ -65,6 +65,20 @@ class ordered_list():
 
     def __repr__(self):
         return str(self.list)
+
+    def __iter__(self):
+        self.n = 0
+        self.max = len(self.list)
+        return self
+
+    def __next__(self):
+        if self.n < self.max:
+            result = self.list[self.n]
+            self.n += 1
+        else:
+            raise StopIteration
+        
+        return result
 
 
 def download_pdb(pdbcode: str, datadir: str,

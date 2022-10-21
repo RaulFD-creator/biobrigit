@@ -392,8 +392,14 @@ class protein():
                     )
                     fitness_score += coor_score
                     possible_coordinators += 1
-        coor_bonus = (possible_coordinators / self.max_coordinators) ** 0.5
-        coor_bonus = coor_bonus if coor_bonus >= 1.0 else 1.0
+        try:
+            coor_bonus = (
+                1.0 if possible_coordinators == self.max_coordinators else
+                1 - possible_coordinators**-1
+            )
+        except ZeroDivisionError:
+            coor_bonus = 0.0
+
         fitness_score = (fitness_score + cnn_score) * coor_bonus
         return fitness_score
 
@@ -426,7 +432,7 @@ def write_site(
     mfs_residues = set()
 
     for atom in structure.atoms:
-        if np.linalg.norm(atom.coordinates - center) <= radius:
+        if np.linalg.norm(atom - center) <= radius:
             mfs_residues.add(atom.res_ID)
 
     control_num_atoms = []
