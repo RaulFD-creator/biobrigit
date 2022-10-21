@@ -261,7 +261,7 @@ class DeepBioMetAll():
 
         scores, molecule = self.coordination_analysis(
             target, max_coordinators, metal, scores, cnn_threshold,
-            verbose, **kwargs
+            kwargs['cnn_weight'], verbose, **kwargs
         )
         best_scores = np.argwhere(scores[:, 3] > combined_threshold)
         new_scores = np.zeros((len(best_scores), 4))
