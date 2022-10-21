@@ -203,12 +203,13 @@ class DeepBioMetAll():
         for x in range(border, max_x, stride):
             for y in range(border, max_y, stride):
                 for z in range(border, max_z, stride):
+                    if (counter % (num_points // 30) == 0):
+                        print(f'{round((counter/num_points)*100, 2)}%')
+                    counter += 1
 
                     if vox[:, 5, x, y, z] > occupancy_restrictions:
                         continue
 
-                    if (counter % (num_points // 30) == 0):
-                        print(f'{round((counter/num_points)*100, 2)}%')
                     x1, x2 = x - border, x + border
                     y1, y2 = y - border, y + border
                     z1, z2 = z - border, z + border
@@ -216,8 +217,7 @@ class DeepBioMetAll():
                         vox[:, :, x1: x2, y1: y2, z1: z2]
                         ).detach().cpu()
                     scores[x, y, z] = output
-
-                    counter += 1
+         
         print()
         scores = scores.reshape(-1)
         scores = scores.detach().cpu().numpy()
@@ -261,7 +261,7 @@ class DeepBioMetAll():
 
         scores, molecule = self.coordination_analysis(
             target, max_coordinators, metal, scores, cnn_threshold,
-            kwargs['cnn_weight'], verbose, **kwargs
+            verbose, **kwargs
         )
         best_scores = np.argwhere(scores[:, 3] > combined_threshold)
         new_scores = np.zeros((len(best_scores), 4))
@@ -286,8 +286,8 @@ class DeepBioMetAll():
         return scores
 
     def coordination_analysis(
-        self, target, max_coordinators, metal, scores, threshold, cnn_weight,
-        verbose, **kwargs
+        self, target, max_coordinators, metal, scores, threshold,
+        verbose, cnn_weight, **kwargs
     ):
         molecule = protein(target, True)
         residues, o_residues, n_residues, metal_stats = (
