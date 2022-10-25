@@ -23,6 +23,7 @@ class DeepBioMetAll():
         self,
         device: str,
         device_id: int,
+        model: str,
         **kwargs
     ):
         if device == 'cuda':
@@ -30,7 +31,7 @@ class DeepBioMetAll():
             set_up_cuda(device_id)
         else:
             self.device = device
-        self.model = load_model(kwargs['model'], device)
+        self.model = load_model(model, device)
 
     def create_PDB(
         self,
@@ -77,30 +78,29 @@ class DeepBioMetAll():
                 if not close2protein:
                     continue
 
-                if entry[3] > threshold:
-                    num_at += 1
-                    num_res = 1
-                    ch = "A"
-                    prb_str = ""
+                num_at += 1
+                num_res = 1
+                ch = "A"
+                prb_str = ""
 
-                    for idx in range(3):
-                        number = str(round(float(entry[idx]), 3))
-                        prb_center = "{:.8s}".format(number)
-                        if len(prb_center) < 8:
-                            prb_center = " "*(8-len(prb_center)) + prb_center
-                            prb_str += prb_center
-                        else:
-                            prb_str += prb_center
+                for idx in range(3):
+                    number = str(round(float(entry[idx]), 3))
+                    prb_center = "{:.8s}".format(number)
+                    if len(prb_center) < 8:
+                        prb_center = " "*(8-len(prb_center)) + prb_center
+                        prb_str += prb_center
+                    else:
+                        prb_str += prb_center
 
-                    atom = "HE"
-                    blank = " "*(7-len(str(num_at)))
-                    fo.write("ATOM" + blank + "%s  %s  SLN %s" %
-                             (num_at, atom, ch))
-                    blank = " "*(3-len(str(num_res)))
-                    score = str(round(entry[3], 2))
-                    score = score if len(score) == 4 else score + '0'
-                    fo.write(blank + "%s     %s  1.00  %s          %s\n" %
-                             (num_res, prb_str, score, atom))
+                atom = "HE"
+                blank = " "*(7-len(str(num_at)))
+                fo.write("ATOM" + blank + "%s  %s  SLN %s" %
+                            (num_at, atom, ch))
+                blank = " "*(3-len(str(num_res)))
+                score = str(round(entry[3], 2))
+                score = score if len(score) == 4 else score + '0'
+                fo.write(blank + "%s     %s  1.00  %s          %s\n" %
+                            (num_res, prb_str, score, atom))
 
             for name, entry in enumerate(centers):
                 num_at += 1
@@ -235,6 +235,7 @@ class DeepBioMetAll():
         combined_threshold: float = 0.5,
         verbose: int = 1,
         clustering_threshold: float = 4.0,
+        cnn_weight: float = 0.5,
         **kwargs
     ) -> np.array:
         start = time.time()
@@ -259,10 +260,16 @@ class DeepBioMetAll():
         if verbose == 1:
             print(f'\nCoordination analysis of target: {target}', end='\n\n')
 
-        scores, molecule = self.coordination_analysis(
+        coor_scores, molecule = self.coordination_analysis(
             target, max_coordinators, metal, scores, cnn_threshold,
             verbose, **kwargs
         )
+        coor_scores = (
+            (coor_scores - np.min(coor_scores)) /
+            (np.max(coor_scores) - np.min(coor_scores))
+        )
+        scores[:, 3] *= cnn_weight
+        scores[:, 3] += coor_scores * (1 - cnn_weight)
         best_scores = np.argwhere(scores[:, 3] > combined_threshold)
         new_scores = np.zeros((len(best_scores), 4))
         for idx, idx_score in enumerate(best_scores):
@@ -287,8 +294,9 @@ class DeepBioMetAll():
 
     def coordination_analysis(
         self, target, max_coordinators, metal, scores, threshold,
-        verbose, cnn_weight, **kwargs
+        verbose, **kwargs
     ):
+        zeros = np.zeros(np.shape(scores[:, 3]))
         molecule = protein(target, True)
         residues, o_residues, n_residues, metal_stats = (
             find_most_likely_coordinators(metal, kwargs['residues'])
@@ -298,10 +306,10 @@ class DeepBioMetAll():
         num_points = len(scores)
         for idx, probe in enumerate(scores):
             if probe[3] > threshold:
-                scores[idx, 3] = molecule.coordination_score(probe, cnn_weight)
+                zeros[idx] = molecule.coordination_score(probe)
             if (idx % (num_points // 30) == 0) and verbose == 1:
                 print(f'{round((idx/num_points)*100, 2)}%')
-        return scores, molecule
+        return zeros, molecule
 
     def clusterize(
         self, scores, molecule, clustering_threshold
@@ -310,9 +318,9 @@ class DeepBioMetAll():
         try:
             labels = clustering.fit_predict(scores[:, :3])
         except ValueError:
-            print('There are not enough predicted points as to properly\
-                  \nclusterize.')
-            exit()
+            raise ValueError('There are not enough predicted points as to\
+                \nproperly clusterize.')
+
         clusters = {}
         result = ordered_list()
         for idx, score in enumerate(scores):

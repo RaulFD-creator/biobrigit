@@ -214,7 +214,7 @@ class protein():
 
         for hetatm in self.hetatms:
             if (
-                hetatm.atom_type in NEW_METALS and
+                hetatm.element in NEW_METALS and
                 hetatm.resname in METAL_RESNAMES
             ):
                 metals.append(hetatm)
@@ -228,7 +228,7 @@ class protein():
                 if idx2 in to_remove or idx == idx2:
                     continue
                 if np.linalg.norm(metal - metal2) < 5.0:
-                    metal.companions.append(metal2.atom_type)
+                    metal.companions.append(metal2.element)
                     to_remove.append(idx2)
             self.metals.append(metal)
 
@@ -304,11 +304,8 @@ class protein():
     def coordination_score(
         self,
         probe,
-        cnn_weight: float = 0.5
     ):
-        cnn_score = probe[3] * cnn_weight
         possible_coordinators = 0
-        stats_weight = 1 - cnn_weight
         fitness_score = 0
 
         for residue in self.coordinators:
@@ -331,7 +328,7 @@ class protein():
             )
             for true in alpha_trues:
                 if true in beta_trues and true in ab_trues:
-                    coor_score = self.stats[residue]['fitness'] * stats_weight
+                    coor_score = self.stats[residue]['fitness']
                     fitness_score += coor_score
                     possible_coordinators += 1
 
@@ -359,7 +356,7 @@ class protein():
             for true in o_alpha_trues:
                 if true in o_trues and true in mao_trues:
                     coor_score = (
-                        self.stats[residue]['o_fitness'] * stats_weight
+                        self.stats[residue]['o_fitness']
                     )
                     fitness_score += coor_score
                     possible_coordinators += 1
@@ -388,7 +385,7 @@ class protein():
             for true in n_alpha_trues:
                 if true in n_trues and true in man_trues:
                     coor_score = (
-                        self.stats[residue]['n_fitness'] * stats_weight
+                        self.stats[residue]['n_fitness']
                     )
                     fitness_score += coor_score
                     possible_coordinators += 1
@@ -400,7 +397,7 @@ class protein():
         except ZeroDivisionError:
             coor_bonus = 0.0
 
-        fitness_score = (fitness_score + cnn_score) * coor_bonus
+        fitness_score = fitness_score * coor_bonus
         return fitness_score
 
     def __str__(self):
@@ -463,11 +460,11 @@ def write_site(
 
 
 def _remove_blank_spaces(sentence):
-    atom_type = ""
+    new_sentence = ""
     for char in sentence:
         if char not in [" ", "\t", "\n"]:
-            atom_type += char
-    return atom_type
+            new_sentence += char
+    return new_sentence
 
 
 if __name__ == '__main__':
