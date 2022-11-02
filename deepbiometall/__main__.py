@@ -27,7 +27,7 @@ def parse_cli() -> dict:
         "--stride", type=int, default=1,
         help="Step of the sliding window when evaluating the protein."
     )
-    p.add_argument("--clustering_threshold", type=float, default=5.0,
+    p.add_argument("--clustering_radius", type=float, default=5.0,
                    help="Threshold used for the Birch clustering algorithm.")
     p.add_argument("--cnn_threshold", type=float, default=0.5,
                    help="Threshold for considering CNN points as possible\
@@ -43,6 +43,10 @@ def parse_cli() -> dict:
         "--verbose", type=int, default=1,
         help="Information that will be displayed. 0: Only Moleculekit, 1: All."
     )
+    p.add_argument("--residue_score", type=str, default='gaussian',
+                   help='Scoring function for residue coordination analysis.')
+    p.add_argument("--backbone_score", type=str, default='discrete',
+                   help='Scoring function for residue coordination analysis.')
     args = p.parse_args()
 
     print()

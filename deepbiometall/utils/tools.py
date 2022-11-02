@@ -252,13 +252,14 @@ def voxelize(
 
 
 def find_most_likely_coordinators(metal, num_residues: int = 20):
-    stats = read_stats()
-    metal_stats = stats[metal]
+    stats, gaussian_stats = read_stats()
+    stats = stats[metal]
+    gaussian_stats = gaussian_stats[metal]
     residues = ordered_list()
     o_residues = ordered_list()
     n_residues = ordered_list()
 
-    for residue, res_stats in metal_stats.items():
+    for residue, res_stats in stats.items():
         if len(residues) < num_residues:
             if res_stats['fitness'] > 0.0:
                 residues.add(residue, res_stats['fitness'])
@@ -280,15 +281,16 @@ def find_most_likely_coordinators(metal, num_residues: int = 20):
             n_residues.pop(-1)
             n_residues.add(residue, res_stats['n_fitness'])
 
-    return (
-        residues.to_list(),
-        o_residues.to_list(),
-        n_residues.to_list(),
-        metal_stats
-    )
+    coordinators = {
+        'residue': residues.to_list(),
+        'backbone_o': o_residues.to_list(),
+        'backbone_n': n_residues.to_list(),
+    }
+
+    return coordinators, stats, gaussian_stats
 
 
-def geometric_relations(v1, v2):
+def geometry(v1, v2):
     v1_distances = np.linalg.norm(v1, axis=1)
     v2_distances = np.linalg.norm(v2, axis=1)
     v1_v2_distances = np.linalg.norm(v1 - v2, axis=1)

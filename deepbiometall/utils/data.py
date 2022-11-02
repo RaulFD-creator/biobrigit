@@ -12,9 +12,14 @@ import json
 
 def read_stats() -> dict:
     current_dir = os.path.dirname(__file__)
-    path = os.path.join(current_dir, 'residue_statistics.json')
-    with open(path) as reader:
-        return json.load(reader)
+    stats_path = os.path.join(current_dir, 'residue_statistics.json')
+    gaussian_path = os.path.join(current_dir, 'gaussian_statistics.json')
+    with open(stats_path) as reader_1:
+        stats = json.load(reader_1)
+    with open(gaussian_path) as reader_2:
+        gaussian_stats = json.load(reader_2)
+
+    return stats, gaussian_stats
 
 
 ALL_CHANNELS = ['hydrophobic', 'aromatic', 'hbond_acceptor', 'hbond_donor',

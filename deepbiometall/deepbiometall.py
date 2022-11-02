@@ -16,6 +16,12 @@ from .utils.tools import (
     ordered_list
 )
 from .utils.pdb_parser import protein
+from .utils.scoring import (
+    parse_residues,
+    coordination_score,
+    discrete_score,
+    gaussian_score
+)
 
 
 class DeepBioMetAll():
@@ -95,12 +101,12 @@ class DeepBioMetAll():
                 atom = "HE"
                 blank = " "*(7-len(str(num_at)))
                 fo.write("ATOM" + blank + "%s  %s  SLN %s" %
-                            (num_at, atom, ch))
+                         (num_at, atom, ch))
                 blank = " "*(3-len(str(num_res)))
                 score = str(round(entry[3], 2))
                 score = score if len(score) == 4 else score + '0'
                 fo.write(blank + "%s     %s  1.00  %s          %s\n" %
-                            (num_res, prb_str, score, atom))
+                         (num_res, prb_str, score, atom))
 
             for name, entry in enumerate(centers):
                 num_at += 1
@@ -137,7 +143,7 @@ class DeepBioMetAll():
         **kwargs
     ):
         if isinstance(target, str):
-            protein = Molecule(target)
+            protein = Molecule(target, validateElements=False)
         elif isinstance(target, Molecule):
             protein = target
         else:
@@ -234,7 +240,7 @@ class DeepBioMetAll():
         cnn_threshold: float = 0.5,
         combined_threshold: float = 0.5,
         verbose: int = 1,
-        clustering_threshold: float = 4.0,
+        clustering_radius: float = 5.0,
         cnn_weight: float = 0.5,
         **kwargs
     ) -> np.array:
@@ -264,10 +270,6 @@ class DeepBioMetAll():
             target, max_coordinators, metal, scores, cnn_threshold,
             verbose, **kwargs
         )
-        coor_scores = (
-            (coor_scores - np.min(coor_scores)) /
-            (np.max(coor_scores) - np.min(coor_scores))
-        )
         scores[:, 3] *= cnn_weight
         scores[:, 3] += coor_scores * (1 - cnn_weight)
         best_scores = np.argwhere(scores[:, 3] > combined_threshold)
@@ -275,7 +277,7 @@ class DeepBioMetAll():
         for idx, idx_score in enumerate(best_scores):
             new_scores[idx, :] = scores[idx_score, :]
         centers = self.clusterize(
-            new_scores, molecule, clustering_threshold
+            new_scores, molecule, clustering_radius
         )
 
         if outputfile is None:
@@ -294,32 +296,58 @@ class DeepBioMetAll():
 
     def coordination_analysis(
         self, target, max_coordinators, metal, scores, threshold,
-        verbose, **kwargs
+        verbose, residue_score, backbone_score, **kwargs
     ):
         zeros = np.zeros(np.shape(scores[:, 3]))
         molecule = protein(target, True)
-        residues, o_residues, n_residues, metal_stats = (
-            find_most_likely_coordinators(metal, kwargs['residues'])
+        coordinators, stats, gaussian_stats = find_most_likely_coordinators(
+            metal, kwargs['residues']
         )
-        molecule.set_stats(metal_stats, max_coordinators)
-        molecule.parse_residues(residues, o_residues, n_residues)
+        if residue_score == 'discrete':
+            residue_score = discrete_score
+        elif residue_score == 'gaussian':
+            residue_score = gaussian_score
+        else:
+            raise IndexError(
+                f'Residue coordination scoring function: {residue_score} not\
+                    currently implemented.'
+            )
+
+        if backbone_score == 'discrete':
+            backbone_score = discrete_score
+        else:
+            raise IndexError(
+                f'Backbone coordination scoring function: {backbone_score} not\
+                    currently implemented.'
+            )
+        molecule_info = parse_residues(molecule, coordinators)
         num_points = len(scores)
         for idx, probe in enumerate(scores):
             if probe[3] > threshold:
-                zeros[idx] = molecule.coordination_score(probe)
+                zeros[idx] = coordination_score(
+                    molecule,
+                    probe,
+                    stats,
+                    gaussian_stats,
+                    molecule_info,
+                    coordinators,
+                    gaussian_score,
+                    discrete_score,
+                    max_coordinators=max_coordinators
+                )
             if (idx % (num_points // 30) == 0) and verbose == 1:
                 print(f'{round((idx/num_points)*100, 2)}%')
         return zeros, molecule
 
     def clusterize(
-        self, scores, molecule, clustering_threshold
+        self, scores, molecule, clustering_radius
     ):
-        clustering = Birch(threshold=clustering_threshold, n_clusters=None)
+        clustering = Birch(threshold=clustering_radius, n_clusters=None)
         try:
             labels = clustering.fit_predict(scores[:, :3])
         except ValueError:
             raise ValueError('There are not enough predicted points as to\
-                \nproperly clusterize.')
+                properly clusterize.')
 
         clusters = {}
         result = ordered_list()
