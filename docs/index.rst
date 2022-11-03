@@ -1,4 +1,4 @@
-Welcome to DeepBioMetAll's documentation!
+Welcome to Brigit's documentation!
 ======================================
 
 .. toctree::

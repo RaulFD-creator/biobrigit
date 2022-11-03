@@ -2,6 +2,6 @@
 Usage
 =====
 
-To use DeepBioMetAll in a project::
+To use Brigit in a project::
 
-    import deepbiometall
+    import brigit

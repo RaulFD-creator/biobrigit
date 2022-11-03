@@ -1,3 +1,17 @@
+"""
+Brigit module that contains the main functions
+for evaluating coordination probes.
+
+Contains 5 functions:
+    - parse_residues
+    - coordination_score
+    - discrete_score
+    - gaussian_score
+    - double_gaussian
+
+Copyright by Raúl Fernández Díaz
+"""
+
 import numpy as np
 import scipy.stats as stats
 from .tools import geometry
@@ -94,6 +108,7 @@ def coordination_score(
     coordinators: dict,
     residue_scoring,
     backbone_scoring,
+    max_coordinators,
     **kwargs
 ) -> float:
     """
@@ -101,7 +116,16 @@ def coordination_score(
     if it where located at the coordinates of `probe`.
 
     It can use different scoring functions for residue or backbone
-    coordinations. It iterates through all 
+    coordinations. It iterates through all coordinating residues and
+    calculates the distances between the probe and the alpha C and a
+    second atom (beta C for residue coordination, O or N for the corresponding
+    backbone coordination), and the angles between both atoms with regards
+    to the probe. Then it uses this information and the appropriate scoring
+    function to assign a coordination score to the probe.
+
+    Finally, the cummulative score is multiplied by a factor that depends on
+    how many coordinating residues were located and how many were expected.
+    Final value will be at maximum of 1.0.
 
     Args:
         molecule (protein): Protein object.
@@ -128,6 +152,7 @@ def coordination_score(
             `probe`.
     """
     fitness = 0
+    possible_coordinators = 0
     coordination_types = ['residue', 'backbone_o', 'backbone_n']
     for coor_type in coordination_types:
         kwargs['coor_type'] = coor_type
@@ -136,7 +161,7 @@ def coordination_score(
             alphas = probe[:3] - molecule_info[f'{coor_type}_alphas'][res]
             atm2 = probe[:3] - molecule_info[f'{coor_type}_2nd_atom'][res]
             dist_1, dist_2, angles = geometry(alphas, atm2)
-            fitness += (
+            fitness_res, coors_res = (
                 residue_scoring(
                     dist_1, dist_2, angles, res, stats, **kwargs
                 )
@@ -145,7 +170,10 @@ def coordination_score(
                     dist_1, dist_2, angles, res, stats, **kwargs
                 )
             )
-    return fitness
+            fitness += fitness_res
+            possible_coordinators += coors_res
+    fitness *= (possible_coordinators / max_coordinators)
+    return fitness if fitness < 1.0 else 1.0
 
 
 def discrete_score(
@@ -154,24 +182,43 @@ def discrete_score(
     angles: np.array,
     residue: str,
     stats: dict,
-    max_coordinators: int,
     coor_type: str,
     **kwargs
-) -> float:
+) -> tuple:
     """
-    
+    Scoring function to be used by the `coordination_score` function
+    to compute the relative strength or suitability of the spatial position
+    represented by the probe for coordinating a given metal ion.
+
+    This particular scoring function uses a set of statistical values
+    calculated as the median of the distribution of distances between the
+    metallic moietie, the alpha C and the appropriate second atom, and the
+    angles between them. The ranges are set at the median +- 3 times the
+    standard deviation.
+
+    The algorithm first finds all positions that comply with all 3 requirements
+    simultaneously and scores them according to the relative abundance of the
+    specific metal being coordinating by the specific residue.
 
     Args:
-        dist_1 (np.array): _description_
-        dist_2 (np.array): _description_
-        angles (np.array): _description_
-        residue (str): _description_
-        stats (dict): _description_
-        max_coordinators (int): _description_
-        coor_type (str): _description_
+        dist_1 (np.array): Distances from `probe` to the alpha C.
+        dist_2 (np.array): Distances from `probe` to the second atom which
+            could be beta C (residue), backbone O, or backbone N.
+        angles (np.array): Angles formed by the vectors defined by alpha C and
+            `probe` and 2nd atom and `probe`.
+        residue (str): Name of the residue currently being evaluated.
+        stats (dict):  Dictionary containing statistical values describing
+            the distances a metallic ion has to keep with regards to different
+            backbone atoms in order to properly be coordinated.
+        coor_type (str): Whether the coordination is with the residue, with a
+            backbone O, or a backbone N. The main difference is the set of
+            statistics used for the evaluation.
 
     Returns:
-        float: _description_
+        tuple: Contains two different values, i.e., `fitness` which is the 
+            score obtained for a given probe and a given type of residue and
+            `possible_coordinators` which is the number of such residues that
+            fulfill the geometric requirements.
     """
     if coor_type == 'residue':
         a, b, c, d, e, f = 'amin', 'amax', 'bmin', 'bmax', 'abmin', 'abmax'
@@ -202,14 +249,7 @@ def discrete_score(
             fitness += stats[residue][g]
             possible_coordinators += 1
 
-    if possible_coordinators > max_coordinators:
-        possible_coordinators = max_coordinators
-
-    fitness *= (possible_coordinators / max_coordinators)
-    if fitness > 1.0:
-        fitness = 1.0
-
-    return fitness
+    return fitness, possible_coordinators
 
 
 def gaussian_score(
@@ -220,8 +260,42 @@ def gaussian_score(
     stats: dict,
     gaussian_stats: dict,
     **kwargs
-) -> float:
+) -> tuple:
+    """
+    Scoring function to be used by the `coordination_score` function
+    to compute the relative strength or suitability of the spatial position
+    represented by the probe for coordinating a given metal ion.
+
+    This particular scoring function uses a set of statistical values
+    calculated as the parameters of the combination of 2 gaussian curves
+    that best fit the distribution of the data. Currently, this function
+    can only be used for evaluating residue coordination and not backbone
+    O or N.
+
+    The algorithm first finds all positions that comply with all 3 requirements
+    simultaneously and scores them according to the relative abundance of the
+    specific metal being coordinating by the specific residue and to their
+    position within the gaussian curves.
+
+
+    Args:
+        dist_1 (np.array): Distances from `probe` to the alpha C.
+        dist_2 (np.array): Distances from `probe` to the second atom which
+            could be beta C (residue), backbone O, or backbone N.
+        angles (np.array): Angles formed by the vectors defined by alpha C and
+            `probe` and 2nd atom and `probe`.
+        residue (str): Name of the residue currently being evaluated.
+        stats (dict):  Dictionary containing statistical values describing
+            the distances a metallic ion has to keep with regards to different
+            backbone atoms in order to properly be coordinated.
+        gaussian_stats (dict):  Similar to `stats`, but these statistics have
+            been calculated to fit the combination of 2 gaussian curves.
+
+    Returns:
+        tuple: _description_
+    """
     fitness = 0
+    possible_coordinators = 0
 
     alpha_scores = double_gaussian(dist_1, *gaussian_stats[residue]['alpha'])
     beta_scores = double_gaussian(dist_2, *gaussian_stats[residue]['beta'])
@@ -238,11 +312,45 @@ def gaussian_score(
             score_angles = angle_scores[true]
             fitness += (score_1 + score_2 + score_angles) / 3
             fitness *= stats[residue]['fitness']
+            possible_coordinators += 1
 
-    return fitness if fitness < 1.0 else 1.0
+    return fitness, possible_coordinators
 
 
-def double_gaussian(x, prop, nu1, sigma1, nu2, sigma2, *args):
+def double_gaussian(
+    x: np.array,
+    prop: float,
+    nu1: float,
+    sigma1: float,
+    nu2: float,
+    sigma2: float
+) -> np.array or float:
+    """
+    Helper function for the `gaussian_score` function that computes
+    the score associated to a certain set of parameters for the input
+    `x`.
+
+    Args:
+        x (np.array): Set of input values to evaluate.
+        prop (float): Factor describing the contribution of each of
+            the gaussians to the final result.
+        nu1 (float): Average value for the first gaussian.
+        sigma1 (float): Standard deviation of the first gaussian.
+        nu2 (float): Average value for the second gaussian.
+        sigma2 (float): Standard deviation of the second gaussian.
+
+    Returns:
+        result (np.array or float): Value or array of values with len(x)
+            with the associated probability.
+    """
     first_gaussian = stats.norm(nu1, sigma1).pdf(x)
     second_gaussian = stats.norm(nu2, sigma2).pdf(x)
     return prop * first_gaussian + (1-prop) * second_gaussian
+
+
+if __name__ == '__main__':
+    help(parse_residues)
+    help(coordination_score)
+    help(discrete_score)
+    help(gaussian_score)
+    help(double_gaussian)

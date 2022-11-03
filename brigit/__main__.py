@@ -1,10 +1,10 @@
 import argparse
 import multiprocessing
-import deepbiometall
+import brigit
 
 
 def parse_cli() -> dict:
-    """Console script for deepbiometall."""
+    """Console script for brigit."""
     p = argparse.ArgumentParser()
     p.add_argument("target", type=str,
                    help="Molecule PDB file to be analysed.")
@@ -54,7 +54,7 @@ def parse_cli() -> dict:
 
 
 def welcome() -> None:
-    message = "Using DeepBioMetAll by Raúl Fernández-Díaz"
+    message = "Using Brigit by Raúl Fernández-Díaz"
     print("-" * (len(message) + 4))
     print("| " + message + " |")
     print("-" * (len(message) + 4))
@@ -65,7 +65,7 @@ def main():
     multiprocessing.freeze_support()
     welcome()
     args = parse_cli()
-    deepbiometall.run(args)
+    brigit.run(args)
 
 
 if __name__ == '__main__':

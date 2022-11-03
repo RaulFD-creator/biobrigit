@@ -1,4 +1,9 @@
-"""Main module."""
+"""
+Main Brigit module.
+
+Contains 1 class:
+    - Brigit
+"""
 import os
 import time
 import torch
@@ -13,7 +18,8 @@ from .utils.tools import (
     get_undesired_channels,
     select_desired_channels,
     find_most_likely_coordinators,
-    ordered_list
+    ordered_list,
+    set_up_cuda
 )
 from .utils.pdb_parser import protein
 from .utils.scoring import (
@@ -24,7 +30,7 @@ from .utils.scoring import (
 )
 
 
-class DeepBioMetAll():
+class Brigit():
     def __init__(
         self,
         device: str,
@@ -333,7 +339,7 @@ class DeepBioMetAll():
                     coordinators,
                     gaussian_score,
                     discrete_score,
-                    max_coordinators=max_coordinators
+                    max_coordinators
                 )
             if (idx % (num_points // 30) == 0) and verbose == 1:
                 print(f'{round((idx/num_points)*100, 2)}%')
@@ -417,18 +423,12 @@ def load_model(model: str, device: str, **kwargs) -> BaseModel:
     return model
 
 
-def set_up_cuda(device_id: int) -> None:
-    torch.backends.cudnn.benchmark = True
-    torch.backends.cudnn.fastest = True
-    torch.cuda.set_device(device_id)
-
-
 def run(args: dict):
     print(args, end="\n\n")
     args['args'] = args
-    deepbiometall = DeepBioMetAll(**args)
-    deepbiometall.predict(**args)
+    brigit = Brigit(**args)
+    brigit.predict(**args)
 
 
 if __name__ == '__main__':
-    help(DeepBioMetAll)
+    help(Brigit)

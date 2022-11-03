@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 
-"""Tests for `deepbiometall` package."""
+"""Tests for `brigit` package."""
 
 
 import unittest
 
-from deepbiometall import deepbiometall
+from brigit import deepbiometall
 
 
 class Testdeepbiometall(unittest.TestCase):
-    """Tests for `deepbiometall` package."""
+    """Tests for `brigit` package."""
 
     def setUp(self):
         """Set up test fixtures, if any."""

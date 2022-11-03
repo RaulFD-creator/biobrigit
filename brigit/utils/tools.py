@@ -306,8 +306,16 @@ def geometry(v1, v2):
     return v1_distances, v2_distances, v1v2_angles
 
 
+def set_up_cuda(device_id: int) -> None:
+    torch.backends.cudnn.benchmark = True
+    torch.backends.cudnn.fastest = True
+    torch.cuda.set_device(device_id)
+
+
 if __name__ == '__main__':
     help(download_pdb)
     help(get_undesired_channels)
     help(select_desired_channels)
     help(voxelize)
+    help(geometry)
+    help(set_up_cuda)
