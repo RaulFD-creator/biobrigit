@@ -30,7 +30,7 @@ from moleculekit.molecule import Molecule
 from moleculekit.tools.atomtyper import prepareProteinForAtomtyping
 from moleculekit.tools.voxeldescriptors import getCenters, getVoxelDescriptors
 from .data import CHANNELS_DICT, read_stats
-from .utils.models import BaseModel, BrigitCNN, DeepSite
+from .models import BaseModel, BrigitCNN, DeepSite
 
 
 class ordered_list():
@@ -315,7 +315,7 @@ def set_up_cuda(device_id: int) -> None:
 
 def load_model(model: str, device: str, **kwargs) -> BaseModel:
     path = os.path.join(
-        os.path.dirname(__file__), "trained_models", f'{model}.ckpt'
+        os.path.dirname(__file__), '..', "trained_models", f'{model}.ckpt'
     )
     if model == 'NewBrigit_2':
         model = BrigitCNN.load_from_checkpoint(
