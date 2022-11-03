@@ -1,6 +1,6 @@
-"""Top-level package for DeepBioMetAll."""
+"""Top-level package for Brigit."""
 
-from .deepbiometall import *
+from .brigit import *
 from .utils import *
 
 __author__ = """Raúl Fernández Díaz"""
