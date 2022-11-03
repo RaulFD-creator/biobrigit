@@ -6,8 +6,26 @@ from .pdb_parser import protein
 
 def parse_residues(
     molecule: protein,
-    coordinators: list,
-):
+    coordinators: dict,
+) -> dict:
+    """
+    Create a dictionary that collects the coordinates of the
+    atoms of a given protein that belong to the most likely
+    coordinators. Depending on the coordination configuration
+    (i.e., residue, backbone O, or backbone N), the atoms of interest
+    will vary (e.g., for residue atoms of interest are alpha C and beta
+    C).
+
+    Args:
+        molecule (protein): Protein object.
+        coordinators (dict): Dictionary summarising the residues that
+            are the most likely coordinators for a given metal for
+            the different configurations.
+
+    Returns:
+        info (dict): Collection of the atoms of interest for evaluating
+            coordination, grouped by the coordination configuration.
+    """
     alphas = {residue: [] for residue in coordinators['residue']}
     betas = {residue: [] for residue in coordinators['residue']}
     o_alphas = {residue: [] for residue in coordinators['backbone_o']}
@@ -77,7 +95,38 @@ def coordination_score(
     residue_scoring,
     backbone_scoring,
     **kwargs
-):
+) -> float:
+    """
+    Compute how strongly a hypothetical metal would be coordinated
+    if it where located at the coordinates of `probe`.
+
+    It can use different scoring functions for residue or backbone
+    coordinations. It iterates through all 
+
+    Args:
+        molecule (protein): Protein object.
+        probe (np.array): 3D array with the spatial coordinates of a
+            hypothetical metal.
+        stats (dict): Dictionary containing statistical values describing
+            the distances a metallic ion has to keep with regards to different
+            backbone atoms in order to properly be coordinated.
+        gaussian_stats (dict): Similar to `stats`, but these statistics have
+            been calculated to fit the combination of 2 gaussian curves.
+        molecule_info (dict): Dictionary containing a collection of the atoms
+            of interest for evaluating coordination, grouped by the
+            coordination configuration. Output of `parse_residues` function.
+        coordinators (dict): Dictionary summarising the residues that
+            are the most likely coordinators for a given metal for
+            the different configurations.
+        residue_scoring (function): Function indicating how to score the
+            coordination through residues.
+        backbone_scoring (function): Function indicating how to score the
+            coordination through backbone atoms.
+
+    Returns:
+        score (float): Score associated to the point in space occupied by the
+            `probe`.
+    """
     fitness = 0
     coordination_types = ['residue', 'backbone_o', 'backbone_n']
     for coor_type in coordination_types:
@@ -109,6 +158,21 @@ def discrete_score(
     coor_type: str,
     **kwargs
 ) -> float:
+    """
+    
+
+    Args:
+        dist_1 (np.array): _description_
+        dist_2 (np.array): _description_
+        angles (np.array): _description_
+        residue (str): _description_
+        stats (dict): _description_
+        max_coordinators (int): _description_
+        coor_type (str): _description_
+
+    Returns:
+        float: _description_
+    """
     if coor_type == 'residue':
         a, b, c, d, e, f = 'amin', 'amax', 'bmin', 'bmax', 'abmin', 'abmax'
         g = 'fitness'
@@ -175,9 +239,7 @@ def gaussian_score(
             fitness += (score_1 + score_2 + score_angles) / 3
             fitness *= stats[residue]['fitness']
 
-    if fitness > 1.0:
-        fitness = 1.0
-    return fitness
+    return fitness if fitness < 1.0 else 1.0
 
 
 def double_gaussian(x, prop, nu1, sigma1, nu2, sigma2, *args):
