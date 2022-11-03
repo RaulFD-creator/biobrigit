@@ -3,6 +3,7 @@ Brigit module that contains the main functions
 for evaluating coordination probes.
 
 Contains 5 functions:
+
     - parse_residues
     - coordination_score
     - discrete_score
@@ -13,7 +14,6 @@ Copyright by Raúl Fernández Díaz
 """
 
 import numpy as np
-import scipy.stats as stats
 from .tools import geometry
 from .pdb_parser import protein
 
@@ -301,9 +301,9 @@ def gaussian_score(
     beta_scores = double_gaussian(dist_2, *gaussian_stats[residue]['beta'])
     angle_scores = double_gaussian(angles, *gaussian_stats[residue]['MAB'])
 
-    alpha_trues = np.argwhere(alpha_scores > 0.2)
-    beta_trues = np.argwhere(beta_scores > 0.2)
-    angle_trues = np.argwhere(angle_scores > 0.2)
+    alpha_trues = np.argwhere(alpha_scores > 0.1)
+    beta_trues = np.argwhere(beta_scores > 0.1)
+    angle_trues = np.argwhere(angle_scores > 0.1)
 
     for true in alpha_trues:
         if true in beta_trues and true in angle_trues:
@@ -343,9 +343,29 @@ def double_gaussian(
         result (np.array or float): Value or array of values with len(x)
             with the associated probability.
     """
-    first_gaussian = stats.norm(nu1, sigma1).pdf(x)
-    second_gaussian = stats.norm(nu2, sigma2).pdf(x)
+    first_gaussian = _normpdf(x, nu1, sigma1)
+    second_gaussian = _normpdf(x, nu2, sigma2)
     return prop * first_gaussian + (1-prop) * second_gaussian
+
+
+def _normpdf(x: np.array or float, nu: float, std: float):
+    """
+    Helper function for `double_gaussian`, computes the PDF of a
+    gaussian function.
+
+    Args:
+        x (np.array or float): Set of input values to evaluate.
+        nu (float): Average value for the gaussian.
+        std (float): Standard deviation of the gaussian.
+
+    Returns:
+        result (float): PDF value.
+    """
+
+    var = std ** 2
+    denom = (2 * np.pi * var) ** .5
+    num = np.exp(- (x - nu) ** 2 / (2 * var))
+    return num / denom
 
 
 if __name__ == '__main__':

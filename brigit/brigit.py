@@ -114,7 +114,7 @@ class Brigit():
         max_x, max_y, max_z = size_x-border, size_y-border, size_z-border
 
         # Create an empty representation of the protein to be filled
-        # with the metal-bindingness prediction
+        # with the coordination score prediction
         scores = np.zeros((size_x, size_y, size_z))
         scores = torch.Tensor(scores).to('cpu')
         vox = torch.tensor(vox, device=self.device).float()

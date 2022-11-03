@@ -198,6 +198,10 @@ class protein():
             filename = download_pdb(pdb_code, '.')
             self._read_pdb(filename)
             os.remove(filename)
+        except IsADirectoryError:
+            filename = download_pdb(pdb_code, '.')
+            self._read_pdb(filename)
+            os.remove(filename)
 
     def _read_pdb(self, pdb_code):
         with open(pdb_code) as pdbfile:

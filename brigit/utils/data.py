@@ -1,5 +1,5 @@
 """
-Data module within the DeepBioMetAll package.
+Data module within the Brigit package.
 
 Contains several different data structures that refer to relevant
 information required by other modules within the package.

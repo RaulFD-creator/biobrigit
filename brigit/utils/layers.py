@@ -1,3 +1,10 @@
+"""
+Layers module within the Brigit package.
+
+Contains the architecture of layers used for building the models.
+
+Copyright by Raúl Fernández Díaz
+"""
 import torch.nn as nn
 
 

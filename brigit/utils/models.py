@@ -1,3 +1,12 @@
+"""
+Models module within the Brigit package.
+
+Contains the architecture of the models used
+for the project.
+
+Copyright by Raúl Fernández Díaz
+"""
+
 import torch
 import numpy as np
 import sklearn.metrics as skmetrics

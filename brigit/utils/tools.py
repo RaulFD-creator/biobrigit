@@ -1,19 +1,19 @@
 """
-Various utility functions within the DeepBioMetAll package.
+Various utility functions within the Brigit package.
 
-Contains 4 functions:
+Contains 9 functions:
     - download_pdb
     - get_undesired_channels
     - select_desired_channels
     - voxelize
+    - distribute
+    - find_most_likely_coordinators
+    - geometry
+    - set_up_cuda
+    - load_model
 
-2 classes:
-    - SimpleMetalPDB
-
-and 1 Data set:
-    - METAL_RESNAMES
-    - CHANNELS
-    - ALL_METALS
+1 class:
+    - ordered_list
 
 Includes functions and data sets that are required in different
 files throughout the project, thus, preventing redundancies.
