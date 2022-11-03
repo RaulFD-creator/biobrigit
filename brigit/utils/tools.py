@@ -30,6 +30,7 @@ from moleculekit.molecule import Molecule
 from moleculekit.tools.atomtyper import prepareProteinForAtomtyping
 from moleculekit.tools.voxeldescriptors import getCenters, getVoxelDescriptors
 from .data import CHANNELS_DICT, read_stats
+from .utils.models import BaseModel, BrigitCNN, DeepSite
 
 
 class ordered_list():
@@ -310,6 +311,31 @@ def set_up_cuda(device_id: int) -> None:
     torch.backends.cudnn.benchmark = True
     torch.backends.cudnn.fastest = True
     torch.cuda.set_device(device_id)
+
+
+def load_model(model: str, device: str, **kwargs) -> BaseModel:
+    path = os.path.join(
+        os.path.dirname(__file__), "trained_models", f'{model}.ckpt'
+    )
+    if model == 'NewBrigit_2':
+        model = BrigitCNN.load_from_checkpoint(
+            path,
+            map_location=device,
+            learning_rate=2e-4,
+            neurons_layer=64,
+            size=12,
+            num_dimns=6
+        )
+    elif model == 'DeepSite':
+        model = DeepSite.load_from_checkpoint(
+            path,
+            map_location=device,
+            learning_rate=2e-4
+        )
+
+    model.to(device)
+    model.eval()
+    return model
 
 
 if __name__ == '__main__':

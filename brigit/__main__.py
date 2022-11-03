@@ -1,10 +1,17 @@
+"""
+Execution Brigit module.
+
+Copyrigth by Raúl Fernández Díaz
+"""
 import argparse
 import multiprocessing
 import brigit
 
 
 def parse_cli() -> dict:
-    """Console script for brigit."""
+    """
+    Console script for brigit.
+    """
     p = argparse.ArgumentParser()
     p.add_argument("target", type=str,
                    help="Molecule PDB file to be analysed.")
@@ -54,6 +61,9 @@ def parse_cli() -> dict:
 
 
 def welcome() -> None:
+    """
+    Print a welcoming message when the program is executed.
+    """
     message = "Using Brigit by Raúl Fernández-Díaz"
     print("-" * (len(message) + 4))
     print("| " + message + " |")
@@ -62,6 +72,9 @@ def welcome() -> None:
 
 
 def main():
+    """
+    Execute the program.
+    """
     multiprocessing.freeze_support()
     welcome()
     args = parse_cli()

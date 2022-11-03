@@ -3,8 +3,9 @@ Main Brigit module.
 
 Contains 1 class:
     - Brigit
+
+Copyright by Raúl Fernández Díaz
 """
-import os
 import time
 import torch
 import numpy as np
@@ -12,14 +13,14 @@ from sklearn.cluster import Birch
 from moleculekit.molecule import Molecule
 from moleculekit.tools.voxeldescriptors import getVoxelDescriptors, getCenters
 from moleculekit.tools.atomtyper import prepareProteinForAtomtyping
-from .utils.models import BaseModel, BrigitCNN, DeepSite
 from .utils.data import CHANNELS
 from .utils.tools import (
     get_undesired_channels,
     select_desired_channels,
     find_most_likely_coordinators,
     ordered_list,
-    set_up_cuda
+    set_up_cuda,
+    load_model
 )
 from .utils.pdb_parser import protein
 from .utils.scoring import (
@@ -31,6 +32,10 @@ from .utils.scoring import (
 
 
 class Brigit():
+    """
+    Main class encapsulating the necessary attributes and methods
+    for predicting protein-metal binding regions.
+    """
     def __init__(
         self,
         device: str,
@@ -38,106 +43,14 @@ class Brigit():
         model: str,
         **kwargs
     ):
+        # TODO: Verify that cuda device is available before setting it
+        # up.
         if device == 'cuda':
             self.device = f'{device}:{device_id}'
             set_up_cuda(device_id)
         else:
             self.device = device
         self.model = load_model(model, device)
-
-    def create_PDB(
-        self,
-        target: str,
-        outputfile: str,
-        scores: np.array,
-        threshold: float,
-        centers: np.array,
-        molecule: protein,
-        **kwargs
-    ) -> None:
-        """
-        Generate an output file in PDB format so that it can be processed with
-        the corresponding visualization tools.
-
-        Arguments
-        ---------
-        output_dir : str
-            Path to the directory where output files should be stored.
-
-        target_name : str
-            Name of the output file.
-
-        protein_scores : np.array
-            Scores obtained from self.evaluate method.
-
-        threshold : float, optional
-            Minimum value to consider a prediction as positive.
-        """
-        outputfile = f'{outputfile}_brigit.pdb'
-        with open(outputfile, "w") as fo:
-            num_at = 0
-            num_res = 0
-            for entry in scores:
-                close2protein = False
-                for atom in molecule.atoms:
-                    if (
-                        np.linalg.norm(atom - entry[:3]) < 3. and
-                        atom.element not in ['H']
-                    ):
-                        close2protein = True
-                        break
-
-                if not close2protein:
-                    continue
-
-                num_at += 1
-                num_res = 1
-                ch = "A"
-                prb_str = ""
-
-                for idx in range(3):
-                    number = str(round(float(entry[idx]), 3))
-                    prb_center = "{:.8s}".format(number)
-                    if len(prb_center) < 8:
-                        prb_center = " "*(8-len(prb_center)) + prb_center
-                        prb_str += prb_center
-                    else:
-                        prb_str += prb_center
-
-                atom = "HE"
-                blank = " "*(7-len(str(num_at)))
-                fo.write("ATOM" + blank + "%s  %s  SLN %s" %
-                         (num_at, atom, ch))
-                blank = " "*(3-len(str(num_res)))
-                score = str(round(entry[3], 2))
-                score = score if len(score) == 4 else score + '0'
-                fo.write(blank + "%s     %s  1.00  %s          %s\n" %
-                         (num_res, prb_str, score, atom))
-
-            for name, entry in enumerate(centers):
-                num_at += 1
-                num_res = 1
-                ch = "A"
-                prb_str = ""
-
-                for idx in range(3):
-                    number = str(round(float(entry[idx]), 3))
-                    prb_center = "{:.8s}".format(number)
-                    if len(prb_center) < 8:
-                        prb_center = " "*(8-len(prb_center)) + prb_center
-                        prb_str += prb_center
-                    else:
-                        prb_str += prb_center
-
-                atom = "AR"
-                blank = " "*(7-len(str(num_at)))
-                fo.write("ATOM" + blank + "%s  %s  SLN %s" %
-                         (num_at, atom, ch))
-                blank = " "*(3-len(str(num_res)))
-                score = str(centers.counts(name))
-                score = score if len(score) == 4 else score + '0'
-                fo.write(blank + "%s     %s  1.00  %s          %s\n" %
-                         (num_res, prb_str, score, atom))
 
     def voxelize(
         self,
@@ -397,30 +310,105 @@ class Brigit():
                 if coordinator_found:
                     writer.write(f",{clusters.counts(name)}\n")
 
+    def create_PDB(
+        self,
+        target: str,
+        outputfile: str,
+        scores: np.array,
+        threshold: float,
+        centers: np.array,
+        molecule: protein,
+        **kwargs
+    ) -> None:
+        """
+        Generate a PDB-style file with the coordinates of the probes
+        with a score superior to `threshold`. The probes will be
+        stored as `HE` atoms and the cluster centers as `AR` atoms. The
+        `b-factor` will be used to store the score each probe has obtained.
 
-def load_model(model: str, device: str, **kwargs) -> BaseModel:
-    path = os.path.join(
-        os.path.dirname(__file__), "trained_models", f'{model}.ckpt'
-    )
-    if model == 'NewBrigit_2':
-        model = BrigitCNN.load_from_checkpoint(
-            path,
-            map_location=device,
-            learning_rate=2e-4,
-            neurons_layer=64,
-            size=12,
-            num_dimns=6
-        )
-    elif model == 'DeepSite':
-        model = DeepSite.load_from_checkpoint(
-            path,
-            map_location=device,
-            learning_rate=2e-4
-        )
+        Before saving any probe coordinate, it will verify whether the probe
+        is at a reasonable distance from any relevant protein atom to mitigate
+        possible noise.
 
-    model.to(device)
-    model.eval()
-    return model
+        Args:
+            target (str): Name of the protein used for the computation.
+            outputfile (str): Name of the output file, will be completed with
+                the tag `_brigit.pdb` to differenciate it from other output
+                files.
+            scores (np.array): Array with probe coordinates and their
+                coordination scores. Dimensions will be (len(probes), 4).
+            threshold (float): Coordination score value below which probes will
+                be discarded.
+            centers (np.array): Array with cluster center coordinates and their
+                coordination scores. Similar to `scores`, its dimensions will
+                be (len(cluster_centers), 4).
+            molecule (protein): Protein object.
+        """
+        outputfile = f'{outputfile}_brigit.pdb'
+        with open(outputfile, "w") as fo:
+            num_at = 0
+            num_res = 0
+            for entry in scores:
+                close2protein = False
+                for atom in molecule.atoms:
+                    if (
+                        np.linalg.norm(atom - entry[:3]) < 3. and
+                        atom.element not in ['H']
+                    ):
+                        close2protein = True
+                        break
+
+                if not close2protein:
+                    continue
+
+                num_at += 1
+                num_res = 1
+                ch = "A"
+                prb_str = ""
+
+                for idx in range(3):
+                    number = str(round(float(entry[idx]), 3))
+                    prb_center = "{:.8s}".format(number)
+                    if len(prb_center) < 8:
+                        prb_center = " "*(8-len(prb_center)) + prb_center
+                        prb_str += prb_center
+                    else:
+                        prb_str += prb_center
+
+                atom = "HE"
+                blank = " "*(7-len(str(num_at)))
+                fo.write("ATOM" + blank + "%s  %s  SLN %s" %
+                         (num_at, atom, ch))
+                blank = " "*(3-len(str(num_res)))
+                score = str(round(entry[3], 2))
+                score = score if len(score) == 4 else score + '0'
+                fo.write(blank + "%s     %s  1.00  %s          %s\n" %
+                         (num_res, prb_str, score, atom))
+
+            for name, entry in enumerate(centers):
+                num_at += 1
+                num_res = 1
+                ch = "A"
+                prb_str = ""
+
+                for idx in range(3):
+                    number = str(round(float(entry[idx]), 3))
+                    prb_center = "{:.8s}".format(number)
+                    if len(prb_center) < 8:
+                        prb_center = " "*(8-len(prb_center)) + prb_center
+                        prb_str += prb_center
+                    else:
+                        prb_str += prb_center
+
+                atom = "AR"
+                blank = " "*(7-len(str(num_at)))
+                fo.write("ATOM" + blank + "%s  %s  SLN %s" %
+                         (num_at, atom, ch))
+                blank = " "*(3-len(str(num_res)))
+                score = str(centers.counts(name))
+                score = score if len(score) == 4 else score + '0'
+                fo.write(blank + "%s     %s  1.00  %s          %s\n" %
+                         (num_res, prb_str, score, atom))
 
 
 def run(args: dict):
