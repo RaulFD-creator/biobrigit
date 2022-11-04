@@ -54,6 +54,10 @@ def parse_cli() -> dict:
                    help='Scoring function for residue coordination analysis.')
     p.add_argument("--backbone_score", type=str, default='discrete',
                    help='Scoring function for residue coordination analysis.')
+    p.add_argument("--threads", type=int, default=0,
+                   help='Number of threads available for multithreading\
+                    calculation. By default it will create 2 threads per\
+                    physical core.')
     args = p.parse_args()
 
     print()

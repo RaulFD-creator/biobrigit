@@ -7,6 +7,7 @@ Contains 1 class:
 Copyright by Raúl Fernández Díaz
 """
 import time
+import multiprocessing
 import torch
 import numpy as np
 from sklearn.cluster import Birch
@@ -20,7 +21,8 @@ from .utils.tools import (
     find_most_likely_coordinators,
     ordered_list,
     set_up_cuda,
-    load_model
+    load_model,
+    distribute
 )
 from .utils.pdb_parser import protein
 from .utils.scoring import (
@@ -185,12 +187,11 @@ class Brigit():
         if verbose == 1:
             print(f'\nCoordination analysis of target: {target}', end='\n\n')
 
-        coor_scores, molecule = self.coordination_analysis(
+        scores, molecule = self.coordination_analysis(
             target, max_coordinators, metal, scores, cnn_threshold,
-            verbose, **kwargs
+            verbose, kwargs['residue_score'], kwargs['backbone_score'],
+            cnn_weight, kwargs
         )
-        scores[:, 3] *= cnn_weight
-        scores[:, 3] += coor_scores * (1 - cnn_weight)
         best_scores = np.argwhere(scores[:, 3] > combined_threshold)
         new_scores = np.zeros((len(best_scores), 4))
         for idx, idx_score in enumerate(best_scores):
@@ -210,12 +211,12 @@ class Brigit():
         )
         self.check_clusters(centers, molecule, outputfile, kwargs['args'])
         end = time.time()
-        print(f'Computation took {end-start} s.', end='\n\n')
+        print(f'Computation took {round(end-start, 2)} s.', end='\n\n')
         return scores
 
     def coordination_analysis(
         self, target, max_coordinators, metal, scores, threshold,
-        verbose, residue_score, backbone_score, **kwargs
+        verbose, residue_score, backbone_score, cnn_weight, kwargs
     ):
         zeros = np.zeros(np.shape(scores[:, 3]))
         molecule = protein(target, True)
@@ -240,23 +241,20 @@ class Brigit():
                     currently implemented.'
             )
         molecule_info = parse_residues(molecule, coordinators)
-        num_points = len(scores)
-        for idx, probe in enumerate(scores):
-            if probe[3] > threshold:
-                zeros[idx] = coordination_score(
-                    molecule,
-                    probe,
-                    stats,
-                    gaussian_stats,
-                    molecule_info,
-                    coordinators,
-                    gaussian_score,
-                    discrete_score,
-                    max_coordinators
-                )
-            if (idx % (num_points // 30) == 0) and verbose == 1:
-                print(f'{round((idx/num_points)*100, 2)}%')
-        return zeros, molecule
+        chunks = distribute(scores, kwargs['threads'])
+        args = [(molecule, chunks[idx], stats, gaussian_stats, molecule_info,
+                coordinators, residue_score, backbone_score, max_coordinators,
+                threshold, cnn_weight) for idx in range(kwargs['threads'])]
+        pool = multiprocessing.Pool(kwargs['threads'])
+        zeros = pool.starmap(analyse_probes, args)
+        new_zeros = []
+        for element in zeros:
+            for subelement in element:
+                new_zeros.append(subelement)
+
+        new_zeros = np.array(new_zeros)
+
+        return new_zeros, molecule
 
     def clusterize(
         self, scores, molecule, clustering_radius
@@ -281,7 +279,7 @@ class Brigit():
             if len(cluster) == 0:
                 continue
             cluster_mean = np.average(
-                cluster[:, :3], axis=0, weights=cluster[:, 3]
+                cluster[:, :3], axis=0, weights=cluster[:, 3] ** 2
             )
             score_mean = np.average(cluster[:, 3])
             result.add(cluster_mean, score_mean)
@@ -411,9 +409,36 @@ class Brigit():
                          (num_res, prb_str, score, atom))
 
 
+def analyse_probes(
+    molecule, probes, stats, gaussian_stats, molecule_info,
+    coordinators, residue_score, backbone_score, max_coordinators,
+    threshold, cnn_weight
+):
+    zeros = np.zeros((len(probes), 4))
+    coor_weight = (1 - cnn_weight)
+    for idx, probe in enumerate(probes):
+        if probe[3] > threshold:
+            zeros[idx, :] = probe
+            zeros[idx, 3] *= cnn_weight
+            zeros[idx, 3] += coordination_score(
+                molecule,
+                probe,
+                stats,
+                gaussian_stats,
+                molecule_info,
+                coordinators,
+                gaussian_score,
+                discrete_score,
+                max_coordinators
+            ) * coor_weight
+    return zeros
+
+
 def run(args: dict):
     print(args, end="\n\n")
     args['args'] = args
+    if args['threads'] == 0:
+        args['threads'] = multiprocessing.cpu_count() * 2
     brigit = Brigit(**args)
     brigit.predict(**args)
 
