@@ -315,9 +315,9 @@ def set_up_cuda(device_id: int) -> None:
 
 def load_model(model: str, device: str, **kwargs) -> BaseModel:
     path = os.path.join(
-        os.path.dirname(__file__), '..', "trained_models", f'{model}.ckpt'
+        os.path.dirname(__file__), "trained_models", f'{model}.ckpt'
     )
-    if model == 'NewBrigit_2':
+    if model == 'BrigitCNN':
         model = BrigitCNN.load_from_checkpoint(
             path,
             map_location=device,

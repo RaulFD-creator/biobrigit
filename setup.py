@@ -38,6 +38,7 @@ setup(
     license="BSD license",
     long_description=readme + '\n\n' + history,
     include_package_data=True,
+    package_data={'': ['*.ckpt', '*.json']},
     keywords='brigit',
     name='brigit',
     packages=find_packages(include=['brigit', 'brigit.*']),

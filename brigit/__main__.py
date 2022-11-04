@@ -17,7 +17,7 @@ def parse_cli() -> dict:
                    help="Molecule PDB file to be analysed.")
     p.add_argument("metal", type=str,
                    help="Symbol of the metal that is to be located.")
-    p.add_argument("--model", type=str, default='NewBrigit_2',
+    p.add_argument("--model", type=str, default='BrigitCNN',
                    help="Name of the model to be used.")
     p.add_argument("--device", type=str, default='cuda',
                    help="Device in which calculations will be run.")
