@@ -14,7 +14,7 @@ BrigitMetalPredictor
 
 
 
-Brigit is a computational tool designed for the prediction of protein-metal
+BrigitMetalPredictor or Brigit, for short, is a computational tool designed for the prediction of protein-metal
 binding sites in proteins. It uses a novel scoring function powered by
 a deep learning model and previous domain knowledge regarding bioinorganic
 interactions.
@@ -36,15 +36,13 @@ Features
 
 **Modular design:**
 
-* The modular design of this packages allows for its use as a command-line
-tool or to be integrated into a larger program or pipeline.
+* The modular design of this packages allows for its use as a command-line tool or to be integrated into a larger program or pipeline.
 
 **Possible applications:**
 
 * Screening of a pool of `.pdb` structures.
 * Identification of conformational changes that alter the formation of metal-binding sites.
-* Identification of probable paths that the metals might have to traverse
-to transitorily binding regions before reaching the more stable, final, binding site.
+* Identification of probable paths that the metals might have to traverse to transitorily binding regions before reaching the more stable, final, binding site.
 * Metalloenzyme design.
 * Metallodrug design.
 
