@@ -27,7 +27,7 @@ relative position to certain atoms in the protein backbone.
 
 Features
 --------
-** Diferent options for customizing the search: **
+**Diferent options for customizing the search:**
 
 * Search for binding sites of specific residues.
 * Filter results according to how likely they are to bind metals.
@@ -35,11 +35,11 @@ Features
 * Scanning the whole protein, though, a region can also be provided as 
 input (in PDB format).
 
-** Modular design: **
+**Modular design:**
 * The modular design of this packages allows for its use as a command-line
 tool or to be integrated into a larger program or pipeline.
 
-** Possible applications: **
+**Possible applications:**
 * Screening of a pool of `.pdb` structures.
 * Identification of conformational changes that alter the formation of metal-binding sites.
 * Identification of probable paths that the metals might have to traverse
@@ -54,7 +54,7 @@ Brigit is an open-source software licensed under the BSD-3 Clause License. Check
 
 History of versions
 -------------------
-* ** v.0.1:** First operative release version.
+* **v.0.1:** First operative release version.
 
 OS Compatibility
 ----------------
