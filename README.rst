@@ -2,14 +2,14 @@
 BrigitMetalPredictor
 ===============
 
-.. image:: https://img.shields.io/pypi/v/brigit.svg
-        :target: https://pypi.python.org/pypi/brigit
+.. image:: https://img.shields.io/pypi/v/brigitmetalpredictor.svg
+        :target: https://pypi.python.org/pypi/brigitmetalpredictor
 
-.. image:: https://img.shields.io/travis/RaulFD-creator/brigit.svg
-        :target: https://travis-ci.com/RaulFD-creator/brigit
+.. image:: https://img.shields.io/travis/RaulFD-creator/brigitmetalpredictor.svg
+        :target: https://travis-ci.com/RaulFD-creator/brigitmetalpredictor
 
-.. image:: https://readthedocs.org/projects/brigit/badge/?version=latest
-        :target: https://brigit.readthedocs.io/en/latest/?version=latest
+.. image:: https://readthedocs.org/projects/brigitmetalpredictor/badge/?version=latest
+        :target: https://brigitmetalpredictor.readthedocs.io/en/latest/?version=latest
         :alt: Documentation Status
 
 
