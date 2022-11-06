@@ -77,7 +77,7 @@ class Brigit():
         cnn_threshold: float = 0.5,
         combined_threshold: float = 0.5,
         verbose: int = 1,
-        clustering_radius: float = 5.0,
+        cluster_radius: float = 5.0,
         cnn_weight: float = 0.5,
         **kwargs
     ) -> np.array:
@@ -105,7 +105,7 @@ class Brigit():
             1. A '_brigit.pdb' file which contains all probes with a score
                 superior to `combined_threshold`.
             2. A '.clusters' file which contains all residues within
-                `clustering_radius` of every cluster center. Thus, summarising
+                `cluster_radius` of every cluster center. Thus, summarising
                 the most likely coordinating residues in the protein. Each
                 cluster will have assigned a global score which will be a sum
                 of the scores of all the probes that comprise it.
@@ -129,7 +129,7 @@ class Brigit():
                 region. Defaults to 0.5.
             verbose (int, optional): Ammount of information to be displayed
                 during computation. Defaults to 1.
-            clustering_radius (float, optional): Radius of the clusters used to
+            cluster_radius (float, optional): Radius of the clusters used to
                 organise the results. Affects mainly the final summary.
                 Defaults to 5.0.
             cnn_weight (float, optional): Weight of the CNN for the final
@@ -175,7 +175,7 @@ class Brigit():
         for idx, idx_score in enumerate(best_scores):
             new_scores[idx, :] = scores[idx_score, :]
         centers = self.clusterize(
-            new_scores, molecule, clustering_radius
+            new_scores, molecule, cluster_radius
         )
 
         if outputfile is None:
@@ -434,9 +434,9 @@ class Brigit():
         return scores
 
     def clusterize(
-        self, scores, molecule, clustering_radius
+        self, scores, molecule, cluster_radius
     ):
-        clustering = Birch(threshold=clustering_radius, n_clusters=None)
+        clustering = Birch(threshold=cluster_radius, n_clusters=None)
         try:
             labels = clustering.fit_predict(scores[:, :3])
         except ValueError:
