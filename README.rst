@@ -50,6 +50,11 @@ License
 -------
 Brigit is an open-source software licensed under the BSD-3 Clause License. Check the details in the `LICENSE <https://github.com/raulfd-creator/brigit/blob/master/LICENSE>`_ file.
 
+TODO
+----
+
+* Modify clustering or check clustering functions to identify specific motifs.
+* Modify clustering or check clustering to propose mutations.
 
 History of versions
 -------------------
