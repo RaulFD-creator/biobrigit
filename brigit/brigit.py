@@ -78,7 +78,6 @@ class Brigit():
         combined_threshold: float = 0.5,
         verbose: int = 1,
         cluster_radius: float = 5.0,
-        cnn_weight: float = 0.5,
         **kwargs
     ) -> np.array:
         """
@@ -132,8 +131,6 @@ class Brigit():
             cluster_radius (float, optional): Radius of the clusters used to
                 organise the results. Affects mainly the final summary.
                 Defaults to 5.0.
-            cnn_weight (float, optional): Weight of the CNN for the final
-                score. Defaults to 0.5.
 
         Raises:
             TypeError: In case the target is neither a PDB code nor a Path to a
@@ -167,8 +164,7 @@ class Brigit():
 
         scores, molecule, coordinators = self.coordination_analysis(
             target, max_coordinators, metal, scores, cnn_threshold,
-            verbose, kwargs['residue_score'], kwargs['backbone_score'],
-            cnn_weight, kwargs
+            verbose, **kwargs
         )
         best_scores = np.argwhere(scores[:, 3] > combined_threshold)
         new_scores = np.zeros((len(best_scores), 4))
@@ -206,7 +202,7 @@ class Brigit():
         residue_score: str,
         backbone_score: str,
         cnn_weight: float,
-        residues: list,
+        residues: int,
         threads: int,
         **kwargs
     ) -> tuple:
@@ -250,7 +246,7 @@ class Brigit():
                 informed by the CNN. Its complementary (1 - cnn_weight)
                 corresponds to the proportion of the final score informed
                 by the coordination analysis.
-            residues (list): List with the most likely residue coordinators for
+            residues (int): Number of the most likely residue coordinators for
                 any specific metal.
             threads (int): Number of threads to be used during the
                 voxelization.
@@ -269,8 +265,9 @@ class Brigit():
         zeros = np.zeros(np.shape(scores[:, 3]))
         molecule = protein(target, True)
         coordinators, stats, gaussian_stats = find_most_likely_coordinators(
-            metal, kwargs['residues']
+            metal, residues
         )
+        print(coordinators)
         if residue_score == 'discrete':
             residue_score = discrete_score
         elif residue_score == 'gaussian':
@@ -289,11 +286,11 @@ class Brigit():
                     currently implemented.'
             )
         molecule_info = parse_residues(molecule, coordinators)
-        chunks = distribute(scores, kwargs['threads'])
+        chunks = distribute(scores, threads)
         args = [(molecule, chunks[idx], stats, gaussian_stats, molecule_info,
                 coordinators, residue_score, backbone_score, max_coordinators,
-                threshold, cnn_weight) for idx in range(kwargs['threads'])]
-        pool = multiprocessing.Pool(kwargs['threads'])
+                threshold, cnn_weight) for idx in range(threads)]
+        pool = multiprocessing.Pool(threads)
         zeros = pool.starmap(analyse_probes, args)
         new_zeros = []
         for element in zeros:
@@ -485,7 +482,7 @@ class Brigit():
                 coordinator_found = False
                 for residue in molecule.residues:
                     for atom in residue.atoms:
-                        if atom.element not in ['N', 'O']:
+                        if atom.element not in ['N', 'O', 'S']:
                             continue
                         if (
                             np.linalg.norm(
