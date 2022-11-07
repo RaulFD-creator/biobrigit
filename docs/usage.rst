@@ -24,7 +24,7 @@ An output file name can be set:
     $ brigit 1dhy Fe --outputfile output_name
 
 Furthermore, the maximum number of coordinators to consider 
-(`--max_coordinators`), the threshold score (`--combined_threshold`); can
+(`--max_coordinators`) or the threshold score (`--combined_threshold`), can
 also be modified:
 
 .. code-block:: console
@@ -32,7 +32,7 @@ also be modified:
     $ brigit 1dhy Fe --max_coordinators 4 --combined_threshold 0.75
 
 Finally, the importance of each of the elements of the hybrid scoring
-function can be tuned (`--cnn_weight`), as well as the scoring function for
+function can be tuned (`--cnn_weight`), as well as the scoring function used for
 the coordination analysis (`--residue_score`):
 
 .. code-block:: console

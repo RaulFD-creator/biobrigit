@@ -28,13 +28,13 @@ def parse_cli() -> dict:
     p.add_argument("--max_coordinators", type=int, default=4,
                    help="Number of residues that need to be coordinating a\
                    given metal.")
-    p.add_argument("--residues", type=int, default=7,
+    p.add_argument("--residues", type=int, default=5,
                    help="Number of most likely residues to consider.")
     p.add_argument(
         "--stride", type=int, default=1,
         help="Step of the sliding window when evaluating the protein."
     )
-    p.add_argument("--clustering_radius", type=float, default=5.0,
+    p.add_argument("--cluster_radius", type=float, default=5.0,
                    help="Threshold used for the Birch clustering algorithm.")
     p.add_argument("--cnn_threshold", type=float, default=0.5,
                    help="Threshold for considering CNN points as possible\
