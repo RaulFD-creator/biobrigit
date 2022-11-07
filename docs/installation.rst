@@ -65,27 +65,13 @@ initialize a specific conda environment.
 
 .. code-block:: console
 
-    $ conda create -n brigit python=3.8
+    $ wget https://raw.githubusercontent.com/RaulFD-creator/brigit/master/environment.yml
 
-    $ conda activate brigit
+    $ conda env create -f environment.yml
 
-    $ conda install moleculekit -c acellera
+    $ git clone https://github.com/Acellera/moleculekit
 
-    $ wget https://raw.githubusercontent.com/Acellera/moleculekit/master/extra_requirements.txt
+    $ pip install moleculekit
 
-    $ conda install --file extra_requirements.txt -c acellera -c conda-forge
+For non-CUDA,
 
-
-For CUDA support,
-
-.. code-block:: console
-
-    $ conda install pytorch torchvision pytorch-cuda=11.6 -c pytorch -c nvidia
-
-    $ conda install pytorch-lightning -c conda-forge
-
-If you do not have a GPU in your system,
-
-.. code-block:: console
-
-    $ conda install pytorch pytorch-lightning -c conda-forge
