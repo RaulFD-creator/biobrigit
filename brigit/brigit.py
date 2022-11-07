@@ -165,7 +165,7 @@ class Brigit():
         if verbose:
             print(f'\nCoordination analysis of target: {target}', end='\n\n')
 
-        scores, molecule = self.coordination_analysis(
+        scores, molecule, coordinators = self.coordination_analysis(
             target, max_coordinators, metal, scores, cnn_threshold,
             verbose, kwargs['residue_score'], kwargs['backbone_score'],
             cnn_weight, kwargs
@@ -174,7 +174,7 @@ class Brigit():
         new_scores = np.zeros((len(best_scores), 4))
         for idx, idx_score in enumerate(best_scores):
             new_scores[idx, :] = scores[idx_score, :]
-        centers = self.clusterize(
+        centers, cluster_scores = self.clusterize(
             new_scores, molecule, cluster_radius
         )
 
@@ -184,10 +184,12 @@ class Brigit():
             else:
                 outputfile = target
         self.create_PDB(
-            target, outputfile, new_scores, combined_threshold, centers,
+            target, outputfile, new_scores, combined_threshold, cluster_scores,
             molecule
         )
-        self.check_clusters(centers, molecule, outputfile, kwargs['args'])
+        self.check_clusters(
+            centers, molecule, outputfile, kwargs['args'], coordinators
+        )
         end = time.time()
         if verbose:
             print(f'Computation took {round(end-start, 2)} s.', end='\n\n')
@@ -300,7 +302,7 @@ class Brigit():
 
         new_zeros = np.array(new_zeros)
 
-        return new_zeros, molecule
+        return new_zeros, molecule, coordinators
 
     def voxelize(
         self,
@@ -444,6 +446,7 @@ class Brigit():
                 properly clusterize.')
 
         clusters = {}
+        mean_clusters = {}
         result = ordered_list()
         for idx, score in enumerate(scores):
             try:
@@ -458,14 +461,25 @@ class Brigit():
             cluster_mean = np.average(
                 cluster[:, :3], axis=0, weights=cluster[:, 3] ** 2
             )
-            score_mean = np.sum(cluster[:, 3])
-            result.add(cluster_mean, score_mean)
-        return result
+            score_sum = np.sum(cluster[:, 3])
+            score_mean = np.mean(cluster[:, 3])
+            result.add(cluster_mean, score_sum)
+            tuple_mean = (cluster_mean[i] for i in range(len(cluster_mean)))
+            mean_clusters[tuple_mean] = score_mean
+        return result, mean_clusters
 
-    def check_clusters(self, clusters, molecule, outputfile, args):
+    def check_clusters(
+        self,
+        clusters,
+        molecule,
+        outputfile,
+        coordinators,
+        args
+    ):
         outputfile_name = f'{outputfile}.clusters'
         with open(outputfile_name, 'w') as writer:
             writer.write(f'{args}\n')
+            writer.write(f'{coordinators}\n')
             writer.write('cluster,coordinators,score\n')
             for name, center in enumerate(clusters):
                 coordinator_found = False
@@ -476,7 +490,7 @@ class Brigit():
                         if (
                             np.linalg.norm(
                                 atom - center
-                            ) < 5
+                            ) < args['cluster_radius']
                         ):
                             if not coordinator_found:
                                 writer.write(f'{name},')
@@ -491,7 +505,7 @@ class Brigit():
         outputfile: str,
         scores: np.array,
         threshold: float,
-        centers: np.array,
+        cluster_scores: dict,
         molecule: protein,
         **kwargs
     ) -> None:
@@ -510,7 +524,7 @@ class Brigit():
             outputfile (str): Name of the output file, will be completed with
                 the tag `_brigit.pdb` to differenciate it from other output
                 files.
-            scores (np.array): Array with probe coordinates and their
+            scores (dict): Dict with probe coordinates and their
                 coordination scores. Dimensions will be (len(probes), 4).
             threshold (float): Coordination score value below which probes will
                 be discarded.
@@ -560,7 +574,7 @@ class Brigit():
                 fo.write(blank + "%s     %s  1.00  %s          %s\n" %
                          (num_res, prb_str, score, atom))
 
-            for name, entry in enumerate(centers):
+            for name, entry in enumerate(cluster_scores.keys()):
                 num_at += 1
                 num_res = 1
                 ch = "A"
@@ -580,7 +594,7 @@ class Brigit():
                 fo.write("ATOM" + blank + "%s  %s  SLN %s" %
                          (num_at, atom, ch))
                 blank = " "*(3-len(str(num_res)))
-                score = str(centers.counts(name))
+                score = str(cluster_scores[entry])
                 score = score if len(score) == 4 else score + '0'
                 fo.write(blank + "%s     %s  1.00  %s          %s\n" %
                          (num_res, prb_str, score, atom))
