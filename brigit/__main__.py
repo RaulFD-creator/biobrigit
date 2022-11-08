@@ -34,6 +34,11 @@ def parse_cli() -> dict:
         "--stride", type=int, default=1,
         help="Step of the sliding window when evaluating the protein."
     )
+    p.add_argument("--motif", type=str, default=None,
+                   help="Motif to be detected. Format: 'HIS,HIS,ASP/GLU'")
+    p.add_argument('--motif_backbone', type=bool, default=True,
+                   help='Whether to consider backbone atoms when analysing\
+                    motif combinations.')
     p.add_argument("--cluster_radius", type=float, default=5.0,
                    help="Threshold used for the Birch clustering algorithm.")
     p.add_argument("--cnn_threshold", type=float, default=0.5,

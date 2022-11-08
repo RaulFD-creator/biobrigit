@@ -5,7 +5,7 @@ for evaluating coordination probes.
 Contains 5 functions:
 
     - parse_residues
-    - coordination_score
+    - coordination_scorer
     - discrete_score
     - gaussian_score
     - double_gaussian
@@ -99,7 +99,7 @@ def parse_residues(
     return info
 
 
-def coordination_score(
+def coordination_scorer(
     molecule: protein,
     probe: np.array,
     stats: dict,
@@ -176,6 +176,43 @@ def coordination_score(
     return fitness if fitness < 1.0 else 1.0
 
 
+def motif_scorer(
+    molecule: protein,
+    probe: np.array,
+    stats: dict,
+    gaussian_stats: dict,
+    molecule_info: dict,
+    coordinators: dict,
+    residue_scoring,
+    backbone_scoring,
+    max_coordinators,
+    **kwargs
+):
+    fitness = 0
+    possible_coordinators = 0
+    coordination_types = ['residue', 'backbone_o', 'backbone_n']
+    for coor_type in coordination_types:
+        kwargs['coor_type'] = coor_type
+        kwargs['gaussian_stats'] = gaussian_stats
+        for res in coordinators[coor_type]:
+            alphas = probe[:3] - molecule_info[f'{coor_type}_alphas'][res]
+            atm2 = probe[:3] - molecule_info[f'{coor_type}_2nd_atom'][res]
+            dist_1, dist_2, angles = geometry(alphas, atm2)
+            fitness_res, coors_res = (
+                residue_scoring(
+                    dist_1, dist_2, angles, res, stats, **kwargs
+                )
+                if coor_type == 'residue' else
+                backbone_scoring(
+                    dist_1, dist_2, angles, res, stats, **kwargs
+                )
+            )
+            fitness += fitness_res
+            possible_coordinators += coors_res
+    fitness *= (possible_coordinators / max_coordinators)
+    return fitness if fitness < 1.0 else 1.0
+
+
 def discrete_score(
     dist_1: np.array,
     dist_2: np.array,
@@ -186,7 +223,7 @@ def discrete_score(
     **kwargs
 ) -> tuple:
     """
-    Scoring function to be used by the `coordination_score` function
+    Scoring function to be used by the `coordination_scorer` function
     to compute the relative strength or suitability of the spatial position
     represented by the probe for coordinating a given metal ion.
 
@@ -262,7 +299,7 @@ def gaussian_score(
     **kwargs
 ) -> tuple:
     """
-    Scoring function to be used by the `coordination_score` function
+    Scoring function to be used by the `coordination_scorer` function
     to compute the relative strength or suitability of the spatial position
     represented by the probe for coordinating a given metal ion.
 
@@ -370,7 +407,7 @@ def _normpdf(x: np.array or float, nu: float, std: float):
 
 if __name__ == '__main__':
     help(parse_residues)
-    help(coordination_score)
+    help(coordination_scorer)
     help(discrete_score)
     help(gaussian_score)
     help(double_gaussian)

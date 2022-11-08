@@ -7,7 +7,7 @@ Contains 9 functions:
     - select_desired_channels
     - voxelize
     - distribute
-    - find_most_likely_coordinators
+    - find_coordinators
     - geometry
     - set_up_cuda
     - load_model
@@ -252,7 +252,7 @@ def voxelize(
     return voxelized
 
 
-def find_most_likely_coordinators(metal, num_residues: int = 20):
+def find_coordinators(metal: str, num_residues: int = 20):
     stats, gaussian_stats = read_stats()
     stats = stats[metal]
     gaussian_stats = gaussian_stats[metal]
@@ -287,6 +287,24 @@ def find_most_likely_coordinators(metal, num_residues: int = 20):
         'backbone_o': o_residues.to_list(),
         'backbone_n': n_residues.to_list(),
     }
+
+    return coordinators, stats, gaussian_stats
+
+
+def load_stats(metal: str, residues: dict, backbone: bool):
+    stats, gaussian_stats = read_stats()
+    stats = stats[metal]
+    gaussian_stats = gaussian_stats[metal]
+    if backbone:
+        coordinators = {
+            'residue': residues,
+            'backbone_o': residues,
+            'backbone_n': residues
+        }
+    else:
+        coordinators = {
+            'residue': residues
+        }
 
     return coordinators, stats, gaussian_stats
 

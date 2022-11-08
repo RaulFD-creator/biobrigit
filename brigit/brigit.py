@@ -19,16 +19,18 @@ from .utils.data import CHANNELS
 from .utils.tools import (
     get_undesired_channels,
     select_desired_channels,
-    find_most_likely_coordinators,
+    find_coordinators,
     ordered_list,
     set_up_cuda,
     load_model,
+    load_stats,
     distribute
 )
 from .utils.pdb_parser import protein
 from .utils.scoring import (
     parse_residues,
-    coordination_score,
+    coordination_scorer,
+    motif_scorer,
     discrete_score,
     gaussian_score
 )
@@ -78,6 +80,7 @@ class Brigit():
         combined_threshold: float = 0.5,
         verbose: int = 1,
         cluster_radius: float = 5.0,
+        motif: str = None,
         **kwargs
     ) -> np.array:
         """
@@ -148,6 +151,18 @@ class Brigit():
 
         if combined_threshold > cnn_threshold:
             cnn_threshold = combined_threshold
+
+        if motif is not None:
+            residues = {'mandatory': {}, 'either': []}
+            new_residues = motif.split(',')
+
+            for residue in new_residues:
+                if '/' in residue:
+                    residues['either'].append(residue.split('/'))
+                else:
+                    residues['mandatory'].append(residue)
+
+            del new_residues
 
         if verbose:
             print(f'Voxelizing target: {target}', end='\n\n')
@@ -265,10 +280,15 @@ class Brigit():
         """
         zeros = np.zeros(np.shape(scores[:, 3]))
         molecule = protein(target, True)
-        coordinators, stats, gaussian_stats = find_most_likely_coordinators(
-            metal, residues
-        )
-        print(coordinators)
+        if isinstance(residues, dict):
+            coordinators, stats, gaussian_stats = load_stats(metal, residues)
+            mode = 'motif_detection'
+        else:
+            coordinators, stats, gaussian_stats = find_coordinators(
+                metal, residues
+            )
+            mode = 'normal_evaluation'
+
         if residue_score == 'discrete':
             residue_score = discrete_score
         elif residue_score == 'gaussian':
@@ -290,7 +310,7 @@ class Brigit():
         chunks = distribute(scores, threads)
         args = [(molecule, chunks[idx], stats, gaussian_stats, molecule_info,
                 coordinators, residue_score, backbone_score, max_coordinators,
-                threshold, cnn_weight) for idx in range(threads)]
+                threshold, cnn_weight, motif) for idx in range(threads)]
         pool = multiprocessing.Pool(threads)
         zeros = pool.starmap(analyse_probes, args)
         new_zeros = []
@@ -602,15 +622,21 @@ class Brigit():
 def analyse_probes(
     molecule, probes, stats, gaussian_stats, molecule_info,
     coordinators, residue_score, backbone_score, max_coordinators,
-    threshold, cnn_weight
+    threshold, cnn_weight, mode
 ):
     zeros = np.zeros((len(probes), 4))
     coor_weight = (1 - cnn_weight)
+
+    if mode == 'motif_detection':
+        scorer = motif_scorer
+    elif mode == 'normal_evaluation':
+        scorer = coordination_scorer
+
     for idx, probe in enumerate(probes):
         if probe[3] > threshold:
             zeros[idx, :] = probe
             zeros[idx, 3] *= cnn_weight
-            zeros[idx, 3] += coordination_score(
+            zeros[idx, 3] += scorer(
                 molecule,
                 probe,
                 stats,
