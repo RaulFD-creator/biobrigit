@@ -30,6 +30,7 @@ Features
 **Diferent options for customizing the search:**
 
 * Search for binding sites of specific residues.
+* Search for specific motifs.
 * Filter results according to how likely they are to bind metals.
 * Takes into account binding with backbone nitrogens and oxygens.
 * Scanning the whole protein, though, a region can also be provided as input (in PDB format).
