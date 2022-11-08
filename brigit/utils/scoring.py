@@ -228,7 +228,7 @@ def motif_scorer(
                 )
             )
             if coors_res >= repeats:
-                fitness += fitness_res
+                fitness = 1.0
             else:
                 return 0
 
@@ -249,7 +249,7 @@ def motif_scorer(
                 )
                 if coors_res > 0:
                     found = True
-                    fitness += fitness_res
+                    fitness = 1.0
 
             if not found:
                 return 0
@@ -382,9 +382,9 @@ def gaussian_score(
     beta_scores = double_gaussian(dist_2, *gaussian_stats[residue]['beta'])
     angle_scores = double_gaussian(angles, *gaussian_stats[residue]['MAB'])
 
-    alpha_trues = np.argwhere(alpha_scores > 0.1)
-    beta_trues = np.argwhere(beta_scores > 0.1)
-    angle_trues = np.argwhere(angle_scores > 0.1)
+    alpha_trues = np.argwhere(alpha_scores > 0.01)
+    beta_trues = np.argwhere(beta_scores > 0.01)
+    angle_trues = np.argwhere(angle_scores > 0.01)
 
     for true in alpha_trues:
         if true in beta_trues and true in angle_trues:
