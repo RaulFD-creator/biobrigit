@@ -184,7 +184,8 @@ class Brigit():
             molecule
         )
         self.check_clusters(
-            centers, molecule, outputfile, kwargs['args'], coordinators
+            centers, molecule, outputfile, coordinators, cluster_radius,
+            kwargs['args']
         )
         end = time.time()
         if verbose:
@@ -461,8 +462,8 @@ class Brigit():
             score_sum = np.sum(cluster[:, 3])
             score_mean = np.mean(cluster[:, 3])
             result.add(cluster_mean, score_sum)
-            tuple_mean = (cluster_mean[i] for i in range(len(cluster_mean)))
-            mean_clusters[tuple_mean] = score_mean
+            tuple_mean = [cluster_mean[i] for i in range(len(cluster_mean))]
+            mean_clusters[tuple(tuple_mean)] = score_mean
         return result, mean_clusters
 
     def check_clusters(
@@ -471,6 +472,7 @@ class Brigit():
         molecule,
         outputfile,
         coordinators,
+        cluster_radius,
         args
     ):
         outputfile_name = f'{outputfile}.clusters'
@@ -487,7 +489,7 @@ class Brigit():
                         if (
                             np.linalg.norm(
                                 atom - center
-                            ) < args['cluster_radius']
+                            ) < cluster_radius
                         ):
                             if not coordinator_found:
                                 writer.write(f'{name},')
