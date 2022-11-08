@@ -591,7 +591,7 @@ class Brigit():
                 fo.write("ATOM" + blank + "%s  %s  SLN %s" %
                          (num_at, atom, ch))
                 blank = " "*(3-len(str(num_res)))
-                score = str(cluster_scores[entry])
+                score = str(round(cluster_scores[entry], 2))
                 score = score if len(score) == 4 else score + '0'
                 fo.write(blank + "%s     %s  1.00  %s          %s\n" %
                          (num_res, prb_str, score, atom))
