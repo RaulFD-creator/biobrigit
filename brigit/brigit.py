@@ -195,6 +195,8 @@ class Brigit():
             verbose, **kwargs
         )
 
+        if verbose:
+            print('Clusterizing results', end='\n\n')
         # Selection of best positions
         best_scores = np.argwhere(scores[:, 3] > combined_threshold)
         new_scores = np.zeros((len(best_scores), 4))
@@ -205,6 +207,9 @@ class Brigit():
         centers, cluster_scores = self.clusterize(
             new_scores, molecule, cluster_radius
         )
+
+        if verbose:
+            print('Preparing and writing output files')
 
         # Preparing and writing output files
         if outputfile is None:
