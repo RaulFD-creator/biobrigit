@@ -303,7 +303,10 @@ def load_stats(metal: str, residues: dict, backbone: bool):
         }
     else:
         coordinators = {
-            'residue': residues
+            'residue': residues,
+            'backbone_o': {'mandatory': {}, 'either': [[]]},
+            'backbone_n': {'mandatory': {}, 'either': [[]]}
+
         }
 
     return coordinators, stats, gaussian_stats

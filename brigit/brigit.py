@@ -29,6 +29,7 @@ from .utils.tools import (
 from .utils.pdb_parser import protein
 from .utils.scoring import (
     parse_residues,
+    parse_residues_motif,
     coordination_scorer,
     motif_scorer,
     discrete_score,
@@ -144,36 +145,48 @@ class Brigit():
         """
         start = time.time()
         verbose = bool(verbose)
+
+        # Check that target is either a PDB file or PDB code
         if not isinstance(target, str):
             message = 'Target has to be:\n  a) string with PDB ID or\n'
             message += '  b) path to local PDB file.'
             raise TypeError(message)
 
+        # Verify that the final threshold is not greater than
+        # CNN threshold
         if combined_threshold > cnn_threshold:
             cnn_threshold = combined_threshold
 
+        # Verify and prepare system for motif search
         if motif is not None:
-            residues = {'mandatory': {}, 'either': []}
+            residues = {'mandatory': {}, 'either': [[]]}
             new_residues = motif.split(',')
 
             for residue in new_residues:
                 if '/' in residue:
                     residues['either'].append(residue.split('/'))
                 else:
-                    residues['mandatory'].append(residue)
+                    try:
+                        residues['mandatory'][residue] += 1
+                    except KeyError:
+                        residues['mandatory'][residue] = 1
 
             del new_residues
+            kwargs['residues'] = residues
 
+        # Voxelize the protein
         if verbose:
             print(f'Voxelizing target: {target}', end='\n\n')
 
         vox, p_centers, nvoxels = self.voxelize(target, **kwargs)
 
+        # CNN evaluation
         if verbose:
             print(f'\nCNN evaluation of target: {target}', end='\n\n')
 
         scores = self.evaluate(vox, p_centers, **kwargs)
 
+        # Coordination analysis
         if verbose:
             print(f'\nCoordination analysis of target: {target}', end='\n\n')
 
@@ -181,14 +194,19 @@ class Brigit():
             target, max_coordinators, metal, scores, cnn_threshold,
             verbose, **kwargs
         )
+
+        # Selection of best positions
         best_scores = np.argwhere(scores[:, 3] > combined_threshold)
         new_scores = np.zeros((len(best_scores), 4))
         for idx, idx_score in enumerate(best_scores):
             new_scores[idx, :] = scores[idx_score, :]
+
+        # Spatial clusterization of best positions
         centers, cluster_scores = self.clusterize(
             new_scores, molecule, cluster_radius
         )
 
+        # Preparing and writing output files
         if outputfile is None:
             if target.endswith('.pdb'):
                 outputfile = target.split('.')[0]
@@ -199,9 +217,11 @@ class Brigit():
             molecule
         )
         self.check_clusters(
-            centers, molecule, outputfile, kwargs['args'], coordinators
+            centers, molecule, outputfile, coordinators, cluster_radius,
+            kwargs['args']
         )
         end = time.time()
+
         if verbose:
             print(f'Computation took {round(end-start, 2)} s.', end='\n\n')
         return scores
@@ -219,6 +239,7 @@ class Brigit():
         cnn_weight: float,
         residues: int,
         threads: int,
+        motif_backbone: bool,
         **kwargs
     ) -> tuple:
         """
@@ -280,12 +301,16 @@ class Brigit():
         zeros = np.zeros(np.shape(scores[:, 3]))
         molecule = protein(target, True)
         if isinstance(residues, dict):
-            coordinators, stats, gaussian_stats = load_stats(metal, residues)
+            coordinators, stats, gaussian_stats = load_stats(
+                metal, residues, motif_backbone
+            )
+            molecule_info = parse_residues_motif(molecule, coordinators)
             mode = 'motif_detection'
         else:
             coordinators, stats, gaussian_stats = find_coordinators(
                 metal, residues
             )
+            molecule_info = parse_residues(molecule, coordinators)
             mode = 'normal_evaluation'
 
         if residue_score == 'discrete':
@@ -305,11 +330,10 @@ class Brigit():
                 f'Backbone coordination scoring function: {backbone_score} not\
                     currently implemented.'
             )
-        molecule_info = parse_residues(molecule, coordinators)
         chunks = distribute(scores, threads)
         args = [(molecule, chunks[idx], stats, gaussian_stats, molecule_info,
                 coordinators, residue_score, backbone_score, max_coordinators,
-                threshold, cnn_weight, motif) for idx in range(threads)]
+                threshold, cnn_weight, mode) for idx in range(threads)]
         pool = multiprocessing.Pool(threads)
         zeros = pool.starmap(analyse_probes, args)
         new_zeros = []
@@ -481,8 +505,10 @@ class Brigit():
             score_sum = np.sum(cluster[:, 3])
             score_mean = np.mean(cluster[:, 3])
             result.add(cluster_mean, score_sum)
-            tuple_mean = (cluster_mean[i] for i in range(len(cluster_mean)))
-            mean_clusters[tuple_mean] = score_mean
+            str_mean = ",".join(
+                str(round(float(cluster_mean[i]), 3)) for i in range(3)
+            )
+            mean_clusters[str_mean] = score_mean
         return result, mean_clusters
 
     def check_clusters(
@@ -491,6 +517,7 @@ class Brigit():
         molecule,
         outputfile,
         coordinators,
+        cluster_radius,
         args
     ):
         outputfile_name = f'{outputfile}.clusters'
@@ -507,7 +534,7 @@ class Brigit():
                         if (
                             np.linalg.norm(
                                 atom - center
-                            ) < args['cluster_radius']
+                            ) < cluster_radius
                         ):
                             if not coordinator_found:
                                 writer.write(f'{name},')
@@ -596,9 +623,10 @@ class Brigit():
                 num_res = 1
                 ch = "A"
                 prb_str = ""
+                list_entry = entry.split(',')
 
                 for idx in range(3):
-                    number = str(round(float(entry[idx]), 3))
+                    number = str(round(float(list_entry[idx]), 3))
                     prb_center = "{:.8s}".format(number)
                     if len(prb_center) < 8:
                         prb_center = " "*(8-len(prb_center)) + prb_center
@@ -629,21 +657,20 @@ def analyse_probes(
         scorer = motif_scorer
     elif mode == 'normal_evaluation':
         scorer = coordination_scorer
-
     for idx, probe in enumerate(probes):
         if probe[3] > threshold:
             zeros[idx, :] = probe
             zeros[idx, 3] *= cnn_weight
             zeros[idx, 3] += scorer(
-                molecule,
-                probe,
-                stats,
-                gaussian_stats,
-                molecule_info,
-                coordinators,
-                gaussian_score,
-                discrete_score,
-                max_coordinators
+                molecule=molecule,
+                probe=probe,
+                stats=stats,
+                gaussian_stats=gaussian_stats,
+                molecule_info=molecule_info,
+                coordinators=coordinators,
+                residue_scoring=gaussian_score,
+                backbone_scoring=discrete_score,
+                max_coordinators=max_coordinators
             ) * coor_weight
     return zeros
 
