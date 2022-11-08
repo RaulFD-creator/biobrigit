@@ -527,6 +527,7 @@ class Brigit():
             writer.write('cluster,coordinators,score\n')
             for name, center in enumerate(clusters):
                 coordinator_found = False
+                line = []
                 for residue in molecule.residues:
                     for atom in residue.atoms:
                         if atom.element not in ['N', 'O', 'S']:
@@ -539,8 +540,9 @@ class Brigit():
                             if not coordinator_found:
                                 writer.write(f'{name},')
                             coordinator_found = True
-                            writer.write(f'{atom.name}_{residue.id};')
+                            line.append(f'{atom.name}_{residue.id}')
                 if coordinator_found:
+                    writer.write(';'.join(res for res in line))
                     writer.write(f",{round(clusters.counts(name), 2)}\n")
 
     def create_PDB(
