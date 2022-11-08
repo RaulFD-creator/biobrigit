@@ -184,8 +184,7 @@ class Brigit():
             molecule
         )
         self.check_clusters(
-            centers, molecule, outputfile, coordinators, cluster_radius,
-            kwargs['args']
+            centers, molecule, outputfile, kwargs['args'], coordinators
         )
         end = time.time()
         if verbose:
@@ -462,8 +461,8 @@ class Brigit():
             score_sum = np.sum(cluster[:, 3])
             score_mean = np.mean(cluster[:, 3])
             result.add(cluster_mean, score_sum)
-            tuple_mean = [cluster_mean[i] for i in range(len(cluster_mean))]
-            mean_clusters[tuple(tuple_mean)] = score_mean
+            tuple_mean = (cluster_mean[i] for i in range(len(cluster_mean)))
+            mean_clusters[tuple_mean] = score_mean
         return result, mean_clusters
 
     def check_clusters(
@@ -472,7 +471,6 @@ class Brigit():
         molecule,
         outputfile,
         coordinators,
-        cluster_radius,
         args
     ):
         outputfile_name = f'{outputfile}.clusters'
@@ -489,14 +487,14 @@ class Brigit():
                         if (
                             np.linalg.norm(
                                 atom - center
-                            ) < cluster_radius
+                            ) < args['cluster_radius']
                         ):
                             if not coordinator_found:
                                 writer.write(f'{name},')
                             coordinator_found = True
                             writer.write(f'{atom.name}_{residue.id};')
                 if coordinator_found:
-                    writer.write(f",{clusters.counts(name)}\n")
+                    writer.write(f",{round(clusters.counts(name), 2)}\n")
 
     def create_PDB(
         self,
@@ -593,7 +591,7 @@ class Brigit():
                 fo.write("ATOM" + blank + "%s  %s  SLN %s" %
                          (num_at, atom, ch))
                 blank = " "*(3-len(str(num_res)))
-                score = str(round(cluster_scores[entry], 2))
+                score = str(cluster_scores[entry])
                 score = score if len(score) == 4 else score + '0'
                 fo.write(blank + "%s     %s  1.00  %s          %s\n" %
                          (num_res, prb_str, score, atom))
