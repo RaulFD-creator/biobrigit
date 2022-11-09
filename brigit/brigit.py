@@ -209,7 +209,7 @@ class Brigit():
         )
 
         if verbose:
-            print('Preparing and writing output files')
+            print('Preparing and writing output files', end='\n\n')
 
         # Preparing and writing output files
         if outputfile is None:
