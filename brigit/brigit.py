@@ -511,6 +511,8 @@ class Brigit():
             except ZeroDivisionError:
                 cluster_mean = np.average(cluster[:, :3], axis=0)
             score_sum = np.sum(cluster[:, 3])
+            if score_sum < 5.0:
+                continue
             score_mean = np.mean(cluster[:, 3])
             result.add(cluster_mean, score_sum)
             str_mean = ",".join(
@@ -528,11 +530,18 @@ class Brigit():
         cluster_radius,
         args
     ):
+        coors = set()
+        for list_coors in coordinators.values():
+            for coor in list_coors:
+                coors.add(coor)
         outputfile_name = f'{outputfile}.clusters'
         with open(outputfile_name, 'w') as writer:
-            writer.write(f'{args}\n')
-            writer.write(f'{coordinators}\n')
-            writer.write('cluster,coordinators,score\n')
+            writer.write(f'Configuration: {args}\n')
+            writer.write(f'Coordinators: {coordinators}\n')
+            title = 'cluster  |  coordinators  |  score\n'
+            writer.write(title)
+            title = title.strip('\n')
+            writer.write('-------     ------------     -----\n')
             for name, center in enumerate(clusters):
                 coordinator_found = False
                 line = []
@@ -540,23 +549,34 @@ class Brigit():
                     for atom in residue.atoms:
                         if atom.element not in ['N', 'O', 'S']:
                             continue
+                        if atom.name in ['N', 'O']:
+                            message = f'BACK_{atom.name}_'
+                        else:
+                            message = ''
+                        if atom.resname not in coors:
+                            continue
                         if (
                             np.linalg.norm(
                                 atom - center
                             ) < cluster_radius
                         ):
                             if not coordinator_found:
-                                writer.write(f'{name},')
+                                entry = f"{' ' * (3 - len(str(name)))}{name}"
+                                entry += "  |  "
+                                writer.write(entry)
                             coordinator_found = True
                             res = residue.id.split('_')
                             res2 = res[1].split('(')
                             res2[1] = res2[1].strip(')')
-                            message = f"{res[0]}:{res2[0]}:{res2[1]}"
+                            message += f"{res[0]}:{res2[0]}:{res2[1]}"
                             if message not in line:
                                 line.append(message)
                 if coordinator_found:
+                    mes = ';'.join(res for res in line)
+                    if len(mes) < len(title):
+                        mes += ' ' * (len(mes) - len(title))
                     writer.write(';'.join(res for res in line))
-                    writer.write(f",{round(clusters.counts(name), 2)}\n")
+                    writer.write(f"  |  {round(clusters.counts(name), 2)}\n")
 
     def create_PDB(
         self,
