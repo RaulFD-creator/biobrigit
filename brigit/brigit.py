@@ -504,9 +504,12 @@ class Brigit():
             cluster = np.array(cluster)
             if len(cluster) == 0:
                 continue
-            cluster_mean = np.average(
-                cluster[:, :3], axis=0, weights=cluster[:, 3] ** 2
-            )
+            try:
+                cluster_mean = np.average(
+                    cluster[:, :3], axis=0, weights=cluster[:, 3] ** 2
+                )
+            except ZeroDivisionError:
+                cluster_mean = np.average(cluster[:, :3], axis=0)
             score_sum = np.sum(cluster[:, 3])
             score_mean = np.mean(cluster[:, 3])
             result.add(cluster_mean, score_sum)
@@ -545,7 +548,12 @@ class Brigit():
                             if not coordinator_found:
                                 writer.write(f'{name},')
                             coordinator_found = True
-                            line.append(f'{atom.name}_{residue.id}')
+                            res = residue.id.split('_')
+                            res2 = res[1].split('(')
+                            res2[1] = res2[1].strip(')')
+                            message = f"{res[0]}:{res2[0]}:{res2[1]}"
+                            if message not in line:
+                                line.append(message)
                 if coordinator_found:
                     writer.write(';'.join(res for res in line))
                     writer.write(f",{round(clusters.counts(name), 2)}\n")
