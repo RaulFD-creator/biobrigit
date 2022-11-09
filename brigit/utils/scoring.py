@@ -208,7 +208,7 @@ def motif_scorer(
     backbone_scoring,
     max_coordinators,
     **kwargs
-):
+) -> float:
     fitness = 0
     coordination_types = ['residue', 'backbone_o', 'backbone_n']
     for coor_type in coordination_types:
