@@ -101,6 +101,49 @@ class BaseModel(pl.LightningModule):
         self.log("log_loss", log_loss)
 
 
+class tinyBrigit(BaseModel):
+    def __init__(
+        self,
+        learning_rate: float,
+        neurons_layer: int = 32,
+        size: int = 12,
+        num_dimns: int = 6
+    ):
+        super().__init__()
+        self.learning_rate = learning_rate
+        self.example_input_array = torch.rand(
+            num_dimns*size**3, 1).view(1, num_dimns, size, size, size)
+
+        self.convolutional = nn.Sequential(
+            nn.Dropout3d(0.2),
+            conv3D(num_dimns, neurons_layer, 3, 2, nn.LeakyReLU, 0.2),
+            nn.BatchNorm3d(neurons_layer),
+            conv3D(neurons_layer, neurons_layer, 3, 1, nn.LeakyReLU, 0.2),
+            nn.BatchNorm3d(neurons_layer),
+            nn.AvgPool3d(2),
+
+            conv3D(neurons_layer, neurons_layer, 3, 1, nn.LeakyReLU, 0.2),
+            nn.BatchNorm3d(neurons_layer),
+            conv3D(neurons_layer, neurons_layer, 3, 1, nn.LeakyReLU, 0.2),
+            conv3D(neurons_layer, neurons_layer, 3, 1, nn.LeakyReLU, 0.2),
+            nn.BatchNorm3d(neurons_layer),
+            nn.AvgPool3d(2),
+            nn.Flatten()
+        )
+        self.classifier1 = nn.Sequential(
+            linear(864, 512, 0.2, nn.LeakyReLU),
+            linear(512, 256, 0.2, nn.LeakyReLU),
+        )
+        self.classifier2 = nn.Sequential(
+            linear(256, 1, 0.0, nn.Sigmoid)
+        )
+
+    def forward(self, x):
+        x = self.convolutional(x)
+        x = self.classifier1(x)
+        return self.classifier2(x)
+
+
 class BrigitCNN(BaseModel):
     def __init__(
         self,

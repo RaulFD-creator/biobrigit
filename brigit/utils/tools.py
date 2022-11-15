@@ -30,7 +30,7 @@ from moleculekit.molecule import Molecule
 from moleculekit.tools.atomtyper import prepareProteinForAtomtyping
 from moleculekit.tools.voxeldescriptors import getCenters, getVoxelDescriptors
 from .data import CHANNELS_DICT, read_stats
-from .models import BaseModel, BrigitCNN, DeepSite
+from .models import BaseModel, BrigitCNN, DeepSite, tinyBrigit
 
 
 class ordered_list():
@@ -352,6 +352,16 @@ def load_model(model: str, device: str, **kwargs) -> BaseModel:
             path,
             map_location=device,
             learning_rate=2e-4
+        )
+
+    elif model == 'tinyBrigit':
+        model = tinyBrigit.load_from_checkpoint(
+            path,
+            map_location=device,
+            learning_rate=2e-4,
+            neurons_layer=32,
+            size=12,
+            num_dimns=6
         )
 
     model.to(device)
