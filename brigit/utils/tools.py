@@ -261,6 +261,8 @@ def find_coordinators(metal: str, num_residues: int = 20):
     n_residues = ordered_list()
 
     for residue, res_stats in stats.items():
+        if residue not in gaussian_stats.keys():
+            continue
         if len(residues) < num_residues:
             if res_stats['fitness'] > 0.0:
                 residues.add(residue, res_stats['fitness'])
