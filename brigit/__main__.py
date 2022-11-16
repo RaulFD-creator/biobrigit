@@ -34,6 +34,8 @@ def parse_cli() -> dict:
         "--stride", type=int, default=1,
         help="Step of the sliding window when evaluating the protein."
     )
+    p.add_argument("--pH", type=float, default=7.4,
+                   help='pH where the structure is to be evaluated.')
     p.add_argument("--motif", type=str, default=None,
                    help="Motif to be detected. Format: 'HIS,HIS,ASP/GLU'")
     p.add_argument('--motif_backbone', type=bool, default=True,

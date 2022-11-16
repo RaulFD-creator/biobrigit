@@ -357,6 +357,7 @@ class Brigit():
         buffer: int = 6,
         validitychecks: bool = False,
         channels: list = CHANNELS,
+        pH: float = 7.4,
         **kwargs
     ) -> tuple:
         """
@@ -403,7 +404,7 @@ class Brigit():
             )
 
         protein.remove("not protein")
-        protein = prepareProteinForAtomtyping(protein, verbose=0)
+        protein = prepareProteinForAtomtyping(protein, verbose=0, pH=pH)
         centers = getCenters(protein)
         uchannels = np.ones((len(centers[0]), 8))
         uchannels, undesired_channels = get_undesired_channels(
