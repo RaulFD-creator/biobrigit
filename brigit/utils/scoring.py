@@ -401,8 +401,10 @@ def gaussian_score(
 def double_gaussian(
     x: np.array,
     prop: float,
+    chi1: float,
     nu1: float,
     sigma1: float,
+    chi2: float,
     nu2: float,
     sigma2: float
 ) -> np.array or float:
@@ -415,8 +417,10 @@ def double_gaussian(
         x (np.array): Set of input values to evaluate.
         prop (float): Factor describing the contribution of each of
             the gaussians to the final result.
+        chi1 (float): Height of the first gaussian.
         nu1 (float): Average value for the first gaussian.
         sigma1 (float): Standard deviation of the first gaussian.
+        chi2 (float): Height of the second gaussian.
         nu2 (float): Average value for the second gaussian.
         sigma2 (float): Standard deviation of the second gaussian.
 
@@ -424,18 +428,19 @@ def double_gaussian(
         result (np.array or float): Value or array of values with len(x)
             with the associated probability.
     """
-    first_gaussian = _normpdf(x, nu1, sigma1)
-    second_gaussian = _normpdf(x, nu2, sigma2)
-    return prop * first_gaussian + (1-prop) * second_gaussian
+    first_gaussian = _normpdf(x, chi1, nu1, sigma1)
+    second_gaussian = _normpdf(x, chi2, nu2, sigma2)
+    return first_gaussian + second_gaussian
 
 
-def _normpdf(x: np.array or float, nu: float, std: float):
+def _normpdf(x: np.array or float, chi: float, nu: float, std: float):
     """
     Helper function for `double_gaussian`, computes the PDF of a
     gaussian function.
 
     Args:
         x (np.array or float): Set of input values to evaluate.
+        chi (float): Height of the gaussian.
         nu (float): Average value for the gaussian.
         std (float): Standard deviation of the gaussian.
 
@@ -444,9 +449,8 @@ def _normpdf(x: np.array or float, nu: float, std: float):
     """
 
     var = std ** 2
-    denom = (2 * np.pi * var) ** .5
     num = np.exp(- (x - nu) ** 2 / (2 * var))
-    return num / denom
+    return chi * num
 
 
 if __name__ == '__main__':
