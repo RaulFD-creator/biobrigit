@@ -6,6 +6,7 @@ Contains 1 class:
 
 Copyright by Raúl Fernández Díaz
 """
+import os
 import time
 import multiprocessing
 import warnings
@@ -152,11 +153,6 @@ class Brigit():
             message += '  b) path to local PDB file.'
             raise TypeError(message)
 
-        # Verify that the final threshold is not greater than
-        # CNN threshold
-        if combined_threshold > cnn_threshold:
-            cnn_threshold = combined_threshold
-
         # Verify and prepare system for motif search
         if motif is not None:
             residues = {'mandatory': {}, 'either': [[]]}
@@ -214,9 +210,11 @@ class Brigit():
         # Preparing and writing output files
         if outputfile is None:
             if target.endswith('.pdb'):
-                outputfile = target.split('.')[0]
+                outputfile = os.path.split(target)[1].split('.')[0]
+
             else:
                 outputfile = target
+
         self.create_PDB(
             target, outputfile, new_scores, combined_threshold, cluster_scores,
             molecule
@@ -535,7 +533,7 @@ class Brigit():
         for list_coors in coordinators.values():
             for coor in list_coors:
                 coors.add(coor)
-        outputfile_name = f'{outputfile}.clusters'
+        outputfile_name = f'{outputfile}_clusters.txt'
         with open(outputfile_name, 'w') as writer:
             writer.write(f'Configuration: {args}\n')
             writer.write(f'Coordinators: {coordinators}\n')
