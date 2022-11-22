@@ -42,9 +42,13 @@ The installation of CUDA depends on the version of CUDA available in your machin
 
 .. code-block:: console
 
-    $ conda install pytorch pytorch-cuda=11.6 -c pytorch -c nvidia
+    $ conda install pytorch pytorch-cuda=11.6 pytorch-lightning torchmetrics -c pytorch -c nvidia -c conda-forge
 
-    $ conda install pytorch_lightning torchmetrics -c conda-forge -c pytorch
+If you do not have a GPU with CUDA available, instead install the following:
+
+.. code-block:: console
+
+    $ conda install pytorch pytorch-lightning torchmetrics -c conda-forge -c pytorch
 
 From sources
 ------------
