@@ -10,8 +10,7 @@ the program, their default values, and a brief explanation.
 First, the program has two mandatory arguments:
 
 - **target:** PDB code to be analysed or Path to a local PDB file.
-- **metal:** Nature of the metal for which possible binding sites are to be
-predicted. The complete list of metals currently supported are: Li, Na, K, Rb, Cs, Be, Mg, Ca, Sr, Ba, V, Cr, Mn, Fe, Co, Ni, Cu, Zn, Mo, Ru, Rh, Pd, Ag, Cd, Ir, Pt, Au, and Hg. There is an additional mode, General, that uses statistics obtained from all metals in the MetalPDB database.
+- **metal:** Nature of the metal for which possible binding sites are to be predicted. The complete list of metals currently supported are: Li, Na, K, Rb, Cs, Be, Mg, Ca, Sr, Ba, V, Cr, Mn, Fe, Co, Ni, Cu, Zn, Mo, Ru, Rh, Pd, Ag, Cd, Ir, Pt, Au, and Hg. There is an additional mode, General, that uses statistics obtained from all metals in the MetalPDB database.
 
 Optional parameters have to be introduced by '- -', examples are provided in the next section:
 
