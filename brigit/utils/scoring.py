@@ -400,7 +400,6 @@ def gaussian_score(
 
 def double_gaussian(
     x: np.array,
-    prop: float,
     chi1: float,
     nu1: float,
     sigma1: float,
