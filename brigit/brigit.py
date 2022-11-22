@@ -510,8 +510,6 @@ class Brigit():
             except ZeroDivisionError:
                 cluster_mean = np.average(cluster[:, :3], axis=0)
             score_sum = np.sum(cluster[:, 3])
-            if score_sum < 5.0:
-                continue
             score_mean = np.mean(cluster[:, 3])
             result.add(cluster_mean, score_sum)
             str_mean = ",".join(
