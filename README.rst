@@ -29,15 +29,14 @@ Features
 --------
 **Diferent options for customizing the search:**
 
-* Search for binding sites of specific residues.
-* Search for specific motifs.
+* Search for binding sites of specific metals.
 * Filter results according to how likely they are to bind metals.
 * Takes into account binding with backbone nitrogens and oxygens.
 * Scanning the whole protein, though, a region can also be provided as input (in PDB format).
 
 **Modular design:**
 
-* The modular design of this packages allows for its use as a command-line tool or to be integrated into a larger program or pipeline.
+* The modular design of this package allows for its use as a command-line tool or to be integrated into a larger Python program or pipeline.
 
 **Possible applications:**
 
