@@ -51,7 +51,7 @@ def parse_cli() -> dict:
                     combining BioMetAll and CNN scores.")
     p.add_argument("--voxelsize", type=float, default=1.0,
                    help="Resolution of the 3D representation. In Arnstrongs.")
-    p.add_argument("--cnn_weight", type=float, default=0.4sss,
+    p.add_argument("--cnn_weight", type=float, default=0.4,
                    help='Weight assigned to CNN.')
     p.add_argument(
         "--verbose", type=int, default=1,
