@@ -43,7 +43,7 @@ def parse_cli() -> dict:
                     motif combinations.')
     p.add_argument("--cluster_radius", type=float, default=5.0,
                    help="Threshold used for the Birch clustering algorithm.")
-    p.add_argument("--cnn_threshold", type=float, default=0.5,
+    p.add_argument("--cnn_threshold", type=float, default=0.4,
                    help="Threshold for considering CNN points as possible\
                     coordinations.")
     p.add_argument("--combined_threshold", type=float, default=0.5,
@@ -51,7 +51,7 @@ def parse_cli() -> dict:
                     combining BioMetAll and CNN scores.")
     p.add_argument("--voxelsize", type=float, default=1.0,
                    help="Resolution of the 3D representation. In Arnstrongs.")
-    p.add_argument("--cnn_weight", type=float, default=0.5,
+    p.add_argument("--cnn_weight", type=float, default=0.4sss,
                    help='Weight assigned to CNN.')
     p.add_argument(
         "--verbose", type=int, default=1,

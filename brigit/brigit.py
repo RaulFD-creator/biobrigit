@@ -506,7 +506,7 @@ class Brigit():
                 continue
             try:
                 cluster_mean = np.average(
-                    cluster[:, :3], axis=0, weights=cluster[:, 3] ** 2
+                    cluster[:, :3], axis=0, weights=cluster[:, 3] ** 3
                 )
             except ZeroDivisionError:
                 cluster_mean = np.average(cluster[:, :3], axis=0)
