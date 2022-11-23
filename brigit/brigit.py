@@ -215,14 +215,15 @@ class Brigit():
             else:
                 outputfile = target
 
-        self.create_PDB(
-            target, outputfile, new_scores, combined_threshold, cluster_scores,
-            molecule
-        )
         self.check_clusters(
             centers, molecule, outputfile, coordinators, cluster_radius,
             kwargs['args']
         )
+        self.create_PDB(
+            target, outputfile, new_scores, combined_threshold, cluster_scores,
+            molecule
+        )
+
         end = time.time()
 
         if verbose:
@@ -614,17 +615,6 @@ class Brigit():
             num_at = 0
             num_res = 0
             for entry in scores:
-                close2protein = False
-                for atom in molecule.atoms:
-                    if (
-                        np.linalg.norm(atom - entry[:3]) < 3. and
-                        atom.element not in ['H']
-                    ):
-                        close2protein = True
-                        break
-
-                if not close2protein:
-                    continue
 
                 num_at += 1
                 num_res = 1
