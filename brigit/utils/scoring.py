@@ -378,9 +378,9 @@ def gaussian_score(
     fitness = 0
     possible_coordinators = 0
 
-    alpha_scores = double_gaussian(dist_1, *gaussian_stats[residue]['alpha'])
-    beta_scores = double_gaussian(dist_2, *gaussian_stats[residue]['beta'])
-    angle_scores = double_gaussian(angles, *gaussian_stats[residue]['MAB'])
+    alpha_scores = bimodal(dist_1, *gaussian_stats[residue]['alpha'])
+    beta_scores = bimodal(dist_2, *gaussian_stats[residue]['beta'])
+    angle_scores = bimodal(angles, *gaussian_stats[residue]['MAB'])
 
     alpha_trues = np.argwhere(alpha_scores > 0.01)
     beta_trues = np.argwhere(beta_scores > 0.01)
@@ -398,7 +398,7 @@ def gaussian_score(
     return fitness, possible_coordinators
 
 
-def double_gaussian(
+def bimodal(
     x: np.array,
     chi1: float,
     nu1: float,
