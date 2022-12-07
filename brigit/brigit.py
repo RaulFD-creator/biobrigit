@@ -70,7 +70,7 @@ class Brigit():
                 warnings.warn('Using CPU for caluclations, although there is\
                     a CUDA compatible GPU available. Using the GPU would\
                     accelerate significantly the calculations.')
-        self.model = load_model(model, device)
+        self.model = load_model(model, self.device)
 
     def predict(
         self,
