@@ -11,10 +11,14 @@ import json
 
 
 def read_stats() -> dict:
+    # Define paths to stats
     current_dir = os.path.dirname(__file__)
-    stats_path = os.path.join(current_dir, 'residue_statistics.json')
-    gaussian_path = os.path.join(current_dir, 'gaussian_statistics.json')
-    with open(stats_path) as reader_1:
+    stats_path = os.path.join(current_dir, 'stats')
+    residues_path = os.path.join(stats_path, 'residue_statistics.json')
+    gaussian_path = os.path.join(stats_path, 'gaussian_statistics.json')
+
+    # Read stats
+    with open(residues_path) as reader_1:
         stats = json.load(reader_1)
     with open(gaussian_path) as reader_2:
         gaussian_stats = json.load(reader_2)
