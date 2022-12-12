@@ -93,7 +93,7 @@ There are many parameters that can be also tuned, though default use is reccomen
 
 License
 -------
-Brigit is an open-source software licensed under the BSD-3 Clause License. Check the details in the `LICENSE <https://github.com/raulfd-creator/biobrigit/blob/master/LICENSE>`_ file.
+Brigit is an open-source software licensed under the BSD-3 Clause License. Check the details in the [LICENSE](https://github.com/raulfd-creator/biobrigit/blob/master/LICENSE) file.
 
 TODO
 ----
