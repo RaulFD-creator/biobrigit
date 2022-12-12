@@ -8,7 +8,7 @@ interactions.
 
 The deep learning model used is a 3D Convolutional Neural Network (CNN) that
 interprets the physico-chemical environment. The previous domain knowledge is 
-based on the works by Sánchez-Aparicio et al. (2017), and translates into the 
+based on the works by [Sánchez-Aparicio et al. (2017)](https://chemrxiv.org/engage/chemrxiv/article-details/60c74de1469df46a86f44378), and translates into the 
 use of statistics to score the suitability of a point of space based on its 
 relative position to certain atoms in the protein backbone.
 
