@@ -14,7 +14,7 @@ BioBrigit
 
 
 
-BrigitMetalPredictor or Brigit, for short, is a computational tool designed for the prediction of protein-metal
+BioBrigit is a computational tool designed for the prediction of protein-metal
 binding sites in proteins. It uses a novel scoring function powered by
 a deep learning model and previous domain knowledge regarding bioinorganic
 interactions.
