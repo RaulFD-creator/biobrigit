@@ -48,7 +48,7 @@ The first step is to create an environment with the necessary libraries. Some wi
 > pip install scikit-learn
 ```
 
-### 2.1. Environment set-up with CUDA acelleration
+**2.1. Environment set-up with CUDA acelleration**
 
 The last step is to install the deep learning framework:
 
@@ -57,7 +57,7 @@ The last step is to install the deep learning framework:
 > conda install pytorch-lightning tensorboard torchmetrics -c conda-forge
 ```
 
-### 2.2. Environment set-up without CUDA acelleration
+**2.2. Environment set-up without CUDA acelleration**
 
 If no CUDA device is available, the recommended installation of the deep learning framework is:
 
@@ -76,7 +76,48 @@ Once the environment is properly set-up the use of the program is relatively sim
 
 There are many parameters that can be also tuned, though default use is reccomended.
 
+* `--model`: Which CNN model is to be used. Two options available `BrigitCNN` which is the default model with highest performance and `TinyBrigit`, which is a smaller model for improved computational efficiency, though it has demonstrated lower performance.
+* `--device`: Whether to use GPU acceleration (`cuda`) or without (`cpu`). By default, it uses GPU if available.
+* `--device_id`: which of the available GPU devices should be used for the calculations. In case a given system has more than one GPU available. By default, it uses the device labelled as 0.
+* `--outputfile`: Name of the outputfiles. The file extensions (`.txt` and `.pdb`) will be added automatically.
+* `--max_coordinators`: Number of maximum coordinators expected. By default, 2. It only affects the range of values assigned to the probes.
+* `--residues`: Number of most likely coordinating residues. By default, 10.
+* `--stride`: Step at which the voxelized representation of the protein should be parsed. By default, 1. The greater the stride, the greater the computational efficiency; however, the resolution of the predictions will be affected.
+* `--pH`: pH of the medium at which the structure is to be evaluated. By default, 7.4.
+* `--cluster_radius`: Radius of the clusters to be generated in armstrongs. By default, 5.
+* `--cnn_threshold`: Threshold for considering CNN points as possible coordinations. Lower values will impact computational efficiency; greater values, may hide possible coordinating regions. By default, 0.5. Values should be within the range [0, 1].
+* `--combined_threshold`: Threshold for considering predictions combining BioMetAll and CNN scores as positive. By default, 0.5. Values should be within the range [0, 1].
+* `--voxelsize`: Resolution of the 3D representation. In Arnstrongs. By default, 1 A.
+* `--cnn_weight`: Importance of the CNN score in the final score in relations to the BioMetAll score. By default, 0.5. Values should be within the range [0, 1].
+* `--verbose`: Information that will be displayed. 0: Only Moleculekit, 1: All. By default, 1.
+* `--residue score`: Scoring function for residue coordination analysis. Can be either `discrete`, that only considers how likely is a residue to bind to a certain metal (more computationally efficient); or `gaussian`, that also considers the fitness of the geometrical descriptors for a certain residue and metal. By default, `gaussian`.
+* `--threads`: Number of threads available for multithreading calculation. By default it will create 2 threads per physical core.
 
+**Examples:**
+
+Searching for copper.
+
+```bash
+> biobrigit 1dhy Cu
+```
+
+Searching with generic metal.
+
+```bash
+> biobrigit 1dhy General --outputfile 1dhy_general
+````
+
+Fast preliminar exploration for binding sites with 4 coordinations, no GPU, and only considering the 4 most likely coordinating residues.
+
+```bash
+> biobrigit 1dhy Cu --stride 2 --model TinyBrigit --max_coordinators 4 --device cpu --residues 4
+```
+
+Search for small clusters at acidic pH (5.2).
+
+```bash
+> biobrigit 1dhy Cu --cluster_radius 3 --pH 5.2
+```
 
 License
 -------

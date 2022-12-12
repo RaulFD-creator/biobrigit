@@ -36,11 +36,6 @@ def parse_cli() -> dict:
     )
     p.add_argument("--pH", type=float, default=7.4,
                    help='pH where the structure is to be evaluated.')
-    p.add_argument("--motif", type=str, default=None,
-                   help="Motif to be detected. Format: 'HIS,HIS,ASP/GLU'")
-    p.add_argument('--motif_backbone', type=bool, default=True,
-                   help='Whether to consider backbone atoms when analysing\
-                    motif combinations.')
     p.add_argument("--cluster_radius", type=float, default=5.0,
                    help="Threshold used for the Birch clustering algorithm.")
     p.add_argument("--cnn_threshold", type=float, default=0.4,
@@ -58,8 +53,6 @@ def parse_cli() -> dict:
         help="Information that will be displayed. 0: Only Moleculekit, 1: All."
     )
     p.add_argument("--residue_score", type=str, default='gaussian',
-                   help='Scoring function for residue coordination analysis.')
-    p.add_argument("--backbone_score", type=str, default='discrete',
                    help='Scoring function for residue coordination analysis.')
     p.add_argument("--threads", type=int, default=0,
                    help='Number of threads available for multithreading\
