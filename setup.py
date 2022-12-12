@@ -31,7 +31,7 @@ setup(
     description = "Computational tool for the prediction of metal-binding sites in proteins using deep convolutional neural networks.",
     entry_points={
         'console_scripts': [
-            'brigit=brigit.__main__:main',
+            'biobrigit=biobrigit.__main__:main',
         ],
     },
     install_requires=requirements,
@@ -39,12 +39,12 @@ setup(
     long_description=readme + '\n\n' + history,
     include_package_data=True,
     package_data={'': ['*.ckpt', '*.json']},
-    keywords='brigit',
-    name='brigit',
-    packages=find_packages(include=['brigit', 'brigit.*']),
+    keywords='biobrigit',
+    name='biobrigit',
+    packages=find_packages(include=['biobrigit', 'biobrigit.*']),
     test_suite='tests',
     tests_require=test_requirements,
-    url='https://github.com/RaulFD-creator/brigit',
+    url='https://github.com/RaulFD-creator/biosbrigit',
     version='0.1.0',
     zip_safe=False,
 )

@@ -1,11 +1,11 @@
 """
-Execution Brigit module.
+Execution BioBrigit module.
 
 Copyrigth by Raúl Fernández Díaz
 """
 import argparse
 import multiprocessing
-import brigit
+import biobrigit
 
 
 def parse_cli() -> dict:
@@ -89,7 +89,7 @@ def main():
     multiprocessing.freeze_support()
     welcome()
     args = parse_cli()
-    brigit.run(args)
+    biobrigit.run(args)
 
 
 if __name__ == '__main__':
