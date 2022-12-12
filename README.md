@@ -1,18 +1,5 @@
-===============
 BioBrigit
 ===============
-
-.. image:: https://img.shields.io/pypi/v/biobrigit.svg
-        :target: https://pypi.python.org/pypi/biobrigit
-
-.. image:: https://img.shields.io/travis/RaulFD-creator/biobrigit.svg
-        :target: https://travis-ci.com/RaulFD-creator/biobrigit
-
-.. image:: https://readthedocs.org/projects/biobrigit/badge/?version=latest
-        :target: https://biobrigit.readthedocs.io/en/latest/?version=latest
-        :alt: Documentation Status
-
-
 
 BioBrigit is a computational tool designed for the prediction of protein-metal
 binding sites in proteins. It uses a novel scoring function powered by
@@ -93,7 +80,7 @@ There are many parameters that can be also tuned, though default use is reccomen
 
 License
 -------
-Brigit is an open-source software licensed under the BSD-3 Clause License. Check the details in the [LICENSE](https://github.com/raulfd-creator/biobrigit/blob/master/LICENSE) file.
+BioBrigit is an open-source software licensed under the BSD-3 Clause License. Check the details in the [LICENSE](https://github.com/raulfd-creator/biobrigit/blob/master/LICENSE) file.
 
 TODO
 ----
@@ -107,7 +94,7 @@ History of versions
 
 OS Compatibility
 ----------------
-Brigit is currently only compatible with Linux, due to some of its dependencies.
+BioBrigit is currently only compatible with Linux, due to some of its dependencies.
 
 If you find some dificulties when installing it in a concrete distribution, please use the issues page to report them.
 
