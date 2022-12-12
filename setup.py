@@ -44,7 +44,7 @@ setup(
     packages=find_packages(include=['biobrigit', 'biobrigit.*']),
     test_suite='tests',
     tests_require=test_requirements,
-    url='https://github.com/RaulFD-creator/biosbrigit',
+    url='https://github.com/RaulFD-creator/biobrigit',
     version='0.1.0',
     zip_safe=False,
 )
