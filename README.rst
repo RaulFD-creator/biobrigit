@@ -46,6 +46,51 @@ Features
 * Metalloenzyme design.
 * Metallodrug design.
 
+Installation
+------------
+The recommended environment for using BioBrigit takes advatange of GPU acceleration. However, it is possible to use the tool in CPU-only environments.
+
+The first step is to create an environment with the necessary libraries. Some will directly installed from source.
+
+```bash
+> conda create -n {name} python=3.9
+> conda activate {name}
+> pip install git+https://github.com/Acellera/moleculekit
+> pip install git+https://github.com/RaulFD-creator/brigit
+> conda install pdb2pqr -c acellera -c conda-forge
+> pip install scikit-learn
+```
+
+### 2.1. Environment set-up with CUDA acelleration
+
+The last step is to install the deep learning framework:
+
+```bash
+> conda install pytorch pytorch-cuda -c pytorch -c nvidia
+> conda install pytorch-lightning tensorboard torchmetrics -c conda-forge
+```
+
+### 2.2. Environment set-up without CUDA acelleration
+
+If no CUDA device is available, the recommended installation of the deep learning framework is:
+
+```bash
+> conda install pytorch
+> conda install pytorch-lightning tensorboard torchmetrics -c conda-forge
+```
+
+Usage
+-----
+Once the environment is properly set-up the use of the program is relatively simple. The easiest example is:
+
+```bash
+> biobrigit target metal
+```
+
+There are many parameters that can be also tuned, though default use is reccomended.
+
+
+
 License
 -------
 Brigit is an open-source software licensed under the BSD-3 Clause License. Check the details in the `LICENSE <https://github.com/raulfd-creator/biobrigit/blob/master/LICENSE>`_ file.

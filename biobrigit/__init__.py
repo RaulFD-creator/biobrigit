@@ -1,6 +1,6 @@
 """Top-level package for Brigit."""
 
-from .brigit import *
+from .biobrigit import *
 from .utils import *
 
 __author__ = """Raúl Fernández Díaz"""
