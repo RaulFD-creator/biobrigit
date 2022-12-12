@@ -1,15 +1,15 @@
 ===============
-BrigitMetalPredictor
+BioBrigit
 ===============
 
-.. image:: https://img.shields.io/pypi/v/brigitmetalpredictor.svg
-        :target: https://pypi.python.org/pypi/brigitmetalpredictor
+.. image:: https://img.shields.io/pypi/v/biobrigit.svg
+        :target: https://pypi.python.org/pypi/biobrigit
 
-.. image:: https://img.shields.io/travis/RaulFD-creator/brigitmetalpredictor.svg
-        :target: https://travis-ci.com/RaulFD-creator/brigitmetalpredictor
+.. image:: https://img.shields.io/travis/RaulFD-creator/biobrigit.svg
+        :target: https://travis-ci.com/RaulFD-creator/biobrigit
 
-.. image:: https://readthedocs.org/projects/brigitmetalpredictor/badge/?version=latest
-        :target: https://brigitmetalpredictor.readthedocs.io/en/latest/?version=latest
+.. image:: https://readthedocs.org/projects/biobrigit/badge/?version=latest
+        :target: https://biobrigit.readthedocs.io/en/latest/?version=latest
         :alt: Documentation Status
 
 
@@ -48,7 +48,7 @@ Features
 
 License
 -------
-Brigit is an open-source software licensed under the BSD-3 Clause License. Check the details in the `LICENSE <https://github.com/raulfd-creator/brigit/blob/master/LICENSE>`_ file.
+Brigit is an open-source software licensed under the BSD-3 Clause License. Check the details in the `LICENSE <https://github.com/raulfd-creator/biobrigit/blob/master/LICENSE>`_ file.
 
 TODO
 ----
