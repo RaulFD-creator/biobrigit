@@ -99,27 +99,6 @@ def parse_residues(
     return info
 
 
-def parse_residues_motif(
-    molecule: protein,
-    coordinators: dict,
-    **kwargs
-) -> dict:
-    motif_residues = {}
-
-    for coor_type, collection in coordinators.items():
-        motif_residues[coor_type] = []
-        for mode, sub_collection in collection.items():
-            if mode == 'mandatory':
-                for residue in sub_collection.keys():
-                    motif_residues[coor_type].append(residue)
-            elif mode == 'either':
-                for residue_list in sub_collection:
-                    for residue in residue_list:
-                        motif_residues[coor_type].append(residue)
-
-    return parse_residues(molecule, motif_residues)
-
-
 def coordination_scorer(
     molecule: protein,
     probe: np.array,
@@ -195,66 +174,6 @@ def coordination_scorer(
             possible_coordinators += coors_res
     fitness *= (possible_coordinators / max_coordinators)
     return fitness if fitness < 1.0 else 1.0
-
-
-def motif_scorer(
-    molecule: protein,
-    probe: np.array,
-    stats: dict,
-    gaussian_stats: dict,
-    molecule_info: dict,
-    coordinators: dict,
-    residue_scoring,
-    backbone_scoring,
-    max_coordinators,
-    **kwargs
-) -> float:
-    fitness = 0
-    coordination_types = ['residue', 'backbone_o', 'backbone_n']
-    for coor_type in coordination_types:
-        kwargs['coor_type'] = coor_type
-        kwargs['gaussian_stats'] = gaussian_stats
-        for res, repeats in coordinators[coor_type]['mandatory'].items():
-            alphas = probe[:3] - molecule_info[f'{coor_type}_alphas'][res]
-            atm2 = probe[:3] - molecule_info[f'{coor_type}_2nd_atom'][res]
-            dist_1, dist_2, angles = geometry(alphas, atm2)
-            fitness_res, coors_res = (
-                residue_scoring(
-                    dist_1, dist_2, angles, res, stats, **kwargs
-                )
-                if coor_type == 'residue' else
-                backbone_scoring(
-                    dist_1, dist_2, angles, res, stats, **kwargs
-                )
-            )
-            if coors_res >= repeats:
-                fitness = 1.0
-            else:
-                return 0
-
-        for alternatives in coordinators[coor_type]['either']:
-            found = False
-            for alt in alternatives:
-                alphas = probe[:3] - molecule_info[f'{coor_type}_alphas'][res]
-                atm2 = probe[:3] - molecule_info[f'{coor_type}_2nd_atom'][res]
-                dist_1, dist_2, angles = geometry(alphas, atm2)
-                fitness_res, coors_res = (
-                    residue_scoring(
-                        dist_1, dist_2, angles, res, stats, **kwargs
-                    )
-                    if coor_type == 'residue' else
-                    backbone_scoring(
-                        dist_1, dist_2, angles, res, stats, **kwargs
-                    )
-                )
-                if coors_res > 0:
-                    found = True
-                    fitness = 1.0
-
-            if not found:
-                return 0
-
-        return fitness if fitness < 1.0 else 1.0
 
 
 def discrete_score(
