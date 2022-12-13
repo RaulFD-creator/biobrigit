@@ -9,22 +9,20 @@ Features
 --------
 **Diferent options for customizing the search:**
 
-* Search for binding sites of specific metals.
-* Filter results according to how likely they are to bind metals.
-* Takes into account binding with backbone nitrogens and oxygens.
-* Scanning the whole protein, though, a region can also be provided as input (in PDB format).
-
-**Modular design:**
-
-* The modular design of this package allows for its use as a command-line tool or to be integrated into a larger Python program or pipeline.
+* Search for the binding sites of specific metals.
+* Provide a score that indicates how suitable a certain region will be for binding.
+* Scan the whole protein or only a region (in PDB format).
 
 **Possible applications:**
 
-* Screening of a pool of `.pdb` structures.
-* Identification of conformational changes that alter the formation of metal-binding sites.
-* Identification of probable paths that the metals might have to traverse before reaching the more stable, final, binding site.
-* Metalloenzyme design.
-* Metallodrug design.
+* Identification of probable metal diffusion pathways through a protein.
+* Identification of conformational changes that alter the formation of such paths.
+* Metalloenzyme and metallodrug design.
+* Molecular physiopathology analysis.
+
+**Modular design:**
+
+* The modular design of this package allows for its use as a command-line application or to be integrated into a larger Python program or pipeline.
 
 Installation
 ------------
