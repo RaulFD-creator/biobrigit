@@ -1,6 +1,8 @@
 BioBrigit: Prediction of protein metal-binding sites and mobility pathways
 ===============
 
+![BioBrigit logo](./BioBrigit_logo.jpeg)
+
 BioBrigit is a computational tool designed for the prediction of protein-metal
 binding sites in proteins. It uses a novel scoring function powered by
 a deep learning model and previous domain knowledge regarding bioinorganic
