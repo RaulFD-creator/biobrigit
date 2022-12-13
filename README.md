@@ -68,9 +68,9 @@ Once the environment is properly set-up the use of the program is relatively sim
 
 There are many parameters that can be also tuned, though default use is reccomended.
 
-* `--model`: Which CNN model is to be used. Two options available `BrigitCNN` which is the default model with highest performance and `TinyBrigit`, which is a smaller model for improved computational efficiency, though it has demonstrated lower performance.
+* `--model`: Which CNN model is to be used. Two options are currently available: `BrigitCNN` which is the default model and `TinyBrigit`, which is a smaller model for improved computational efficiency, though it has lower accuracy.
 * `--device`: Whether to use GPU acceleration (`cuda`) or not (`cpu`). By default, it uses GPU if available.
-* `--device_id`: which of the available GPU devices should be used for the calculations. In case a given system has more than one GPU available. By default, it uses the device labelled as 0.
+* `--device_id`: Which of the available GPU devices should be used for the calculations in case that there are more than one GPU available. By default, it uses the device labelled as 0.
 * `--outputfile`: Name of the outputfiles. The file extensions (`.txt` and `.pdb`) will be added automatically.
 * `--max_coordinators`: Number of maximum coordinators expected. By default, 2. It only affects the range of values assigned to the probes.
 * `--residues`: Number of most likely coordinating residues. By default, 10.
@@ -110,6 +110,10 @@ Search for small clusters at acidic pH (5.2).
 ```bash
 > biobrigit 1dhy Cu --cluster_radius 3 --pH 5.2
 ```
+
+Output
+------
+The program generates 2 output files. First, a `.txt` file that contains information regarding the clusters of probes ordered by the predicted strength of the interaction between protein and metal. This file also displays a list of possible coordinating residues. Second, it generates a `.pdb`, which is the recommended output for studying the predicted paths. It contains the coordinates of all probes with a score greater than `combined_threshold`. Probes are represented as He atoms, whereas the centers of the clusters as Ar atoms. To easily visualise the score for each probe, simply colour the probes by their $\beta$ factor using your preferred protein visualization tool.
 
 License
 -------
