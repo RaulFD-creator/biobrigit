@@ -18,7 +18,8 @@ Features
 * Identification of probable metal diffusion pathways through a protein.
 * Identification of conformational changes that alter the formation of such paths.
 * Metalloenzyme and metallodrug design.
-* Molecular physiopathology analysis.
+* Aid in developing hypothesis in molecular physiopathology.
+* Drug discovery.
 
 **Modular design:**
 
