@@ -29,7 +29,7 @@ Installation
 ------------
 The recommended environment for using BioBrigit takes advatange of GPU acceleration. However, it is possible to use the tool in CPU-only environments.
 
-The first step is to create an environment with the necessary libraries. Some will bee directly installed from source.
+The first step is to create an environment with the necessary libraries. Some will be directly installed from source.
 
 ```bash
 > conda create -n {name} python=3.9
