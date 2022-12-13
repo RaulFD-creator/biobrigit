@@ -1,6 +1,6 @@
-&nbsp;
-
 <img src="./docs/figures/BioBrigit_light.png" width="820" class="center"/>
+
+&nbsp
 
 BioBrigit: Prediction of protein metal-binding sites and mobility pathways
 ===============
