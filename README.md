@@ -1,16 +1,7 @@
-BioBrigit: Prediction of protein metal-binding sites and mobility pathways
+BioBrigit
 ===============
 
-BioBrigit is a computational tool designed for the prediction of protein-metal
-binding sites in proteins. It uses a novel scoring function powered by
-a deep learning model and previous domain knowledge regarding bioinorganic
-interactions.
-
-The deep learning model used is a 3D Convolutional Neural Network (CNN) that
-interprets the physico-chemical environment. The previous domain knowledge is 
-based on the works by [Sánchez-Aparicio et al. (2017)](https://chemrxiv.org/engage/chemrxiv/article-details/60c74de1469df46a86f44378), and translates into the 
-use of statistics to score the suitability of a point of space based on its 
-relative position to certain atoms in the protein backbone.
+BioBrigit is a computational tool designed for the prediction of metal mobility pathways through a protein. It uses a novel hybrid scoring function combining a Convolutional Neural Network (CNN) trained to distinguish between metal-binding and non-binding protein regions and previous domain knowledge regarding bioinorganic interactions as described in [Sánchez-Aparicio et al. (2017)](https://chemrxiv.org/engage/chemrxiv/article-details/60c74de1469df46a86f44378).
 
 <img src="./docs/figures/BioBrigit_light.png" width="820" class="center"/>
 
