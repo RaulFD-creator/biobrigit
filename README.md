@@ -43,7 +43,7 @@ The first step is to create an environment with the necessary libraries. Some wi
 > conda create -n {name} python=3.9
 > conda activate {name}
 > pip install git+https://github.com/Acellera/moleculekit
-> pip install git+https://github.com/RaulFD-creator/brigit
+> pip install git+https://github.com/RaulFD-creator/biobrigit
 > conda install pdb2pqr -c acellera -c conda-forge
 > pip install scikit-learn
 ```
