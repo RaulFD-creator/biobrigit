@@ -77,7 +77,7 @@ Once the environment is properly set-up the use of the program is relatively sim
 There are many parameters that can be also tuned, though default use is reccomended.
 
 * `--model`: Which CNN model is to be used. Two options available `BrigitCNN` which is the default model with highest performance and `TinyBrigit`, which is a smaller model for improved computational efficiency, though it has demonstrated lower performance.
-* `--device`: Whether to use GPU acceleration (`cuda`) or without (`cpu`). By default, it uses GPU if available.
+* `--device`: Whether to use GPU acceleration (`cuda`) or not (`cpu`). By default, it uses GPU if available.
 * `--device_id`: which of the available GPU devices should be used for the calculations. In case a given system has more than one GPU available. By default, it uses the device labelled as 0.
 * `--outputfile`: Name of the outputfiles. The file extensions (`.txt` and `.pdb`) will be added automatically.
 * `--max_coordinators`: Number of maximum coordinators expected. By default, 2. It only affects the range of values assigned to the probes.
