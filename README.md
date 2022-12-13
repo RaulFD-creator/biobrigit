@@ -113,7 +113,10 @@ Search for small clusters at acidic pH (5.2).
 
 Output
 ------
-The program generates 2 output files. First, a `.txt` file that contains information regarding the clusters of probes ordered by the predicted strength of the interaction between protein and metal. This file also displays a list of possible coordinating residues. Second, it generates a `.pdb`, which is the recommended output for studying the predicted paths. It contains the coordinates of all probes with a score greater than `combined_threshold`. Probes are represented as He atoms, whereas the centers of the clusters as Ar atoms. To easily visualise the score for each probe, simply colour the probes by their $\beta$ factor using your preferred protein visualization tool.
+The program generates 2 output files. 
+
+1. A `.txt` file that contains information regarding the clusters of probes ordered by the predicted strength of the interaction between protein and metal. This file also displays a list of possible coordinating residues. 
+2. A `.pdb` file that contains the coordinates of all probes with a score greater than `combined_threshold` and is the recommended output format for visualizing the predicted paths. The probes are represented as He atoms and the centers of their clusters as Ar atoms. To easily visualise the score for each probe, simply colour the probes by their $\beta$-factor using your protein visualization tool of choice.
 
 License
 -------
