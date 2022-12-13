@@ -1,4 +1,4 @@
-&nbr
+&nbsp;
 
 <img src="./docs/figures/BioBrigit_light.png" width="820" class="center"/>
 
