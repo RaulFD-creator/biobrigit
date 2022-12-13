@@ -1,4 +1,4 @@
-BioBrigit: Protein metal-binding sites and mobility pathways
+BioBrigit: Prediction of protein metal-binding sites and mobility pathways
 ===============
 
 BioBrigit is a computational tool designed for the prediction of protein-metal
