@@ -123,12 +123,6 @@ License
 -------
 BioBrigit is an open-source software licensed under the BSD-3 Clause License. Check the details in the [LICENSE](https://github.com/raulfd-creator/biobrigit/blob/master/LICENSE) file.
 
-TODO
-----
-
-* Modify clustering or check clustering functions to identify specific motifs.
-* Modify clustering or check clustering to propose mutations.
-
 History of versions
 -------------------
 * **v.0.1:** First operative release version.
@@ -138,7 +132,6 @@ OS Compatibility
 BioBrigit is currently only compatible with Linux, due to some of its dependencies.
 
 If you find some dificulties when installing it in a concrete distribution, please use the issues page to report them.
-
 
 Credits
 -------
