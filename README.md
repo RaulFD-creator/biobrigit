@@ -9,8 +9,8 @@ Features
 --------
 **Diferent options for customizing the search:**
 
-* Search for the binding sites of specific metals.
-* Provide a score that indicates how suitable a certain region will be for binding.
+* Search for the paths of specific metals.
+* Provide a score that indicates how strong the protein-metal interaction will be in different positions.
 * Scan the whole protein or only a region (in PDB format).
 
 **Possible applications:**
