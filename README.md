@@ -1,4 +1,4 @@
-BioBrigit
+BioBrigit: Prediction of protein metal-binding sites and mobility pathways
 ===============
 
 BioBrigit is a computational tool designed for the prediction of protein-metal
@@ -29,7 +29,7 @@ Features
 
 * Screening of a pool of `.pdb` structures.
 * Identification of conformational changes that alter the formation of metal-binding sites.
-* Identification of probable paths that the metals might have to traverse to transitorily binding regions before reaching the more stable, final, binding site.
+* Identification of probable paths that the metals might have to traverse before reaching the more stable, final, binding site.
 * Metalloenzyme design.
 * Metallodrug design.
 
@@ -37,7 +37,7 @@ Installation
 ------------
 The recommended environment for using BioBrigit takes advatange of GPU acceleration. However, it is possible to use the tool in CPU-only environments.
 
-The first step is to create an environment with the necessary libraries. Some will directly installed from source.
+The first step is to create an environment with the necessary libraries. Some will bee directly installed from source.
 
 ```bash
 > conda create -n {name} python=3.9
@@ -77,7 +77,7 @@ Once the environment is properly set-up the use of the program is relatively sim
 There are many parameters that can be also tuned, though default use is reccomended.
 
 * `--model`: Which CNN model is to be used. Two options available `BrigitCNN` which is the default model with highest performance and `TinyBrigit`, which is a smaller model for improved computational efficiency, though it has demonstrated lower performance.
-* `--device`: Whether to use GPU acceleration (`cuda`) or without (`cpu`). By default, it uses GPU if available.
+* `--device`: Whether to use GPU acceleration (`cuda`) or not (`cpu`). By default, it uses GPU if available.
 * `--device_id`: which of the available GPU devices should be used for the calculations. In case a given system has more than one GPU available. By default, it uses the device labelled as 0.
 * `--outputfile`: Name of the outputfiles. The file extensions (`.txt` and `.pdb`) will be added automatically.
 * `--max_coordinators`: Number of maximum coordinators expected. By default, 2. It only affects the range of values assigned to the probes.
@@ -123,12 +123,6 @@ License
 -------
 BioBrigit is an open-source software licensed under the BSD-3 Clause License. Check the details in the [LICENSE](https://github.com/raulfd-creator/biobrigit/blob/master/LICENSE) file.
 
-TODO
-----
-
-* Modify clustering or check clustering functions to identify specific motifs.
-* Modify clustering or check clustering to propose mutations.
-
 History of versions
 -------------------
 * **v.0.1:** First operative release version.
@@ -138,7 +132,6 @@ OS Compatibility
 BioBrigit is currently only compatible with Linux, due to some of its dependencies.
 
 If you find some dificulties when installing it in a concrete distribution, please use the issues page to report them.
-
 
 Credits
 -------
