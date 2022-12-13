@@ -1,0 +1,3192 @@
+{
+    "GENERIC": {
+        "GLU": {
+            "fitness": 0.18964,
+            "amax": 8.35,
+            "amin": 3.586,
+            "bmax": 6.108,
+            "bmin": 4.123,
+            "abmax": 2.574,
+            "abmin": 0.0
+        },
+        "GLN": {
+            "fitness": 0.01257,
+            "amax": 8.731,
+            "amin": 3.146,
+            "bmax": 6.584,
+            "bmin": 3.505,
+            "abmax": 2.453,
+            "abmin": 0.0
+        },
+        "ASP": {
+            "fitness": 0.28631,
+            "amax": 6.192,
+            "amin": 3.907,
+            "bmax": 5.052,
+            "bmin": 3.658,
+            "abmax": 1.876,
+            "abmin": 0.003
+        },
+        "ASN": {
+            "fitness": 0.03805,
+            "amax": 5.702,
+            "amin": 4.048,
+            "bmax": 5.25,
+            "bmin": 3.865,
+            "abmax": 1.699,
+            "abmin": 0.682
+        },
+        "HIS": {
+            "fitness": 0.2336,
+            "amax": 7.102,
+            "amin": 3.076,
+            "bmax": 6.074,
+            "bmin": 3.045,
+            "abmax": 2.105,
+            "abmin": 0.0
+        },
+        "TYR": {
+            "fitness": 0.00713,
+            "amax": 9.016,
+            "amin": 6.888,
+            "bmax": 8.086,
+            "bmin": 6.366,
+            "abmax": 1.634,
+            "abmin": 0.29
+        },
+        "ARG": {
+            "fitness": 0.00303,
+            "amax": 12.191,
+            "amin": 2.162,
+            "bmax": 10.459,
+            "bmin": 2.26,
+            "abmax": 2.022,
+            "abmin": 0.0
+        },
+        "LYS": {
+            "fitness": 0.00338,
+            "amax": 9.762,
+            "amin": 5.14,
+            "bmax": 8.52,
+            "bmin": 4.351,
+            "abmax": 1.932,
+            "abmin": 0.0
+        },
+        "SER": {
+            "fitness": 0.01806,
+            "amax": 5.171,
+            "amin": 3.383,
+            "bmax": 4.367,
+            "bmin": 2.56,
+            "abmax": 1.525,
+            "abmin": 0.163
+        },
+        "THR": {
+            "fitness": 0.01992,
+            "amax": 5.098,
+            "amin": 3.311,
+            "bmax": 4.373,
+            "bmin": 2.525,
+            "abmax": 1.67,
+            "abmin": 0.143
+        },
+        "MET": {
+            "fitness": 0.00723,
+            "amax": 6.747,
+            "amin": 4.388,
+            "bmax": 5.095,
+            "bmin": 3.653,
+            "abmax": 1.248,
+            "abmin": 0.0
+        },
+        "CYS": {
+            "fitness": 0.18007,
+            "amax": 5.451,
+            "amin": 3.247,
+            "bmax": 3.829,
+            "bmin": 2.794,
+            "abmax": 1.767,
+            "abmin": 0.0
+        }
+    },
+    "LI": {
+        "GLU": {
+            "fitness": 0.2766,
+            "amax": 7.905,
+            "amin": 0.903,
+            "bmax": 7.034,
+            "bmin": 1.859,
+            "abmax": 2.237,
+            "abmin": 0.438
+        },
+        "GLN": {
+            "fitness": 0.16312,
+            "amax": 9.374,
+            "amin": 2.095,
+            "bmax": 5.552,
+            "bmin": 4.452,
+            "abmax": 3.395,
+            "abmin": 0.0
+        },
+        "ASP": {
+            "fitness": 0.31915,
+            "amax": 6.585,
+            "amin": 3.162,
+            "bmax": 5.104,
+            "bmin": 3.06,
+            "abmax": 2.096,
+            "abmin": 0.0
+        },
+        "ASN": {
+            "fitness": 0.03546,
+            "amax": 5.424,
+            "amin": 3.963,
+            "bmax": 4.559,
+            "bmin": 4.411,
+            "abmax": 1.666,
+            "abmin": 0.697
+        },
+        "HIS": {
+            "fitness": 0.05674,
+            "amax": 7.102,
+            "amin": 3.076,
+            "bmax": 6.074,
+            "bmin": 3.045,
+            "abmax": 2.105,
+            "abmin": 0.0
+        },
+        "TYR": {
+            "fitness": 0.00709,
+            "amax": 8.0,
+            "amin": 8.0,
+            "bmax": 7.129,
+            "bmin": 7.129,
+            "abmax": 0.899,
+            "abmin": 0.899
+        },
+        "ARG": {
+            "fitness": 0.01418,
+            "amax": 5.349,
+            "amin": 4.683,
+            "bmax": 5.187,
+            "bmin": 2.97,
+            "abmax": 1.378,
+            "abmin": 0.115
+        },
+        "LYS": {
+            "fitness": 0.02128,
+            "amax": 9.75,
+            "amin": 5.896,
+            "bmax": 8.955,
+            "bmin": 4.275,
+            "abmax": 1.183,
+            "abmin": 0.0
+        },
+        "SER": {
+            "fitness": 0.01418,
+            "amax": 4.5,
+            "amin": 2.92,
+            "bmax": 4.041,
+            "bmin": 2.742,
+            "abmax": 1.197,
+            "abmin": 1.105
+        },
+        "THR": {
+            "fitness": 0.08511,
+            "amax": 3.931,
+            "amin": 3.758,
+            "bmax": 3.454,
+            "bmin": 3.265,
+            "abmax": 1.075,
+            "abmin": 1.021
+        },
+        "MET": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        },
+        "CYS": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        }
+    },
+    "BE": {
+        "GLU": {
+            "fitness": 0.04151,
+            "amax": 7.581,
+            "amin": 3.874,
+            "bmax": 5.765,
+            "bmin": 4.409,
+            "abmax": 2.237,
+            "abmin": 0.0
+        },
+        "GLN": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        },
+        "ASP": {
+            "fitness": 0.8,
+            "amax": 4.955,
+            "amin": 3.907,
+            "bmax": 4.656,
+            "bmin": 3.393,
+            "abmax": 1.311,
+            "abmin": 0.938
+        },
+        "ASN": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        },
+        "HIS": {
+            "fitness": 0.01887,
+            "amax": 7.102,
+            "amin": 3.076,
+            "bmax": 6.074,
+            "bmin": 3.045,
+            "abmax": 2.105,
+            "abmin": 0.0
+        },
+        "TYR": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        },
+        "ARG": {
+            "fitness": 0.03774,
+            "amax": 10.692,
+            "amin": 5.418,
+            "bmax": 9.996,
+            "bmin": 3.552,
+            "abmax": 0.803,
+            "abmin": 0.078
+        },
+        "LYS": {
+            "fitness": 0.03774,
+            "amax": 10.096,
+            "amin": 4.594,
+            "bmax": 8.644,
+            "bmin": 4.381,
+            "abmax": 1.469,
+            "abmin": 0.297
+        },
+        "SER": {
+            "fitness": 0.04151,
+            "amax": 4.991,
+            "amin": 2.738,
+            "bmax": 4.661,
+            "bmin": 1.75,
+            "abmax": 1.113,
+            "abmin": 0.571
+        },
+        "THR": {
+            "fitness": 0.02264,
+            "amax": 4.698,
+            "amin": 3.722,
+            "bmax": 4.087,
+            "bmin": 3.567,
+            "abmax": 1.383,
+            "abmin": 0.897
+        },
+        "MET": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        },
+        "CYS": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        }
+    },
+    "NA": {
+        "GLU": {
+            "fitness": 0.19672,
+            "amax": 8.39,
+            "amin": 3.472,
+            "bmax": 6.214,
+            "bmin": 4.066,
+            "abmax": 2.479,
+            "abmin": 0.0
+        },
+        "GLN": {
+            "fitness": 0.05328,
+            "amax": 9.343,
+            "amin": 2.063,
+            "bmax": 6.289,
+            "bmin": 3.649,
+            "abmax": 2.835,
+            "abmin": 0.0
+        },
+        "ASP": {
+            "fitness": 0.30376,
+            "amax": 7.018,
+            "amin": 2.782,
+            "bmax": 5.261,
+            "bmin": 3.563,
+            "abmax": 2.429,
+            "abmin": 0.0
+        },
+        "ASN": {
+            "fitness": 0.12133,
+            "amax": 7.12,
+            "amin": 2.946,
+            "bmax": 5.32,
+            "bmin": 3.905,
+            "abmax": 2.136,
+            "abmin": 0.148
+        },
+        "HIS": {
+            "fitness": 0.02684,
+            "amax": 7.102,
+            "amin": 3.076,
+            "bmax": 6.074,
+            "bmin": 3.045,
+            "abmax": 2.105,
+            "abmin": 0.0
+        },
+        "TYR": {
+            "fitness": 0.03308,
+            "amax": 9.022,
+            "amin": 7.109,
+            "bmax": 8.053,
+            "bmin": 6.747,
+            "abmax": 1.485,
+            "abmin": 0.572
+        },
+        "ARG": {
+            "fitness": 0.01484,
+            "amax": 11.746,
+            "amin": 1.092,
+            "bmax": 10.234,
+            "bmin": 1.377,
+            "abmax": 1.823,
+            "abmin": 0.0
+        },
+        "LYS": {
+            "fitness": 0.00497,
+            "amax": 10.36,
+            "amin": 3.429,
+            "bmax": 8.985,
+            "bmin": 3.416,
+            "abmax": 2.121,
+            "abmin": 0.0
+        },
+        "SER": {
+            "fitness": 0.14177,
+            "amax": 5.28,
+            "amin": 3.172,
+            "bmax": 4.143,
+            "bmin": 2.822,
+            "abmax": 1.752,
+            "abmin": 0.018
+        },
+        "THR": {
+            "fitness": 0.09638,
+            "amax": 5.429,
+            "amin": 2.912,
+            "bmax": 4.322,
+            "bmin": 2.904,
+            "abmax": 1.78,
+            "abmin": 0.279
+        },
+        "MET": {
+            "fitness": 0.00134,
+            "amax": 6.877,
+            "amin": 3.986,
+            "bmax": 5.859,
+            "bmin": 3.421,
+            "abmax": 1.024,
+            "abmin": 0.322
+        },
+        "CYS": {
+            "fitness": 0.00158,
+            "amax": 5.384,
+            "amin": 3.546,
+            "bmax": 4.052,
+            "bmin": 2.725,
+            "abmax": 1.178,
+            "abmin": 0.0
+        }
+    },
+    "MG": {
+        "GLU": {
+            "fitness": 0.20951,
+            "amax": 8.217,
+            "amin": 4.063,
+            "bmax": 6.638,
+            "bmin": 3.611,
+            "abmax": 1.877,
+            "abmin": 0.0
+        },
+        "GLN": {
+            "fitness": 0.03062,
+            "amax": 8.645,
+            "amin": 3.479,
+            "bmax": 7.058,
+            "bmin": 3.087,
+            "abmax": 2.152,
+            "abmin": 0.0
+        },
+        "ASP": {
+            "fitness": 0.43378,
+            "amax": 6.395,
+            "amin": 3.794,
+            "bmax": 5.095,
+            "bmin": 3.574,
+            "abmax": 1.924,
+            "abmin": 0.0
+        },
+        "ASN": {
+            "fitness": 0.06007,
+            "amax": 5.718,
+            "amin": 3.986,
+            "bmax": 4.998,
+            "bmin": 4.006,
+            "abmax": 1.6,
+            "abmin": 0.77
+        },
+        "HIS": {
+            "fitness": 0.10877,
+            "amax": 7.102,
+            "amin": 3.076,
+            "bmax": 6.074,
+            "bmin": 3.045,
+            "abmax": 2.105,
+            "abmin": 0.0
+        },
+        "TYR": {
+            "fitness": 0.00492,
+            "amax": 9.196,
+            "amin": 6.774,
+            "bmax": 8.339,
+            "bmin": 6.233,
+            "abmax": 1.618,
+            "abmin": 0.492
+        },
+        "ARG": {
+            "fitness": 0.01232,
+            "amax": 12.624,
+            "amin": 2.203,
+            "bmax": 11.04,
+            "bmin": 1.955,
+            "abmax": 2.023,
+            "abmin": 0.0
+        },
+        "LYS": {
+            "fitness": 0.00629,
+            "amax": 10.16,
+            "amin": 4.18,
+            "bmax": 9.157,
+            "bmin": 3.258,
+            "abmax": 1.856,
+            "abmin": 0.0
+        },
+        "SER": {
+            "fitness": 0.04963,
+            "amax": 4.987,
+            "amin": 3.52,
+            "bmax": 3.878,
+            "bmin": 2.699,
+            "abmax": 1.079,
+            "abmin": 0.365
+        },
+        "THR": {
+            "fitness": 0.08135,
+            "amax": 4.868,
+            "amin": 3.588,
+            "bmax": 4.02,
+            "bmin": 2.594,
+            "abmax": 1.05,
+            "abmin": 0.466
+        },
+        "MET": {
+            "fitness": 0.00018,
+            "amax": 6.093,
+            "amin": 4.417,
+            "bmax": 5.097,
+            "bmin": 3.14,
+            "abmax": 0.899,
+            "abmin": 0.389
+        },
+        "CYS": {
+            "fitness": 0.00077,
+            "amax": 5.84,
+            "amin": 3.171,
+            "bmax": 4.305,
+            "bmin": 2.804,
+            "abmax": 1.805,
+            "abmin": 0.0
+        }
+    },
+    "V": {
+        "GLU": {
+            "fitness": 0.00781,
+            "amax": 5.015,
+            "amin": 5.015,
+            "bmax": 4.727,
+            "bmin": 4.727,
+            "abmax": 1.229,
+            "abmin": 1.229
+        },
+        "GLN": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        },
+        "ASP": {
+            "fitness": 0.17969,
+            "amax": 5.127,
+            "amin": 4.683,
+            "bmax": 4.776,
+            "bmin": 4.084,
+            "abmax": 1.266,
+            "abmin": 0.993
+        },
+        "ASN": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        },
+        "HIS": {
+            "fitness": 0.47656,
+            "amax": 7.102,
+            "amin": 3.076,
+            "bmax": 6.074,
+            "bmin": 3.045,
+            "abmax": 2.105,
+            "abmin": 0.0
+        },
+        "TYR": {
+            "fitness": 0.10156,
+            "amax": 8.054,
+            "amin": 7.549,
+            "bmax": 7.282,
+            "bmin": 6.893,
+            "abmax": 1.133,
+            "abmin": 0.855
+        },
+        "ARG": {
+            "fitness": 0.00781,
+            "amax": 9.738,
+            "amin": 9.738,
+            "bmax": 8.671,
+            "bmin": 8.671,
+            "abmax": 0.747,
+            "abmin": 0.747
+        },
+        "LYS": {
+            "fitness": 0.00781,
+            "amax": 6.934,
+            "amin": 6.934,
+            "bmax": 6.767,
+            "bmin": 6.767,
+            "abmax": 1.351,
+            "abmin": 1.351
+        },
+        "SER": {
+            "fitness": 0.02344,
+            "amax": 4.472,
+            "amin": 3.745,
+            "bmax": 3.331,
+            "bmin": 2.734,
+            "abmax": 1.116,
+            "abmin": 0.195
+        },
+        "THR": {
+            "fitness": 0.02344,
+            "amax": 4.274,
+            "amin": 3.722,
+            "bmax": 3.39,
+            "bmin": 2.606,
+            "abmax": 0.808,
+            "abmin": 0.592
+        },
+        "MET": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        },
+        "CYS": {
+            "fitness": 0.17188,
+            "amax": 5.061,
+            "amin": 4.344,
+            "bmax": 3.96,
+            "bmin": 3.039,
+            "abmax": 0.626,
+            "abmin": 0.551
+        }
+    },
+    "CR": {
+        "GLU": {
+            "fitness": 0.125,
+            "amax": 5.941,
+            "amin": 5.891,
+            "bmax": 5.114,
+            "bmin": 5.037,
+            "abmax": 0.921,
+            "abmin": 0.832
+        },
+        "GLN": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        },
+        "ASP": {
+            "fitness": 0.6875,
+            "amax": 6.161,
+            "amin": 3.279,
+            "bmax": 4.814,
+            "bmin": 3.647,
+            "abmax": 1.98,
+            "abmin": 0.331
+        },
+        "ASN": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        },
+        "HIS": {
+            "fitness": 0.1875,
+            "amax": 7.102,
+            "amin": 3.076,
+            "bmax": 6.074,
+            "bmin": 3.045,
+            "abmax": 2.105,
+            "abmin": 0.0
+        },
+        "TYR": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        },
+        "ARG": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        },
+        "LYS": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        },
+        "SER": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        },
+        "THR": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        },
+        "MET": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        },
+        "CYS": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        }
+    },
+    "MN": {
+        "GLU": {
+            "fitness": 0.24625,
+            "amax": 8.393,
+            "amin": 3.892,
+            "bmax": 6.467,
+            "bmin": 3.883,
+            "abmax": 2.231,
+            "abmin": 0.0
+        },
+        "GLN": {
+            "fitness": 0.00716,
+            "amax": 7.809,
+            "amin": 5.013,
+            "bmax": 6.21,
+            "bmin": 4.03,
+            "abmax": 1.058,
+            "abmin": 0.0
+        },
+        "ASP": {
+            "fitness": 0.43676,
+            "amax": 6.331,
+            "amin": 3.963,
+            "bmax": 5.094,
+            "bmin": 3.418,
+            "abmax": 1.894,
+            "abmin": 0.0
+        },
+        "ASN": {
+            "fitness": 0.02228,
+            "amax": 5.651,
+            "amin": 4.16,
+            "bmax": 4.817,
+            "bmin": 4.086,
+            "abmax": 1.602,
+            "abmin": 0.627
+        },
+        "HIS": {
+            "fitness": 0.25839,
+            "amax": 7.102,
+            "amin": 3.076,
+            "bmax": 6.074,
+            "bmin": 3.045,
+            "abmax": 2.105,
+            "abmin": 0.0
+        },
+        "TYR": {
+            "fitness": 0.00109,
+            "amax": 9.35,
+            "amin": 6.905,
+            "bmax": 8.613,
+            "bmin": 6.492,
+            "abmax": 1.436,
+            "abmin": 0.754
+        },
+        "ARG": {
+            "fitness": 0.00147,
+            "amax": 10.456,
+            "amin": 4.482,
+            "bmax": 9.152,
+            "bmin": 4.23,
+            "abmax": 1.37,
+            "abmin": 0.461
+        },
+        "LYS": {
+            "fitness": 0.00554,
+            "amax": 8.563,
+            "amin": 6.538,
+            "bmax": 8.132,
+            "bmin": 5.606,
+            "abmax": 1.526,
+            "abmin": 0.589
+        },
+        "SER": {
+            "fitness": 0.00554,
+            "amax": 4.876,
+            "amin": 3.666,
+            "bmax": 3.673,
+            "bmin": 2.767,
+            "abmax": 1.182,
+            "abmin": 0.1
+        },
+        "THR": {
+            "fitness": 0.00453,
+            "amax": 4.724,
+            "amin": 3.924,
+            "bmax": 3.824,
+            "bmin": 2.987,
+            "abmax": 1.045,
+            "abmin": 0.562
+        },
+        "MET": {
+            "fitness": 0.00081,
+            "amax": 9.279,
+            "amin": 1.201,
+            "bmax": 5.804,
+            "bmin": 4.417,
+            "abmax": 4.232,
+            "abmin": 0.0
+        },
+        "CYS": {
+            "fitness": 0.00968,
+            "amax": 4.607,
+            "amin": 3.785,
+            "bmax": 4.134,
+            "bmin": 2.878,
+            "abmax": 1.303,
+            "abmin": 0.556
+        }
+    },
+    "FE": {
+        "GLU": {
+            "fitness": 0.19622,
+            "amax": 7.741,
+            "amin": 3.342,
+            "bmax": 6.302,
+            "bmin": 3.838,
+            "abmax": 2.269,
+            "abmin": 0.0
+        },
+        "GLN": {
+            "fitness": 0.00266,
+            "amax": 7.157,
+            "amin": 3.674,
+            "bmax": 5.903,
+            "bmin": 3.988,
+            "abmax": 2.442,
+            "abmin": 0.0
+        },
+        "ASP": {
+            "fitness": 0.06885,
+            "amax": 6.075,
+            "amin": 4.081,
+            "bmax": 4.976,
+            "bmin": 3.573,
+            "abmax": 1.433,
+            "abmin": 0.297
+        },
+        "ASN": {
+            "fitness": 0.00268,
+            "amax": 5.805,
+            "amin": 4.552,
+            "bmax": 5.231,
+            "bmin": 3.5,
+            "abmax": 1.744,
+            "abmin": 0.002
+        },
+        "HIS": {
+            "fitness": 0.45344,
+            "amax": 7.102,
+            "amin": 3.076,
+            "bmax": 6.074,
+            "bmin": 3.045,
+            "abmax": 2.105,
+            "abmin": 0.0
+        },
+        "TYR": {
+            "fitness": 0.0328,
+            "amax": 8.88,
+            "amin": 6.823,
+            "bmax": 7.562,
+            "bmin": 6.643,
+            "abmax": 1.654,
+            "abmin": 0.242
+        },
+        "ARG": {
+            "fitness": 0.00013,
+            "amax": 11.878,
+            "amin": 5.626,
+            "bmax": 10.966,
+            "bmin": 3.917,
+            "abmax": 1.114,
+            "abmin": 0.0
+        },
+        "LYS": {
+            "fitness": 0.0024,
+            "amax": 7.321,
+            "amin": 6.852,
+            "bmax": 7.088,
+            "bmin": 6.37,
+            "abmax": 1.426,
+            "abmin": 1.011
+        },
+        "SER": {
+            "fitness": 0.00033,
+            "amax": 5.134,
+            "amin": 3.128,
+            "bmax": 4.42,
+            "bmin": 2.225,
+            "abmax": 1.042,
+            "abmin": 0.667
+        },
+        "THR": {
+            "fitness": 0.00022,
+            "amax": 4.976,
+            "amin": 4.323,
+            "bmax": 4.033,
+            "bmin": 2.715,
+            "abmax": 0.725,
+            "abmin": 0.233
+        },
+        "MET": {
+            "fitness": 0.03598,
+            "amax": 6.18,
+            "amin": 4.669,
+            "bmax": 4.538,
+            "bmin": 3.971,
+            "abmax": 1.298,
+            "abmin": 0.0
+        },
+        "CYS": {
+            "fitness": 0.20286,
+            "amax": 5.243,
+            "amin": 3.217,
+            "bmax": 3.74,
+            "bmin": 2.938,
+            "abmax": 1.536,
+            "abmin": 0.052
+        }
+    },
+    "CO": {
+        "GLU": {
+            "fitness": 0.23713,
+            "amax": 8.138,
+            "amin": 4.076,
+            "bmax": 6.113,
+            "bmin": 4.074,
+            "abmax": 2.368,
+            "abmin": 0.0
+        },
+        "GLN": {
+            "fitness": 0.00718,
+            "amax": 6.985,
+            "amin": 5.278,
+            "bmax": 5.542,
+            "bmin": 3.742,
+            "abmax": 0.36,
+            "abmin": 0.0
+        },
+        "ASP": {
+            "fitness": 0.26462,
+            "amax": 6.112,
+            "amin": 4.04,
+            "bmax": 4.844,
+            "bmin": 3.575,
+            "abmax": 1.705,
+            "abmin": 0.0
+        },
+        "ASN": {
+            "fitness": 0.00595,
+            "amax": 5.944,
+            "amin": 4.154,
+            "bmax": 4.856,
+            "bmin": 4.311,
+            "abmax": 1.495,
+            "abmin": 0.735
+        },
+        "HIS": {
+            "fitness": 0.4279,
+            "amax": 7.102,
+            "amin": 3.076,
+            "bmax": 6.074,
+            "bmin": 3.045,
+            "abmax": 2.105,
+            "abmin": 0.0
+        },
+        "TYR": {
+            "fitness": 0.00595,
+            "amax": 8.229,
+            "amin": 7.516,
+            "bmax": 8.054,
+            "bmin": 6.377,
+            "abmax": 1.916,
+            "abmin": 0.02
+        },
+        "ARG": {
+            "fitness": 0.00082,
+            "amax": 9.745,
+            "amin": 6.313,
+            "bmax": 9.019,
+            "bmin": 4.449,
+            "abmax": 1.004,
+            "abmin": 0.0
+        },
+        "LYS": {
+            "fitness": 0.00062,
+            "amax": 7.57,
+            "amin": 3.786,
+            "bmax": 7.987,
+            "bmin": 2.677,
+            "abmax": 2.257,
+            "abmin": 0.0
+        },
+        "SER": {
+            "fitness": 0.00492,
+            "amax": 5.135,
+            "amin": 2.848,
+            "bmax": 3.544,
+            "bmin": 2.809,
+            "abmax": 1.602,
+            "abmin": 0.063
+        },
+        "THR": {
+            "fitness": 0.0041,
+            "amax": 5.143,
+            "amin": 3.525,
+            "bmax": 4.442,
+            "bmin": 2.451,
+            "abmax": 1.559,
+            "abmin": 0.055
+        },
+        "MET": {
+            "fitness": 0.00574,
+            "amax": 5.628,
+            "amin": 5.034,
+            "bmax": 5.167,
+            "bmin": 4.53,
+            "abmax": 1.482,
+            "abmin": 0.607
+        },
+        "CYS": {
+            "fitness": 0.03508,
+            "amax": 6.14,
+            "amin": 2.515,
+            "bmax": 3.809,
+            "bmin": 2.938,
+            "abmax": 2.129,
+            "abmin": 0.0
+        }
+    },
+    "NI": {
+        "GLU": {
+            "fitness": 0.14719,
+            "amax": 7.845,
+            "amin": 3.922,
+            "bmax": 6.246,
+            "bmin": 4.152,
+            "abmax": 3.088,
+            "abmin": 0.0
+        },
+        "GLN": {
+            "fitness": 0.01056,
+            "amax": 8.221,
+            "amin": 5.43,
+            "bmax": 6.663,
+            "bmin": 4.382,
+            "abmax": 0.561,
+            "abmin": 0.272
+        },
+        "ASP": {
+            "fitness": 0.13937,
+            "amax": 6.088,
+            "amin": 4.02,
+            "bmax": 5.023,
+            "bmin": 3.671,
+            "abmax": 1.761,
+            "abmin": 0.147
+        },
+        "ASN": {
+            "fitness": 0.00713,
+            "amax": 5.786,
+            "amin": 4.382,
+            "bmax": 5.463,
+            "bmin": 3.559,
+            "abmax": 1.833,
+            "abmin": 0.175
+        },
+        "HIS": {
+            "fitness": 0.5428,
+            "amax": 7.102,
+            "amin": 3.076,
+            "bmax": 6.074,
+            "bmin": 3.045,
+            "abmax": 2.105,
+            "abmin": 0.0
+        },
+        "TYR": {
+            "fitness": 0.00082,
+            "amax": 9.694,
+            "amin": 6.084,
+            "bmax": 7.906,
+            "bmin": 6.536,
+            "abmax": 1.762,
+            "abmin": 0.284
+        },
+        "ARG": {
+            "fitness": 0.00055,
+            "amax": 9.29,
+            "amin": 3.958,
+            "bmax": 8.352,
+            "bmin": 3.149,
+            "abmax": 1.193,
+            "abmin": 0.52
+        },
+        "LYS": {
+            "fitness": 0.00412,
+            "amax": 8.631,
+            "amin": 6.694,
+            "bmax": 7.846,
+            "bmin": 4.942,
+            "abmax": 1.211,
+            "abmin": 0.0
+        },
+        "SER": {
+            "fitness": 0.00219,
+            "amax": 4.958,
+            "amin": 3.289,
+            "bmax": 4.293,
+            "bmin": 1.708,
+            "abmax": 1.521,
+            "abmin": 0.0
+        },
+        "THR": {
+            "fitness": 0.00123,
+            "amax": 6.131,
+            "amin": 1.416,
+            "bmax": 3.729,
+            "bmin": 2.611,
+            "abmax": 2.009,
+            "abmin": 0.0
+        },
+        "MET": {
+            "fitness": 0.0037,
+            "amax": 5.609,
+            "amin": 5.064,
+            "bmax": 5.097,
+            "bmin": 4.566,
+            "abmax": 1.344,
+            "abmin": 0.824
+        },
+        "CYS": {
+            "fitness": 0.138,
+            "amax": 5.367,
+            "amin": 3.255,
+            "bmax": 4.105,
+            "bmin": 2.481,
+            "abmax": 1.788,
+            "abmin": 0.0
+        }
+    },
+    "CU": {
+        "GLU": {
+            "fitness": 0.03456,
+            "amax": 7.886,
+            "amin": 4.011,
+            "bmax": 6.158,
+            "bmin": 4.036,
+            "abmax": 2.451,
+            "abmin": 0.0
+        },
+        "GLN": {
+            "fitness": 0.00278,
+            "amax": 6.715,
+            "amin": 5.888,
+            "bmax": 5.449,
+            "bmin": 4.421,
+            "abmax": 1.245,
+            "abmin": 0.0
+        },
+        "ASP": {
+            "fitness": 0.02262,
+            "amax": 5.798,
+            "amin": 4.317,
+            "bmax": 4.696,
+            "bmin": 3.728,
+            "abmax": 1.521,
+            "abmin": 0.257
+        },
+        "ASN": {
+            "fitness": 0.00062,
+            "amax": 6.084,
+            "amin": 3.849,
+            "bmax": 5.26,
+            "bmin": 3.735,
+            "abmax": 1.678,
+            "abmin": 0.67
+        },
+        "HIS": {
+            "fitness": 0.70817,
+            "amax": 7.102,
+            "amin": 3.076,
+            "bmax": 6.074,
+            "bmin": 3.045,
+            "abmax": 2.105,
+            "abmin": 0.0
+        },
+        "TYR": {
+            "fitness": 0.0093,
+            "amax": 9.87,
+            "amin": 6.688,
+            "bmax": 8.728,
+            "bmin": 5.929,
+            "abmax": 1.373,
+            "abmin": 0.41
+        },
+        "ARG": {
+            "fitness": 0.0009,
+            "amax": 9.411,
+            "amin": 1.569,
+            "bmax": 9.437,
+            "bmin": 0.882,
+            "abmax": 1.873,
+            "abmin": 0.676
+        },
+        "LYS": {
+            "fitness": 0.00062,
+            "amax": 7.25,
+            "amin": 6.323,
+            "bmax": 6.352,
+            "bmin": 5.548,
+            "abmax": 1.215,
+            "abmin": 0.651
+        },
+        "SER": {
+            "fitness": 0.00097,
+            "amax": 6.947,
+            "amin": 1.078,
+            "bmax": 4.889,
+            "bmin": 1.919,
+            "abmax": 2.049,
+            "abmin": 0.035
+        },
+        "THR": {
+            "fitness": 0.00062,
+            "amax": 3.606,
+            "amin": 3.161,
+            "bmax": 3.409,
+            "bmin": 3.147,
+            "abmax": 1.373,
+            "abmin": 1.188
+        },
+        "MET": {
+            "fitness": 0.05559,
+            "amax": 6.672,
+            "amin": 5.336,
+            "bmax": 5.378,
+            "bmin": 3.741,
+            "abmax": 0.657,
+            "abmin": 0.0
+        },
+        "CYS": {
+            "fitness": 0.16323,
+            "amax": 5.035,
+            "amin": 4.111,
+            "bmax": 3.653,
+            "bmin": 2.895,
+            "abmax": 1.136,
+            "abmin": 0.0
+        }
+    },
+    "ZN": {
+        "GLU": {
+            "fitness": 0.10081,
+            "amax": 8.14,
+            "amin": 3.489,
+            "bmax": 5.919,
+            "bmin": 4.122,
+            "abmax": 2.62,
+            "abmin": 0.0
+        },
+        "GLN": {
+            "fitness": 0.0017,
+            "amax": 7.772,
+            "amin": 4.382,
+            "bmax": 6.074,
+            "bmin": 3.981,
+            "abmax": 1.915,
+            "abmin": 0.0
+        },
+        "ASP": {
+            "fitness": 0.13538,
+            "amax": 6.201,
+            "amin": 3.938,
+            "bmax": 4.707,
+            "bmin": 3.777,
+            "abmax": 1.634,
+            "abmin": 0.079
+        },
+        "ASN": {
+            "fitness": 0.00291,
+            "amax": 5.537,
+            "amin": 4.44,
+            "bmax": 4.895,
+            "bmin": 4.022,
+            "abmax": 1.331,
+            "abmin": 0.77
+        },
+        "HIS": {
+            "fitness": 0.31661,
+            "amax": 7.102,
+            "amin": 3.076,
+            "bmax": 6.074,
+            "bmin": 3.045,
+            "abmax": 2.105,
+            "abmin": 0.0
+        },
+        "TYR": {
+            "fitness": 0.00079,
+            "amax": 9.023,
+            "amin": 6.69,
+            "bmax": 8.377,
+            "bmin": 5.98,
+            "abmax": 1.851,
+            "abmin": 0.116
+        },
+        "ARG": {
+            "fitness": 0.00046,
+            "amax": 8.992,
+            "amin": 5.578,
+            "bmax": 8.721,
+            "bmin": 4.088,
+            "abmax": 1.937,
+            "abmin": 0.0
+        },
+        "LYS": {
+            "fitness": 0.00386,
+            "amax": 9.682,
+            "amin": 5.419,
+            "bmax": 8.455,
+            "bmin": 4.416,
+            "abmax": 0.88,
+            "abmin": 0.443
+        },
+        "SER": {
+            "fitness": 0.00174,
+            "amax": 5.492,
+            "amin": 2.479,
+            "bmax": 4.313,
+            "bmin": 2.288,
+            "abmax": 1.669,
+            "abmin": 0.118
+        },
+        "THR": {
+            "fitness": 0.00141,
+            "amax": 5.549,
+            "amin": 2.155,
+            "bmax": 3.919,
+            "bmin": 2.499,
+            "abmax": 1.691,
+            "abmin": 0.175
+        },
+        "MET": {
+            "fitness": 0.00019,
+            "amax": 8.12,
+            "amin": 1.865,
+            "bmax": 5.398,
+            "bmin": 3.812,
+            "abmax": 2.48,
+            "abmin": 0.0
+        },
+        "CYS": {
+            "fitness": 0.43369,
+            "amax": 5.427,
+            "amin": 3.309,
+            "bmax": 3.827,
+            "bmin": 2.782,
+            "abmax": 1.739,
+            "abmin": 0.0
+        }
+    },
+    "K": {
+        "GLU": {
+            "fitness": 0.19161,
+            "amax": 8.857,
+            "amin": 2.955,
+            "bmax": 6.985,
+            "bmin": 2.914,
+            "abmax": 2.492,
+            "abmin": 0.0
+        },
+        "GLN": {
+            "fitness": 0.09322,
+            "amax": 7.831,
+            "amin": 5.849,
+            "bmax": 6.142,
+            "bmin": 4.795,
+            "abmax": 1.22,
+            "abmin": 0.0
+        },
+        "ASP": {
+            "fitness": 0.22613,
+            "amax": 6.855,
+            "amin": 2.76,
+            "bmax": 5.894,
+            "bmin": 2.729,
+            "abmax": 1.639,
+            "abmin": 0.406
+        },
+        "ASN": {
+            "fitness": 0.14758,
+            "amax": 6.394,
+            "amin": 3.356,
+            "bmax": 5.66,
+            "bmin": 3.731,
+            "abmax": 1.766,
+            "abmin": 0.772
+        },
+        "HIS": {
+            "fitness": 0.01674,
+            "amax": 7.102,
+            "amin": 3.076,
+            "bmax": 6.074,
+            "bmin": 3.045,
+            "abmax": 2.105,
+            "abmin": 0.0
+        },
+        "TYR": {
+            "fitness": 0.031,
+            "amax": 9.477,
+            "amin": 7.346,
+            "bmax": 8.433,
+            "bmin": 6.923,
+            "abmax": 1.449,
+            "abmin": 0.513
+        },
+        "ARG": {
+            "fitness": 0.00227,
+            "amax": 9.833,
+            "amin": 2.926,
+            "bmax": 8.358,
+            "bmin": 2.371,
+            "abmax": 1.81,
+            "abmin": 0.0
+        },
+        "LYS": {
+            "fitness": 0.00248,
+            "amax": 10.034,
+            "amin": 1.872,
+            "bmax": 7.161,
+            "bmin": 4.655,
+            "abmax": 3.797,
+            "abmin": 0.0
+        },
+        "SER": {
+            "fitness": 0.16474,
+            "amax": 5.667,
+            "amin": 3.385,
+            "bmax": 4.567,
+            "bmin": 3.155,
+            "abmax": 2.001,
+            "abmin": 0.0
+        },
+        "THR": {
+            "fitness": 0.12298,
+            "amax": 5.728,
+            "amin": 3.335,
+            "bmax": 4.575,
+            "bmin": 2.966,
+            "abmax": 1.52,
+            "abmin": 0.263
+        },
+        "MET": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        },
+        "CYS": {
+            "fitness": 0.00062,
+            "amax": 5.629,
+            "amin": 3.506,
+            "bmax": 4.248,
+            "bmin": 2.37,
+            "abmax": 0.711,
+            "abmin": 0.338
+        }
+    },
+    "CA": {
+        "GLU": {
+            "fitness": 0.28937,
+            "amax": 8.353,
+            "amin": 3.716,
+            "bmax": 5.847,
+            "bmin": 4.471,
+            "abmax": 2.566,
+            "abmin": 0.0
+        },
+        "GLN": {
+            "fitness": 0.0172,
+            "amax": 7.675,
+            "amin": 3.703,
+            "bmax": 5.983,
+            "bmin": 3.79,
+            "abmax": 2.422,
+            "abmin": 0.0
+        },
+        "ASP": {
+            "fitness": 0.55132,
+            "amax": 6.138,
+            "amin": 3.84,
+            "bmax": 5.104,
+            "bmin": 3.764,
+            "abmax": 1.969,
+            "abmin": 0.146
+        },
+        "ASN": {
+            "fitness": 0.0971,
+            "amax": 5.496,
+            "amin": 4.192,
+            "bmax": 5.25,
+            "bmin": 3.868,
+            "abmax": 1.658,
+            "abmin": 0.766
+        },
+        "HIS": {
+            "fitness": 0.00689,
+            "amax": 7.102,
+            "amin": 3.076,
+            "bmax": 6.074,
+            "bmin": 3.045,
+            "abmax": 2.105,
+            "abmin": 0.0
+        },
+        "TYR": {
+            "fitness": 0.00103,
+            "amax": 9.389,
+            "amin": 6.546,
+            "bmax": 8.178,
+            "bmin": 6.39,
+            "abmax": 1.866,
+            "abmin": 0.157
+        },
+        "ARG": {
+            "fitness": 0.00091,
+            "amax": 10.508,
+            "amin": 1.177,
+            "bmax": 8.109,
+            "bmin": 3.338,
+            "abmax": 3.766,
+            "abmin": 0.0
+        },
+        "LYS": {
+            "fitness": 0.00044,
+            "amax": 10.454,
+            "amin": 3.642,
+            "bmax": 9.569,
+            "bmin": 3.075,
+            "abmax": 2.107,
+            "abmin": 0.0
+        },
+        "SER": {
+            "fitness": 0.01673,
+            "amax": 5.082,
+            "amin": 3.533,
+            "bmax": 4.081,
+            "bmin": 3.111,
+            "abmax": 1.524,
+            "abmin": 0.339
+        },
+        "THR": {
+            "fitness": 0.01792,
+            "amax": 5.017,
+            "amin": 3.121,
+            "bmax": 4.1,
+            "bmin": 3.104,
+            "abmax": 1.639,
+            "abmin": 0.568
+        },
+        "MET": {
+            "fitness": 2e-05,
+            "amax": 5.211,
+            "amin": 4.061,
+            "bmax": 5.398,
+            "bmin": 2.991,
+            "abmax": 2.33,
+            "abmin": 0.0
+        },
+        "CYS": {
+            "fitness": 0.0002,
+            "amax": 5.323,
+            "amin": 2.917,
+            "bmax": 5.888,
+            "bmin": 1.398,
+            "abmax": 2.137,
+            "abmin": 0.094
+        }
+    },
+    "MO": {
+        "GLU": {
+            "fitness": 0.05017,
+            "amax": 7.224,
+            "amin": 5.813,
+            "bmax": 6.309,
+            "bmin": 4.997,
+            "abmax": 0.952,
+            "abmin": 0.771
+        },
+        "GLN": {
+            "fitness": 0.03344,
+            "amax": 9.081,
+            "amin": 1.463,
+            "bmax": 6.6,
+            "bmin": 2.702,
+            "abmax": 2.187,
+            "abmin": 0.0
+        },
+        "ASP": {
+            "fitness": 0.1806,
+            "amax": 5.885,
+            "amin": 4.274,
+            "bmax": 4.85,
+            "bmin": 3.54,
+            "abmax": 1.111,
+            "abmin": 0.472
+        },
+        "ASN": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        },
+        "HIS": {
+            "fitness": 0.31773,
+            "amax": 7.102,
+            "amin": 3.076,
+            "bmax": 6.074,
+            "bmin": 3.045,
+            "abmax": 2.105,
+            "abmin": 0.0
+        },
+        "TYR": {
+            "fitness": 0.00334,
+            "amax": 8.839,
+            "amin": 8.839,
+            "bmax": 8.237,
+            "bmin": 8.237,
+            "abmax": 1.09,
+            "abmin": 1.09
+        },
+        "ARG": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        },
+        "LYS": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        },
+        "SER": {
+            "fitness": 0.17391,
+            "amax": 4.052,
+            "amin": 3.409,
+            "bmax": 3.234,
+            "bmin": 3.014,
+            "abmax": 1.088,
+            "abmin": 0.849
+        },
+        "THR": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        },
+        "MET": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        },
+        "CYS": {
+            "fitness": 0.2408,
+            "amax": 5.278,
+            "amin": 2.788,
+            "bmax": 3.803,
+            "bmin": 3.039,
+            "abmax": 2.259,
+            "abmin": 0.0
+        }
+    },
+    "RU": {
+        "GLU": {
+            "fitness": 0.11511,
+            "amax": 9.528,
+            "amin": 2.519,
+            "bmax": 7.071,
+            "bmin": 3.771,
+            "abmax": 3.079,
+            "abmin": 0.0
+        },
+        "GLN": {
+            "fitness": 0.00719,
+            "amax": 5.747,
+            "amin": 5.747,
+            "bmax": 4.482,
+            "bmin": 4.482,
+            "abmax": 0.538,
+            "abmin": 0.538
+        },
+        "ASP": {
+            "fitness": 0.25899,
+            "amax": 6.135,
+            "amin": 4.678,
+            "bmax": 4.668,
+            "bmin": 4.191,
+            "abmax": 1.379,
+            "abmin": 0.209
+        },
+        "ASN": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        },
+        "HIS": {
+            "fitness": 0.48921,
+            "amax": 7.102,
+            "amin": 3.076,
+            "bmax": 6.074,
+            "bmin": 3.045,
+            "abmax": 2.105,
+            "abmin": 0.0
+        },
+        "TYR": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        },
+        "ARG": {
+            "fitness": 0.05036,
+            "amax": 10.463,
+            "amin": 5.266,
+            "bmax": 9.48,
+            "bmin": 4.063,
+            "abmax": 0.781,
+            "abmin": 0.617
+        },
+        "LYS": {
+            "fitness": 0.01439,
+            "amax": 8.537,
+            "amin": 6.375,
+            "bmax": 6.722,
+            "bmin": 5.819,
+            "abmax": 1.225,
+            "abmin": 0.0
+        },
+        "SER": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        },
+        "THR": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        },
+        "MET": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        },
+        "CYS": {
+            "fitness": 0.05755,
+            "amax": 5.713,
+            "amin": 3.465,
+            "bmax": 3.952,
+            "bmin": 3.216,
+            "abmax": 1.536,
+            "abmin": 0.0
+        }
+    },
+    "RH": {
+        "GLU": {
+            "fitness": 0.02632,
+            "amax": 4.964,
+            "amin": 4.964,
+            "bmax": 5.114,
+            "bmin": 5.114,
+            "abmax": 1.515,
+            "abmin": 1.515
+        },
+        "GLN": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        },
+        "ASP": {
+            "fitness": 0.39474,
+            "amax": 5.812,
+            "amin": 5.033,
+            "bmax": 4.726,
+            "bmin": 4.133,
+            "abmax": 1.148,
+            "abmin": 0.341
+        },
+        "ASN": {
+            "fitness": 0.13158,
+            "amax": 6.223,
+            "amin": 4.344,
+            "bmax": 4.676,
+            "bmin": 4.099,
+            "abmax": 1.183,
+            "abmin": 0.513
+        },
+        "HIS": {
+            "fitness": 0.21053,
+            "amax": 7.102,
+            "amin": 3.076,
+            "bmax": 6.074,
+            "bmin": 3.045,
+            "abmax": 2.105,
+            "abmin": 0.0
+        },
+        "TYR": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        },
+        "ARG": {
+            "fitness": 0.23684,
+            "amax": 9.488,
+            "amin": 5.662,
+            "bmax": 7.691,
+            "bmin": 5.0,
+            "abmax": 0.745,
+            "abmin": 0.629
+        },
+        "LYS": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        },
+        "SER": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        },
+        "THR": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        },
+        "MET": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        },
+        "CYS": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        }
+    },
+    "PD": {
+        "GLU": {
+            "fitness": 0.16541,
+            "amax": 8.142,
+            "amin": 3.559,
+            "bmax": 6.593,
+            "bmin": 3.938,
+            "abmax": 2.636,
+            "abmin": 0.0
+        },
+        "GLN": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        },
+        "ASP": {
+            "fitness": 0.03759,
+            "amax": 8.591,
+            "amin": -0.568,
+            "bmax": 6.003,
+            "bmin": 1.869,
+            "abmax": 2.822,
+            "abmin": 0.0
+        },
+        "ASN": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        },
+        "HIS": {
+            "fitness": 0.28571,
+            "amax": 7.102,
+            "amin": 3.076,
+            "bmax": 6.074,
+            "bmin": 3.045,
+            "abmax": 2.105,
+            "abmin": 0.0
+        },
+        "TYR": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        },
+        "ARG": {
+            "fitness": 0.05263,
+            "amax": 11.01,
+            "amin": 3.209,
+            "bmax": 8.641,
+            "bmin": 3.383,
+            "abmax": 1.248,
+            "abmin": 0.0
+        },
+        "LYS": {
+            "fitness": 0.04511,
+            "amax": 7.349,
+            "amin": 6.224,
+            "bmax": 5.869,
+            "bmin": 5.124,
+            "abmax": 1.282,
+            "abmin": 0.0
+        },
+        "SER": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        },
+        "THR": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        },
+        "MET": {
+            "fitness": 0.00752,
+            "amax": 5.248,
+            "amin": 5.248,
+            "bmax": 3.98,
+            "bmin": 3.98,
+            "abmax": 0.521,
+            "abmin": 0.521
+        },
+        "CYS": {
+            "fitness": 0.40602,
+            "amax": 5.87,
+            "amin": 3.005,
+            "bmax": 3.854,
+            "bmin": 2.961,
+            "abmax": 2.005,
+            "abmin": 0.0
+        }
+    },
+    "AG": {
+        "GLU": {
+            "fitness": 0.02308,
+            "amax": 5.425,
+            "amin": 4.388,
+            "bmax": 5.004,
+            "bmin": 3.356,
+            "abmax": 1.147,
+            "abmin": 0.755
+        },
+        "GLN": {
+            "fitness": 0.00769,
+            "amax": 7.02,
+            "amin": 6.702,
+            "bmax": 6.052,
+            "bmin": 5.736,
+            "abmax": 0.802,
+            "abmin": 0.798
+        },
+        "ASP": {
+            "fitness": 0.02692,
+            "amax": 5.614,
+            "amin": 4.492,
+            "bmax": 4.548,
+            "bmin": 4.27,
+            "abmax": 1.455,
+            "abmin": 0.525
+        },
+        "ASN": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        },
+        "HIS": {
+            "fitness": 0.25385,
+            "amax": 7.102,
+            "amin": 3.076,
+            "bmax": 6.074,
+            "bmin": 3.045,
+            "abmax": 2.105,
+            "abmin": 0.0
+        },
+        "TYR": {
+            "fitness": 0.00385,
+            "amax": 8.727,
+            "amin": 8.727,
+            "bmax": 7.773,
+            "bmin": 7.773,
+            "abmax": 0.827,
+            "abmin": 0.827
+        },
+        "ARG": {
+            "fitness": 0.01538,
+            "amax": 9.833,
+            "amin": 2.175,
+            "bmax": 8.539,
+            "bmin": 3.789,
+            "abmax": 2.476,
+            "abmin": 0.636
+        },
+        "LYS": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        },
+        "SER": {
+            "fitness": 0.00769,
+            "amax": 4.939,
+            "amin": 3.864,
+            "bmax": 3.923,
+            "bmin": 3.894,
+            "abmax": 1.395,
+            "abmin": 0.742
+        },
+        "THR": {
+            "fitness": 0.01154,
+            "amax": 4.72,
+            "amin": 4.499,
+            "bmax": 4.065,
+            "bmin": 3.834,
+            "abmax": 1.002,
+            "abmin": 0.943
+        },
+        "MET": {
+            "fitness": 0.3,
+            "amax": 8.224,
+            "amin": 2.923,
+            "bmax": 7.395,
+            "bmin": 1.39,
+            "abmax": 1.192,
+            "abmin": 0.046
+        },
+        "CYS": {
+            "fitness": 0.35,
+            "amax": 6.094,
+            "amin": 2.334,
+            "bmax": 4.029,
+            "bmin": 2.782,
+            "abmax": 2.037,
+            "abmin": 0.0
+        }
+    },
+    "CD": {
+        "GLU": {
+            "fitness": 0.35838,
+            "amax": 8.151,
+            "amin": 4.053,
+            "bmax": 5.678,
+            "bmin": 4.62,
+            "abmax": 2.486,
+            "abmin": 0.0
+        },
+        "GLN": {
+            "fitness": 0.00607,
+            "amax": 8.865,
+            "amin": 2.951,
+            "bmax": 6.2,
+            "bmin": 3.606,
+            "abmax": 2.523,
+            "abmin": 0.0
+        },
+        "ASP": {
+            "fitness": 0.26125,
+            "amax": 5.825,
+            "amin": 4.53,
+            "bmax": 4.912,
+            "bmin": 3.821,
+            "abmax": 1.223,
+            "abmin": 0.494
+        },
+        "ASN": {
+            "fitness": 0.01012,
+            "amax": 5.913,
+            "amin": 4.119,
+            "bmax": 5.408,
+            "bmin": 3.833,
+            "abmax": 1.676,
+            "abmin": 0.624
+        },
+        "HIS": {
+            "fitness": 0.16751,
+            "amax": 7.102,
+            "amin": 3.076,
+            "bmax": 6.074,
+            "bmin": 3.045,
+            "abmax": 2.105,
+            "abmin": 0.0
+        },
+        "TYR": {
+            "fitness": 0.00046,
+            "amax": 9.449,
+            "amin": 6.687,
+            "bmax": 8.45,
+            "bmin": 6.713,
+            "abmax": 1.803,
+            "abmin": 0.453
+        },
+        "ARG": {
+            "fitness": 0.00285,
+            "amax": 10.153,
+            "amin": 5.891,
+            "bmax": 8.449,
+            "bmin": 5.848,
+            "abmax": 2.196,
+            "abmin": 0.0
+        },
+        "LYS": {
+            "fitness": 0.00442,
+            "amax": 9.809,
+            "amin": 5.346,
+            "bmax": 8.455,
+            "bmin": 4.634,
+            "abmax": 1.43,
+            "abmin": 0.023
+        },
+        "SER": {
+            "fitness": 0.00506,
+            "amax": 5.095,
+            "amin": 3.578,
+            "bmax": 3.942,
+            "bmin": 3.032,
+            "abmax": 1.246,
+            "abmin": 0.402
+        },
+        "THR": {
+            "fitness": 0.00322,
+            "amax": 5.354,
+            "amin": 3.502,
+            "bmax": 3.871,
+            "bmin": 3.136,
+            "abmax": 1.395,
+            "abmin": 0.204
+        },
+        "MET": {
+            "fitness": 0.00193,
+            "amax": 6.935,
+            "amin": 4.465,
+            "bmax": 6.574,
+            "bmin": 2.423,
+            "abmax": 1.409,
+            "abmin": 0.0
+        },
+        "CYS": {
+            "fitness": 0.17698,
+            "amax": 5.637,
+            "amin": 3.221,
+            "bmax": 3.986,
+            "bmin": 2.826,
+            "abmax": 1.76,
+            "abmin": 0.0
+        }
+    },
+    "RB": {
+        "GLU": {
+            "fitness": 0.15217,
+            "amax": 8.027,
+            "amin": 5.686,
+            "bmax": 7.208,
+            "bmin": 3.862,
+            "abmax": 1.184,
+            "abmin": 0.0
+        },
+        "GLN": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        },
+        "ASP": {
+            "fitness": 0.23913,
+            "amax": 7.256,
+            "amin": 3.675,
+            "bmax": 5.813,
+            "bmin": 3.77,
+            "abmax": 1.84,
+            "abmin": 0.0
+        },
+        "ASN": {
+            "fitness": 0.17391,
+            "amax": 6.301,
+            "amin": 3.012,
+            "bmax": 5.32,
+            "bmin": 4.072,
+            "abmax": 2.059,
+            "abmin": 0.889
+        },
+        "HIS": {
+            "fitness": 0.0,
+            "amax": 7.102,
+            "amin": 3.076,
+            "bmax": 6.074,
+            "bmin": 3.045,
+            "abmax": 2.105,
+            "abmin": 0.0
+        },
+        "TYR": {
+            "fitness": 0.19565,
+            "amax": 9.067,
+            "amin": 8.095,
+            "bmax": 7.981,
+            "bmin": 7.733,
+            "abmax": 1.236,
+            "abmin": 0.734
+        },
+        "ARG": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        },
+        "LYS": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        },
+        "SER": {
+            "fitness": 0.07609,
+            "amax": 4.259,
+            "amin": 4.238,
+            "bmax": 4.031,
+            "bmin": 3.789,
+            "abmax": 1.311,
+            "abmin": 1.048
+        },
+        "THR": {
+            "fitness": 0.16304,
+            "amax": 5.236,
+            "amin": 3.804,
+            "bmax": 4.291,
+            "bmin": 3.005,
+            "abmax": 1.02,
+            "abmin": 0.649
+        },
+        "MET": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        },
+        "CYS": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        }
+    },
+    "SR": {
+        "GLU": {
+            "fitness": 0.29874,
+            "amax": 7.358,
+            "amin": 5.82,
+            "bmax": 5.763,
+            "bmin": 4.729,
+            "abmax": 1.59,
+            "abmin": 0.0
+        },
+        "GLN": {
+            "fitness": 0.05189,
+            "amax": 5.163,
+            "amin": 4.104,
+            "bmax": 4.599,
+            "bmin": 3.511,
+            "abmax": 1.115,
+            "abmin": 0.901
+        },
+        "ASP": {
+            "fitness": 0.42138,
+            "amax": 6.583,
+            "amin": 3.832,
+            "bmax": 5.349,
+            "bmin": 3.987,
+            "abmax": 1.774,
+            "abmin": 0.36
+        },
+        "ASN": {
+            "fitness": 0.14308,
+            "amax": 6.093,
+            "amin": 4.179,
+            "bmax": 5.626,
+            "bmin": 4.191,
+            "abmax": 1.64,
+            "abmin": 0.837
+        },
+        "HIS": {
+            "fitness": 0.00472,
+            "amax": 7.102,
+            "amin": 3.076,
+            "bmax": 6.074,
+            "bmin": 3.045,
+            "abmax": 2.105,
+            "abmin": 0.0
+        },
+        "TYR": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        },
+        "ARG": {
+            "fitness": 0.0173,
+            "amax": 10.593,
+            "amin": 7.274,
+            "bmax": 9.053,
+            "bmin": 5.833,
+            "abmax": 0.235,
+            "abmin": 0.125
+        },
+        "LYS": {
+            "fitness": 0.00157,
+            "amax": 7.82,
+            "amin": 7.82,
+            "bmax": 6.628,
+            "bmin": 6.628,
+            "abmax": 0.611,
+            "abmin": 0.611
+        },
+        "SER": {
+            "fitness": 0.05189,
+            "amax": 5.235,
+            "amin": 4.291,
+            "bmax": 4.092,
+            "bmin": 3.288,
+            "abmax": 0.821,
+            "abmin": 0.479
+        },
+        "THR": {
+            "fitness": 0.00943,
+            "amax": 4.732,
+            "amin": 4.458,
+            "bmax": 4.234,
+            "bmin": 3.022,
+            "abmax": 1.33,
+            "abmin": 0.225
+        },
+        "MET": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        },
+        "CYS": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        }
+    },
+    "IR": {
+        "GLU": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        },
+        "GLN": {
+            "fitness": 0.05556,
+            "amax": 5.847,
+            "amin": 5.841,
+            "bmax": 4.416,
+            "bmin": 4.401,
+            "abmax": 0.308,
+            "abmin": 0.303
+        },
+        "ASP": {
+            "fitness": 0.02778,
+            "amax": 5.562,
+            "amin": 5.562,
+            "bmax": 4.48,
+            "bmin": 4.48,
+            "abmax": 0.688,
+            "abmin": 0.688
+        },
+        "ASN": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        },
+        "HIS": {
+            "fitness": 0.69444,
+            "amax": 7.102,
+            "amin": 3.076,
+            "bmax": 6.074,
+            "bmin": 3.045,
+            "abmax": 2.105,
+            "abmin": 0.0
+        },
+        "TYR": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        },
+        "ARG": {
+            "fitness": 0.02778,
+            "amax": 9.492,
+            "amin": 9.492,
+            "bmax": 8.395,
+            "bmin": 8.395,
+            "abmax": 0.713,
+            "abmin": 0.713
+        },
+        "LYS": {
+            "fitness": 0.08333,
+            "amax": 10.057,
+            "amin": 7.352,
+            "bmax": 8.763,
+            "bmin": 5.893,
+            "abmax": 0.537,
+            "abmin": 0.282
+        },
+        "SER": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        },
+        "THR": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        },
+        "MET": {
+            "fitness": 0.05556,
+            "amax": 5.211,
+            "amin": 4.88,
+            "bmax": 5.194,
+            "bmin": 4.669,
+            "abmax": 1.413,
+            "abmin": 1.275
+        },
+        "CYS": {
+            "fitness": 0.05556,
+            "amax": 4.901,
+            "amin": 4.65,
+            "bmax": 3.593,
+            "bmin": 3.54,
+            "abmax": 0.66,
+            "abmin": 0.471
+        }
+    },
+    "PT": {
+        "GLU": {
+            "fitness": 0.04945,
+            "amax": 7.453,
+            "amin": 2.862,
+            "bmax": 6.348,
+            "bmin": 3.416,
+            "abmax": 2.261,
+            "abmin": 0.177
+        },
+        "GLN": {
+            "fitness": 0.00366,
+            "amax": 7.568,
+            "amin": 5.912,
+            "bmax": 6.008,
+            "bmin": 5.186,
+            "abmax": 1.01,
+            "abmin": 0.255
+        },
+        "ASP": {
+            "fitness": 0.01832,
+            "amax": 5.744,
+            "amin": 5.104,
+            "bmax": 4.865,
+            "bmin": 4.038,
+            "abmax": 0.934,
+            "abmin": 0.535
+        },
+        "ASN": {
+            "fitness": 0.01648,
+            "amax": 6.9,
+            "amin": 3.363,
+            "bmax": 5.456,
+            "bmin": 3.291,
+            "abmax": 3.244,
+            "abmin": 0.0
+        },
+        "HIS": {
+            "fitness": 0.3956,
+            "amax": 7.102,
+            "amin": 3.076,
+            "bmax": 6.074,
+            "bmin": 3.045,
+            "abmax": 2.105,
+            "abmin": 0.0
+        },
+        "TYR": {
+            "fitness": 0.00183,
+            "amax": 8.641,
+            "amin": 8.641,
+            "bmax": 8.011,
+            "bmin": 8.011,
+            "abmax": 1.064,
+            "abmin": 1.064
+        },
+        "ARG": {
+            "fitness": 0.0989,
+            "amax": 8.057,
+            "amin": 6.177,
+            "bmax": 7.313,
+            "bmin": 4.789,
+            "abmax": 1.088,
+            "abmin": 0.328
+        },
+        "LYS": {
+            "fitness": 0.04945,
+            "amax": 8.994,
+            "amin": 5.392,
+            "bmax": 8.27,
+            "bmin": 4.139,
+            "abmax": 2.161,
+            "abmin": 0.0
+        },
+        "SER": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        },
+        "THR": {
+            "fitness": 0.00549,
+            "amax": 3.538,
+            "amin": 3.122,
+            "bmax": 3.783,
+            "bmin": 3.179,
+            "abmax": 1.604,
+            "abmin": 1.309
+        },
+        "MET": {
+            "fitness": 0.28205,
+            "amax": 6.658,
+            "amin": 3.596,
+            "bmax": 5.942,
+            "bmin": 2.106,
+            "abmax": 1.456,
+            "abmin": 0.0
+        },
+        "CYS": {
+            "fitness": 0.07692,
+            "amax": 5.81,
+            "amin": 2.949,
+            "bmax": 4.042,
+            "bmin": 2.826,
+            "abmax": 1.9,
+            "abmin": 0.0
+        }
+    },
+    "AU": {
+        "GLU": {
+            "fitness": 0.033,
+            "amax": 6.336,
+            "amin": 5.081,
+            "bmax": 5.387,
+            "bmin": 4.184,
+            "abmax": 1.115,
+            "abmin": 0.446
+        },
+        "GLN": {
+            "fitness": 0.0165,
+            "amax": 8.052,
+            "amin": 5.435,
+            "bmax": 7.472,
+            "bmin": 3.291,
+            "abmax": 1.239,
+            "abmin": 0.0
+        },
+        "ASP": {
+            "fitness": 0.0297,
+            "amax": 6.587,
+            "amin": 4.761,
+            "bmax": 5.664,
+            "bmin": 3.458,
+            "abmax": 1.016,
+            "abmin": 0.202
+        },
+        "ASN": {
+            "fitness": 0.0165,
+            "amax": 6.089,
+            "amin": 3.908,
+            "bmax": 4.653,
+            "bmin": 3.625,
+            "abmax": 2.691,
+            "abmin": 0.0
+        },
+        "HIS": {
+            "fitness": 0.25743,
+            "amax": 7.102,
+            "amin": 3.076,
+            "bmax": 6.074,
+            "bmin": 3.045,
+            "abmax": 2.105,
+            "abmin": 0.0
+        },
+        "TYR": {
+            "fitness": 0.0132,
+            "amax": 7.632,
+            "amin": 7.471,
+            "bmax": 7.297,
+            "bmin": 7.059,
+            "abmax": 1.252,
+            "abmin": 1.179
+        },
+        "ARG": {
+            "fitness": 0.033,
+            "amax": 11.267,
+            "amin": 1.191,
+            "bmax": 9.304,
+            "bmin": 1.749,
+            "abmax": 2.186,
+            "abmin": 0.0
+        },
+        "LYS": {
+            "fitness": 0.0231,
+            "amax": 8.042,
+            "amin": 5.633,
+            "bmax": 7.407,
+            "bmin": 4.176,
+            "abmax": 1.797,
+            "abmin": 0.0
+        },
+        "SER": {
+            "fitness": 0.0165,
+            "amax": 4.825,
+            "amin": 4.141,
+            "bmax": 3.564,
+            "bmin": 3.203,
+            "abmax": 0.696,
+            "abmin": 0.609
+        },
+        "THR": {
+            "fitness": 0.0198,
+            "amax": 6.028,
+            "amin": 2.795,
+            "bmax": 4.479,
+            "bmin": 2.867,
+            "abmax": 1.592,
+            "abmin": 0.182
+        },
+        "MET": {
+            "fitness": 0.0297,
+            "amax": 6.364,
+            "amin": 4.359,
+            "bmax": 6.786,
+            "bmin": 2.694,
+            "abmax": 1.321,
+            "abmin": 0.518
+        },
+        "CYS": {
+            "fitness": 0.51155,
+            "amax": 5.558,
+            "amin": 2.645,
+            "bmax": 4.193,
+            "bmin": 2.359,
+            "abmax": 1.823,
+            "abmin": 0.0
+        }
+    },
+    "HG": {
+        "GLU": {
+            "fitness": 0.01662,
+            "amax": 9.168,
+            "amin": 2.928,
+            "bmax": 6.32,
+            "bmin": 3.939,
+            "abmax": 1.978,
+            "abmin": 0.0
+        },
+        "GLN": {
+            "fitness": 0.01108,
+            "amax": 9.925,
+            "amin": 0.933,
+            "bmax": 8.386,
+            "bmin": 0.112,
+            "abmax": 1.51,
+            "abmin": 0.0
+        },
+        "ASP": {
+            "fitness": 0.0217,
+            "amax": 6.523,
+            "amin": 4.152,
+            "bmax": 5.47,
+            "bmin": 3.636,
+            "abmax": 1.564,
+            "abmin": 0.049
+        },
+        "ASN": {
+            "fitness": 0.00646,
+            "amax": 6.535,
+            "amin": 3.262,
+            "bmax": 5.083,
+            "bmin": 3.809,
+            "abmax": 1.961,
+            "abmin": 0.164
+        },
+        "HIS": {
+            "fitness": 0.08772,
+            "amax": 7.102,
+            "amin": 3.076,
+            "bmax": 6.074,
+            "bmin": 3.045,
+            "abmax": 2.105,
+            "abmin": 0.0
+        },
+        "TYR": {
+            "fitness": 0.0157,
+            "amax": 9.217,
+            "amin": 6.911,
+            "bmax": 8.425,
+            "bmin": 6.315,
+            "abmax": 1.166,
+            "abmin": 0.801
+        },
+        "ARG": {
+            "fitness": 0.012,
+            "amax": 12.695,
+            "amin": 2.141,
+            "bmax": 10.906,
+            "bmin": 1.422,
+            "abmax": 0.798,
+            "abmin": 0.016
+        },
+        "LYS": {
+            "fitness": 0.00462,
+            "amax": 10.2,
+            "amin": 2.056,
+            "bmax": 10.501,
+            "bmin": 0.436,
+            "abmax": 1.565,
+            "abmin": 0.242
+        },
+        "SER": {
+            "fitness": 0.01801,
+            "amax": 5.459,
+            "amin": 4.646,
+            "bmax": 4.206,
+            "bmin": 3.246,
+            "abmax": 0.553,
+            "abmin": 0.238
+        },
+        "THR": {
+            "fitness": 0.03324,
+            "amax": 6.266,
+            "amin": 3.565,
+            "bmax": 4.031,
+            "bmin": 3.746,
+            "abmax": 1.475,
+            "abmin": 0.0
+        },
+        "MET": {
+            "fitness": 0.01985,
+            "amax": 6.432,
+            "amin": 5.489,
+            "bmax": 5.614,
+            "bmin": 3.862,
+            "abmax": 1.002,
+            "abmin": 0.138
+        },
+        "CYS": {
+            "fitness": 0.75023,
+            "amax": 5.688,
+            "amin": 2.285,
+            "bmax": 4.032,
+            "bmin": 2.605,
+            "abmax": 1.902,
+            "abmin": 0.0
+        }
+    },
+    "CS": {
+        "GLU": {
+            "fitness": 0.1791,
+            "amax": 6.994,
+            "amin": 4.683,
+            "bmax": 5.932,
+            "bmin": 4.601,
+            "abmax": 1.136,
+            "abmin": 0.718
+        },
+        "GLN": {
+            "fitness": 0.02985,
+            "amax": 7.355,
+            "amin": 7.296,
+            "bmax": 6.116,
+            "bmin": 5.909,
+            "abmax": 0.548,
+            "abmin": 0.406
+        },
+        "ASP": {
+            "fitness": 0.29851,
+            "amax": 6.441,
+            "amin": 3.468,
+            "bmax": 5.254,
+            "bmin": 4.128,
+            "abmax": 2.4,
+            "abmin": 0.003
+        },
+        "ASN": {
+            "fitness": 0.10448,
+            "amax": 5.833,
+            "amin": 3.734,
+            "bmax": 5.627,
+            "bmin": 4.113,
+            "abmax": 1.72,
+            "abmin": 1.228
+        },
+        "HIS": {
+            "fitness": 0.08955,
+            "amax": 7.102,
+            "amin": 3.076,
+            "bmax": 6.074,
+            "bmin": 3.045,
+            "abmax": 2.105,
+            "abmin": 0.0
+        },
+        "TYR": {
+            "fitness": 0.04478,
+            "amax": 8.847,
+            "amin": 8.338,
+            "bmax": 8.462,
+            "bmin": 7.258,
+            "abmax": 1.247,
+            "abmin": 0.731
+        },
+        "ARG": {
+            "fitness": 0.02985,
+            "amax": 7.46,
+            "amin": 7.206,
+            "bmax": 6.644,
+            "bmin": 6.383,
+            "abmax": 0.928,
+            "abmin": 0.912
+        },
+        "LYS": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        },
+        "SER": {
+            "fitness": 0.08955,
+            "amax": 5.11,
+            "amin": 4.247,
+            "bmax": 4.625,
+            "bmin": 2.691,
+            "abmax": 1.592,
+            "abmin": 0.0
+        },
+        "THR": {
+            "fitness": 0.13433,
+            "amax": 5.129,
+            "amin": 4.054,
+            "bmax": 4.237,
+            "bmin": 3.466,
+            "abmax": 1.392,
+            "abmin": 0.466
+        },
+        "MET": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        },
+        "CYS": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        }
+    },
+    "BA": {
+        "GLU": {
+            "fitness": 0.23661,
+            "amax": 8.01,
+            "amin": 5.401,
+            "bmax": 6.667,
+            "bmin": 4.492,
+            "abmax": 1.552,
+            "abmin": 0.0
+        },
+        "GLN": {
+            "fitness": 0.01339,
+            "amax": 7.215,
+            "amin": 7.0,
+            "bmax": 5.723,
+            "bmin": 5.526,
+            "abmax": 0.251,
+            "abmin": 0.19
+        },
+        "ASP": {
+            "fitness": 0.47321,
+            "amax": 6.563,
+            "amin": 3.993,
+            "bmax": 5.431,
+            "bmin": 4.055,
+            "abmax": 2.122,
+            "abmin": 0.0
+        },
+        "ASN": {
+            "fitness": 0.12054,
+            "amax": 6.251,
+            "amin": 3.396,
+            "bmax": 5.388,
+            "bmin": 4.172,
+            "abmax": 2.357,
+            "abmin": 0.341
+        },
+        "HIS": {
+            "fitness": 0.0625,
+            "amax": 7.102,
+            "amin": 3.076,
+            "bmax": 6.074,
+            "bmin": 3.045,
+            "abmax": 2.105,
+            "abmin": 0.0
+        },
+        "TYR": {
+            "fitness": 0.00446,
+            "amax": 8.115,
+            "amin": 8.115,
+            "bmax": 7.797,
+            "bmin": 7.797,
+            "abmax": 1.268,
+            "abmin": 1.268
+        },
+        "ARG": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        },
+        "LYS": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        },
+        "SER": {
+            "fitness": 0.05357,
+            "amax": 5.013,
+            "amin": 4.203,
+            "bmax": 4.461,
+            "bmin": 3.719,
+            "abmax": 1.262,
+            "abmin": 0.891
+        },
+        "THR": {
+            "fitness": 0.03571,
+            "amax": 5.147,
+            "amin": 3.716,
+            "bmax": 4.081,
+            "bmin": 3.364,
+            "abmax": 1.402,
+            "abmin": 0.517
+        },
+        "MET": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        },
+        "CYS": {
+            "fitness": 0.0,
+            "amax": 0.0,
+            "amin": 0.0,
+            "bmax": 0.0,
+            "bmin": 0.0,
+            "abmax": 0.0,
+            "abmin": 0.0
+        }
+    }
+}
