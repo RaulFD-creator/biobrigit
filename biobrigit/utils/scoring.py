@@ -41,8 +41,8 @@ def parse_residues(
         info (dict): Collection of the atoms of interest for evaluating
             coordination, grouped by the coordination configuration.
     """
-    alphas = {residue: [] for residue in coordinators['residue']}
-    betas = {residue: [] for residue in coordinators['residue']}
+    alphas = {residue: [] for residue in coordinators}
+    betas = {residue: [] for residue in coordinators}
 
     for idx, residue in enumerate(molecule.residues):
         try:
