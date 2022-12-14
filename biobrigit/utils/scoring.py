@@ -14,8 +14,9 @@ Copyright by Raúl Fernández Díaz
 """
 
 import numpy as np
-from .tools import geometry
+
 from .pdb_parser import protein
+from .tools import geometry
 
 
 def parse_residues(
@@ -42,22 +43,13 @@ def parse_residues(
     """
     alphas = {residue: [] for residue in coordinators['residue']}
     betas = {residue: [] for residue in coordinators['residue']}
-    o_alphas = {residue: [] for residue in coordinators['backbone_o']}
-    o = {residue: [] for residue in coordinators['backbone_o']}
-    n_alphas = {residue: [] for residue in coordinators['backbone_n']}
-    n = {residue: [] for residue in coordinators['backbone_n']}
 
     for idx, residue in enumerate(molecule.residues):
         try:
             if residue.name in coordinators['residue']:
                 alphas[residue.name].append(residue.alpha.coordinates)
                 betas[residue.name].append(residue.beta.coordinates)
-            elif residue.name in coordinators['backbone_o']:
-                o_alphas[residue.name].append(residue.alpha.coordinates)
-                o[residue.name].append(residue.o.coordinates)
-            elif residue.name in coordinators['backbone_n']:
-                n_alphas[residue.name].append(residue.alpha.coordinates)
-                n[residue.name].append(residue.n.coordinates)
+
         except AttributeError:
             continue
 
@@ -69,32 +61,10 @@ def parse_residues(
         residue: np.array(betas[residue]).reshape(len(betas[residue]), 3)
         for residue in coordinators['residue']
     }
-    o_alphas = {
-        residue: np.array(o_alphas[residue]).reshape(
-            len(o_alphas[residue]), 3
-        ) for residue in coordinators['backbone_o']
-    }
-    o = {
-        residue: np.array(o[residue]).reshape(len(o[residue]), 3)
-        for residue in coordinators['backbone_o']
-    }
-    n_alphas = {
-        residue: np.array(n_alphas[residue]).reshape(
-            len(n_alphas[residue]), 3
-        ) for residue in coordinators['backbone_n']
-    }
-    n = {
-        residue: np.array(n[residue]).reshape(
-            len(n[residue]), 3
-        ) for residue in coordinators['backbone_n']
-    }
+
     info = {
         'residue_alphas': alphas,
         'residue_2nd_atom': betas,
-        'backbone_o_alphas': o_alphas,
-        'backbone_o_2nd_atom': o,
-        'backbone_n_alphas': n_alphas,
-        'backbone_n_2nd_atom': n
     }
     return info
 
@@ -107,7 +77,6 @@ def coordination_scorer(
     molecule_info: dict,
     coordinators: dict,
     residue_scoring,
-    backbone_scoring,
     max_coordinators,
     **kwargs
 ) -> float:
@@ -153,25 +122,19 @@ def coordination_scorer(
     """
     fitness = 0
     possible_coordinators = 0
-    coordination_types = ['residue', 'backbone_o', 'backbone_n']
-    for coor_type in coordination_types:
-        kwargs['coor_type'] = coor_type
-        kwargs['gaussian_stats'] = gaussian_stats
-        for res in coordinators[coor_type]:
-            alphas = probe[:3] - molecule_info[f'{coor_type}_alphas'][res]
-            atm2 = probe[:3] - molecule_info[f'{coor_type}_2nd_atom'][res]
-            dist_1, dist_2, angles = geometry(alphas, atm2)
-            fitness_res, coors_res = (
-                residue_scoring(
-                    dist_1, dist_2, angles, res, stats, **kwargs
-                )
-                if coor_type == 'residue' else
-                backbone_scoring(
-                    dist_1, dist_2, angles, res, stats, **kwargs
-                )
+
+    kwargs['gaussian_stats'] = gaussian_stats
+    for res in coordinators:
+        alphas = probe[:3] - molecule_info['residue_alphas'][res]
+        atm2 = probe[:3] - molecule_info['residue_2nd_atom'][res]
+        dist_1, dist_2, angles = geometry(alphas, atm2)
+        fitness_res, coors_res = (
+            residue_scoring(
+                dist_1, dist_2, angles, res, stats, **kwargs
             )
-            fitness += fitness_res
-            possible_coordinators += coors_res
+        )
+        fitness += fitness_res
+        possible_coordinators += coors_res
     fitness *= (possible_coordinators / max_coordinators)
     return fitness if fitness < 1.0 else 1.0
 
@@ -376,4 +339,4 @@ if __name__ == '__main__':
     help(coordination_scorer)
     help(discrete_score)
     help(gaussian_score)
-    help(double_gaussian)
+    help(bimodal)

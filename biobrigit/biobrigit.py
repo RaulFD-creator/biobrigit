@@ -288,7 +288,7 @@ class Brigit():
 
         chunks = distribute(scores, threads)
         args = [(molecule, chunks[idx], stats, gaussian_stats, molecule_info,
-                coordinators, residue_score, discrete_score, max_coordinators,
+                coordinators, residue_score, max_coordinators,
                 threshold, cnn_weight) for idx in range(threads)]
         pool = multiprocessing.Pool(threads)
         zeros = pool.starmap(analyse_probes, args)
@@ -621,7 +621,7 @@ class Brigit():
 
 def analyse_probes(
     molecule, probes, stats, gaussian_stats, molecule_info,
-    coordinators, residue_score, backbone_score, max_coordinators,
+    coordinators, residue_score, max_coordinators,
     threshold, cnn_weight
 ):
     zeros = np.zeros((len(probes), 4))
@@ -639,7 +639,6 @@ def analyse_probes(
                 molecule_info=molecule_info,
                 coordinators=coordinators,
                 residue_scoring=gaussian_score,
-                backbone_scoring=discrete_score,
                 max_coordinators=max_coordinators
             ) * coor_weight
     return zeros

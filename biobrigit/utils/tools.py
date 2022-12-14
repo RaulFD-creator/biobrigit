@@ -259,8 +259,6 @@ def find_coordinators(metal: str, num_residues: int = 20):
     stats = stats[metal.upper()]
     gaussian_stats = gaussian_stats[metal]
     residues = ordered_list()
-    o_residues = ordered_list()
-    n_residues = ordered_list()
 
     for residue, res_stats in stats.items():
         if residue not in gaussian_stats.keys():
@@ -272,25 +270,7 @@ def find_coordinators(metal: str, num_residues: int = 20):
             residues.pop(-1)
             residues.add(residue, res_stats['fitness'])
 
-        if len(o_residues) < num_residues:
-            if res_stats['o_fitness'] > 0.0:
-                o_residues.add(residue, res_stats['o_fitness'])
-        elif res_stats['o_fitness'] > o_residues.counts(-1):
-            o_residues.pop(-1)
-            o_residues.add(residue, res_stats['o_fitness'])
-
-        if len(n_residues) < num_residues:
-            if res_stats['n_fitness'] > 0.0:
-                n_residues.add(residue, res_stats['n_fitness'])
-        elif res_stats['n_fitness'] > n_residues.counts(-1):
-            n_residues.pop(-1)
-            n_residues.add(residue, res_stats['n_fitness'])
-
-    coordinators = {
-        'residue': residues.to_list(),
-        'backbone_o': o_residues.to_list(),
-        'backbone_n': n_residues.to_list(),
-    }
+    coordinators = residues.to_list()
 
     return coordinators, stats, gaussian_stats
 
