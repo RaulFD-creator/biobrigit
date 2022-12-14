@@ -54,11 +54,11 @@ def parse_residues(
 
     alphas = {
         residue: np.array(alphas[residue]).reshape(len(alphas[residue]), 3)
-        for residue in coordinators['residue']
+        for residue in coordinators
     }
     betas = {
         residue: np.array(betas[residue]).reshape(len(betas[residue]), 3)
-        for residue in coordinators['residue']
+        for residue in coordinators
     }
 
     info = {
