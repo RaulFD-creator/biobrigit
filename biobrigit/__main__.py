@@ -38,7 +38,7 @@ def parse_cli() -> dict:
                    help='pH where the structure is to be evaluated.')
     p.add_argument("--cluster_radius", type=float, default=5.0,
                    help="Threshold used for the Birch clustering algorithm.")
-    p.add_argument("--cnn_threshold", type=float, default=0.4,
+    p.add_argument("--cnn_threshold", type=float, default=0.5,
                    help="Threshold for considering CNN points as possible\
                     coordinations.")
     p.add_argument("--combined_threshold", type=float, default=0.5,
