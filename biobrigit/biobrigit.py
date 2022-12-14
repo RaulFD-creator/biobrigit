@@ -6,34 +6,25 @@ Contains 1 class:
 
 Copyright by Raúl Fernández Díaz
 """
+import multiprocessing
 import os
 import time
-import multiprocessing
 import warnings
-import torch
+
 import numpy as np
-from sklearn.cluster import Birch
+import torch
 from moleculekit.molecule import Molecule
-from moleculekit.tools.voxeldescriptors import getVoxelDescriptors, getCenters
 from moleculekit.tools.atomtyper import prepareProteinForAtomtyping
+from moleculekit.tools.voxeldescriptors import getCenters, getVoxelDescriptors
+from sklearn.cluster import Birch
+
 from .utils.data import CHANNELS
-from .utils.tools import (
-    get_undesired_channels,
-    select_desired_channels,
-    find_coordinators,
-    ordered_list,
-    set_up_cuda,
-    load_model,
-    load_stats,
-    distribute
-)
 from .utils.pdb_parser import protein
-from .utils.scoring import (
-    parse_residues,
-    coordination_scorer,
-    discrete_score,
-    gaussian_score
-)
+from .utils.scoring import (coordination_scorer, discrete_score,
+                            gaussian_score, parse_residues)
+from .utils.tools import (distribute, find_coordinators,
+                          get_undesired_channels, load_model, ordered_list,
+                          select_desired_channels, set_up_cuda)
 
 
 class Brigit():
@@ -219,7 +210,6 @@ class Brigit():
         threshold: float,
         verbose: bool,
         residue_score: str,
-        backbone_score: str,
         cnn_weight: float,
         residues: int,
         threads: int,
@@ -259,8 +249,6 @@ class Brigit():
                 during computation.
             residue_score (str): Scoring function used to evaluate the
                 coordination through side chains.
-            backbone_score (str): Scoring function used to evaluate the
-                coordination through backbone atoms.
             cnn_weight (float): Proportion of the final score that will be
                 informed by the CNN. Its complementary (1 - cnn_weight)
                 corresponds to the proportion of the final score informed
@@ -298,16 +286,9 @@ class Brigit():
                     currently implemented.'
             )
 
-        if backbone_score == 'discrete':
-            backbone_score = discrete_score
-        else:
-            raise IndexError(
-                f'Backbone coordination scoring function: {backbone_score} not\
-                    currently implemented.'
-            )
         chunks = distribute(scores, threads)
         args = [(molecule, chunks[idx], stats, gaussian_stats, molecule_info,
-                coordinators, residue_score, backbone_score, max_coordinators,
+                coordinators, residue_score, discrete_score, max_coordinators,
                 threshold, cnn_weight) for idx in range(threads)]
         pool = multiprocessing.Pool(threads)
         zeros = pool.starmap(analyse_probes, args)
