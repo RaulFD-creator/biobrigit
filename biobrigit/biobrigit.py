@@ -481,7 +481,7 @@ class Brigit():
         args
     ):
         coors = set()
-        for list_coors in coordinators.values():
+        for list_coors in coordinators:
             for coor in list_coors:
                 coors.add(coor)
         outputfile_name = f'{outputfile}_clusters.txt'
