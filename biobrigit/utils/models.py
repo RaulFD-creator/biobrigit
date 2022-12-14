@@ -186,9 +186,7 @@ class BrigitCNN(BaseModel):
         )
         self.classifier1 = nn.Sequential(
             linear(neurons_layer*3**3, 512, 0.2, nn.LeakyReLU),
-            linear(512, 256, 0.2, nn.LeakyReLU),
-            linear(256, 256, 0.2, nn.LeakyReLU)
-
+            linear(512, 256, 0.2, nn.LeakyReLU)
         )
         self.classifier2 = nn.Sequential(
             linear(256, 1, 0.0, nn.Sigmoid)
