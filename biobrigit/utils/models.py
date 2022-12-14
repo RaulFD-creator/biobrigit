@@ -151,19 +151,14 @@ class BrigitCNN(BaseModel):
         neurons_layer: int = 32,
         size: int = 12,
         num_dimns: int = 6,
-        include: list = None,
-        exclude: list = None,
         **kwargs
     ):
         super().__init__()
-        if include is None:
-            include = ['ALL']
+
         self.save_hyperparameters(
             "learning_rate",
             "neurons_layer",
             "num_dimns",
-            "include",
-            "exclude"
         )
         self.learning_rate = learning_rate
         self.example_input_array = torch.rand(
