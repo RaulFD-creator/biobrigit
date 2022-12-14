@@ -23,12 +23,14 @@ Copyright by Raúl Fernández Díaz
 
 import os
 import sys
-import torch
-import numpy as np
 import urllib.request
+
+import numpy as np
+import torch
 from moleculekit.molecule import Molecule
 from moleculekit.tools.atomtyper import prepareProteinForAtomtyping
 from moleculekit.tools.voxeldescriptors import getCenters, getVoxelDescriptors
+
 from .data import CHANNELS_DICT, read_stats
 from .models import BaseModel, BrigitCNN
 
@@ -254,7 +256,7 @@ def voxelize(
 
 def find_coordinators(metal: str, num_residues: int = 20):
     stats, gaussian_stats = read_stats()
-    stats = stats[metal]
+    stats = stats[metal.upper()]
     gaussian_stats = gaussian_stats[metal]
     residues = ordered_list()
     o_residues = ordered_list()
@@ -350,7 +352,7 @@ def load_model(model: str, device: str, **kwargs) -> BaseModel:
             num_dimns=6
         )
     elif model.lower() == 'tinybrigit':
-        model = tinyBrigit.load_from_checkpoint(
+        model = BrigitCNN.load_from_checkpoint(
             path,
             map_location=device,
             learning_rate=2e-4,
@@ -361,7 +363,7 @@ def load_model(model: str, device: str, **kwargs) -> BaseModel:
     else:
         message = f'Model: {model} is not available.'
         message += ' Please select either BrigitCNN or TinyBrigit.'
-        raise RunTimeError(message)
+        raise RuntimeError(message)
     model.to(device)
     model.eval()
     return model
