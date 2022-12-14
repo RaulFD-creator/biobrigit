@@ -171,20 +171,11 @@ class BrigitCNN(BaseModel):
 
         self.convolutional = nn.Sequential(
             nn.Dropout3d(0.2),
-            conv3D(num_dimns, neurons_layer, 5, 2, nn.LeakyReLU, 0.2),
+            conv3D(num_dimns, neurons_layer, 3, 1, nn.LeakyReLU, 0.2),
             nn.BatchNorm3d(neurons_layer),
-            conv3D(neurons_layer, neurons_layer, 3, 1, nn.LeakyReLU, 0.2),
-            conv3D(neurons_layer, neurons_layer, 3, 1, nn.LeakyReLU, 0.2),
-            nn.BatchNorm3d(neurons_layer),
-            nn.AvgPool3d(2),
-
-            conv3D(neurons_layer, neurons_layer, 5, 2, nn.LeakyReLU, 0.2),
-            nn.BatchNorm3d(neurons_layer),
-            conv3D(neurons_layer, neurons_layer, 3, 1, nn.LeakyReLU, 0.2),
             conv3D(neurons_layer, neurons_layer, 3, 1, nn.LeakyReLU, 0.2),
             nn.BatchNorm3d(neurons_layer),
             nn.AvgPool3d(2),
-
             conv3D(neurons_layer, neurons_layer, 3, 1, nn.LeakyReLU, 0.2),
             nn.BatchNorm3d(neurons_layer),
             conv3D(neurons_layer, neurons_layer, 3, 1, nn.LeakyReLU, 0.2),
@@ -194,7 +185,7 @@ class BrigitCNN(BaseModel):
             nn.Flatten()
         )
         self.classifier1 = nn.Sequential(
-            linear(neurons_layer, 512, 0.2, nn.LeakyReLU),
+            linear(neurons_layer*3**3, 512, 0.2, nn.LeakyReLU),
             linear(512, 256, 0.2, nn.LeakyReLU),
             linear(256, 256, 0.2, nn.LeakyReLU)
 
