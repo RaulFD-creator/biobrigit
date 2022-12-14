@@ -46,10 +46,9 @@ def parse_residues(
 
     for idx, residue in enumerate(molecule.residues):
         try:
-            if residue.name in coordinators['residue']:
+            if residue.name in coordinators:
                 alphas[residue.name].append(residue.alpha.coordinates)
                 betas[residue.name].append(residue.beta.coordinates)
-
         except AttributeError:
             continue
 
