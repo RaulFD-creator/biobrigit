@@ -30,7 +30,7 @@ from moleculekit.molecule import Molecule
 from moleculekit.tools.atomtyper import prepareProteinForAtomtyping
 from moleculekit.tools.voxeldescriptors import getCenters, getVoxelDescriptors
 from .data import CHANNELS_DICT, read_stats
-from .models import BaseModel, BrigitCNN, DeepSite, tinyBrigit
+from .models import BaseModel, BrigitCNN
 
 
 class ordered_list():
@@ -340,7 +340,7 @@ def load_model(model: str, device: str, **kwargs) -> BaseModel:
     path = os.path.join(
         os.path.dirname(__file__), "trained_models", f'{model}.ckpt'
     )
-    if model == 'BrigitCNN':
+    if model.lower() == 'brigitcnn':
         model = BrigitCNN.load_from_checkpoint(
             path,
             map_location=device,
@@ -349,23 +349,19 @@ def load_model(model: str, device: str, **kwargs) -> BaseModel:
             size=12,
             num_dimns=6
         )
-    elif model == 'DeepSite':
-        model = DeepSite.load_from_checkpoint(
-            path,
-            map_location=device,
-            learning_rate=2e-4
-        )
-
-    elif model == 'tinyBrigit':
+    elif model.lower() == 'tinybrigit':
         model = tinyBrigit.load_from_checkpoint(
             path,
             map_location=device,
             learning_rate=2e-4,
-            neurons_layer=32,
+            neurons_layer=16,
             size=12,
             num_dimns=6
         )
-
+    else:
+        message = f'Model: {model} is not available.'
+        message += ' Please select either BrigitCNN or TinyBrigit.'
+        raise RunTimeError(message)
     model.to(device)
     model.eval()
     return model
