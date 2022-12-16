@@ -134,6 +134,7 @@ def coordination_scorer(
         )
         fitness += fitness_res
         possible_coordinators += coors_res
+
     fitness *= (possible_coordinators / max_coordinators)
     return fitness if fitness < 1.0 else 1.0
 
@@ -259,22 +260,35 @@ def gaussian_score(
     fitness = 0
     possible_coordinators = 0
 
-    alpha_scores = bimodal(dist_1, *gaussian_stats[residue]['alpha'])
-    beta_scores = bimodal(dist_2, *gaussian_stats[residue]['beta'])
-    angle_scores = bimodal(angles, *gaussian_stats[residue]['MAB'])
+    a, b, c, d, e, f = 'amin', 'amax', 'bmin', 'bmax', 'abmin', 'abmax'
+    g = 'fitness'
 
-    alpha_trues = np.argwhere(alpha_scores > 0.01)
-    beta_trues = np.argwhere(beta_scores > 0.01)
-    angle_trues = np.argwhere(angle_scores > 0.01)
-
+    # BioMetAll v1.0 filter
+    alpha_trues = np.argwhere(
+        (dist_1 > stats[residue][a]) &
+        (dist_1 < stats[residue][b])
+    )
+    beta_trues = np.argwhere(
+        (dist_2 > stats[residue][c]) &
+        (dist_2 < stats[residue][d])
+    )
+    ab_trues = np.argwhere(
+        (angles > stats[residue][e]) &
+        (angles < stats[residue][f])
+    )
+    true_indexes = []
     for true in alpha_trues:
-        if true in beta_trues and true in angle_trues:
-            score_1 = alpha_scores[true]
-            score_2 = beta_scores[true]
-            score_angles = angle_scores[true]
-            fitness += (score_1 + score_2 + score_angles) / 3
-            fitness *= stats[residue]['fitness']
-            possible_coordinators += 1
+        if true in beta_trues and true in ab_trues:
+            true_indexes.append(true)
+
+    # Gaussian score
+    true_indexes = np.array(true_indexes)
+    score_1 = bimodal(dist_1[true_indexes], *gaussian_stats[residue])
+    score_2 = bimodal(dist_2[true_indexes], *gaussian_stats[residue])
+    score_angles = bimodal(angles[true_indexes], *gaussian_stats[residue])
+    fitness += (score_1 + score_2 + score_angles) / 3
+    fitness *= stats[residue][g]
+    possible_coordinators += len(true_indexes)
 
     return fitness, possible_coordinators
 
