@@ -75,15 +75,17 @@ There are many parameters that can be also tuned, though default use is reccomen
 * `--max_coordinators`: Number of maximum coordinators expected. By default, 2. It only affects the range of values assigned to the probes.
 * `--residues`: Number of most likely coordinating residues. By default, 10.
 * `--stride`: Step at which the voxelized representation of the protein should be parsed. By default, 1. The greater the stride, the greater the computational efficiency; however, the resolution of the predictions will be affected.
-* `--pH`: pH of the medium at which the structure is to be evaluated. By default, 7.4.
 * `--cluster_radius`: Radius of the clusters to be generated in armstrongs. By default, 5.
 * `--cnn_threshold`: Threshold for considering CNN points as possible coordinations. Lower values will impact computational efficiency; greater values, may hide possible coordinating regions. By default, 0.5. Values should be within the range [0, 1].
 * `--combined_threshold`: Threshold for considering predictions combining BioMetAll and CNN scores as positive. By default, 0.5. Values should be within the range [0, 1].
-* `--voxelsize`: Resolution of the 3D representation. In Arnstrongs. By default, 1 A.
-* `--cnn_weight`: Importance of the CNN score in the final score in relations to the BioMetAll score. By default, 0.5. Values should be within the range [0, 1].
+* `--threads`: Number of threads available for multithreading calculation. By default it will create 2 threads per physical core.
 * `--verbose`: Information that will be displayed. 0: Only Moleculekit, 1: All. By default, 1.
 * `--residue score`: Scoring function for residue coordination analysis. Can be either `discrete`, that only considers how likely is a residue to bind to a certain metal (more computationally efficient); or `gaussian`, that also considers the fitness of the geometrical descriptors for a certain residue and metal. By default, `gaussian`.
-* `--threads`: Number of threads available for multithreading calculation. By default it will create 2 threads per physical core.
+
+The following parameters can also be tuned, but their modification is **not** reccomended as it may translate in unreliable predictions.
+* `--cnn_weight`: Importance of the CNN score in the final score in relations to the BioMetAll score. By default, 0.5. Values should be within the range [0, 1].
+* `--voxelsize`: Resolution of the 3D representation. In Arnstrongs. By default, 1 A.
+* `--pH`: pH of the medium at which the structure is to be evaluated. By default, 7.4.
 
 **Examples:**
 
