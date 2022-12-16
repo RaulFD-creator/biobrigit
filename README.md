@@ -40,7 +40,7 @@ The first step is to create an environment with the necessary libraries. Some wi
 > pip install scikit-learn
 ```
 
-**2.1. Environment set-up with CUDA acelleration**
+**Environment set-up _with_ CUDA acelleration**
 
 The last step is to install the deep learning framework:
 
@@ -49,7 +49,7 @@ The last step is to install the deep learning framework:
 > conda install pytorch-lightning tensorboard torchmetrics -c conda-forge
 ```
 
-**2.2. Environment set-up without CUDA acelleration**
+**Environment set-up _without_ CUDA acelleration**
 
 If no CUDA device is available, the recommended installation of the deep learning framework is:
 
