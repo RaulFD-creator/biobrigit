@@ -96,7 +96,7 @@ Searching for copper.
 Searching with generic metal.
 
 ```bash
-> biobrigit 1dhy General --outputfile 1dhy_general
+> biobrigit 1dhy generic --outputfile 1dhy_general
 ````
 
 Fast preliminar exploration for binding sites with 4 coordinations, no GPU, and only considering the 4 most likely coordinating residues.
