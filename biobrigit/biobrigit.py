@@ -158,7 +158,7 @@ class Brigit():
             print(f'\nCoordination analysis of target: {target}', end='\n\n')
 
         scores, molecule, coordinators = self.coordination_analysis(
-            target, max_coordinators, metal, scores, cnn_threshold,
+            target, max_coordinators, metal.upper(), scores, cnn_threshold,
             verbose, **kwargs
         )
 

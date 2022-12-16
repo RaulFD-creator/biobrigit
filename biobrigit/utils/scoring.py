@@ -281,13 +281,17 @@ def gaussian_score(
         if true in beta_trues and true in ab_trues:
             true_indexes.append(true)
 
+    if len(true_indexes) < 1:
+        return 0, 0
+
     # Gaussian score
     true_indexes = np.array(true_indexes)
-    score_1 = bimodal(dist_1[true_indexes], *gaussian_stats[residue])
-    score_2 = bimodal(dist_2[true_indexes], *gaussian_stats[residue])
-    score_angles = bimodal(angles[true_indexes], *gaussian_stats[residue])
-    fitness += (score_1 + score_2 + score_angles) / 3
+    score_1 = bimodal(dist_1[true_indexes], *gaussian_stats[residue]['alpha'])
+    score_2 = bimodal(dist_2[true_indexes], *gaussian_stats[residue]['beta'])
+    score_3 = bimodal(angles[true_indexes], *gaussian_stats[residue]['MAB'])
+    fitness = np.sum((score_1 + score_2 + score_3) / 3)
     fitness *= stats[residue][g]
+    fitness = float(fitness)
     possible_coordinators += len(true_indexes)
 
     return fitness, possible_coordinators
