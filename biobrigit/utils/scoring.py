@@ -260,23 +260,16 @@ def gaussian_score(
     fitness = 0
     possible_coordinators = 0
 
-    a, b, c, d, e, f = 'amin', 'amax', 'bmin', 'bmax', 'abmin', 'abmax'
-    g = 'fitness'
+    score_1 = bimodal(dist_1, *gaussian_stats[residue]['alpha'])
+    score_2 = bimodal(dist_2, *gaussian_stats[residue]['beta'])
+    score_3 = bimodal(angles, *gaussian_stats[residue]['MAB'])
 
     # BioMetAll v1.0 filter
-    alpha_trues = np.argwhere(
-        (dist_1 > stats[residue][a]) &
-        (dist_1 < stats[residue][b])
-    )
-    beta_trues = np.argwhere(
-        (dist_2 > stats[residue][c]) &
-        (dist_2 < stats[residue][d])
-    )
-    ab_trues = np.argwhere(
-        (angles > stats[residue][e]) &
-        (angles < stats[residue][f])
-    )
+    alpha_trues = np.argwhere(score_1 > 0.01)
+    beta_trues = np.argwhere(score_2 > 0.01)
+    ab_trues = np.argwhere(score_3 > 0.01)
     true_indexes = []
+
     for true in alpha_trues:
         if true in beta_trues and true in ab_trues:
             true_indexes.append(true)
@@ -286,12 +279,13 @@ def gaussian_score(
 
     # Gaussian score
     true_indexes = np.array(true_indexes)
-    score_1 = bimodal(dist_1[true_indexes], *gaussian_stats[residue]['alpha'])
-    score_2 = bimodal(dist_2[true_indexes], *gaussian_stats[residue]['beta'])
-    score_3 = bimodal(angles[true_indexes], *gaussian_stats[residue]['MAB'])
-    fitness = np.sum((score_1 + score_2 + score_3) / 3)
-    fitness *= stats[residue][g]
+
+    fitness = np.sum(
+        (score_1[true_indexes] + score_2[true_indexes] + score_3[true_indexes])
+        / 3
+    )
     fitness = float(fitness)
+    fitness *= stats[residue]['fitness']
     possible_coordinators += len(true_indexes)
 
     return fitness, possible_coordinators

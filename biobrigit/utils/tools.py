@@ -256,7 +256,7 @@ def voxelize(
 
 def find_coordinators(metal: str, num_residues: int = 20):
     stats, gaussian_stats = read_stats()
-    stats = stats[metal.upper()]
+    stats = stats[metal]
     gaussian_stats = gaussian_stats[metal]
     residues = ordered_list()
 
