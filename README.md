@@ -40,7 +40,7 @@ The first step is to create an environment with the necessary libraries. Some wi
 > pip install scikit-learn
 ```
 
-**2.1. Environment set-up with CUDA acelleration**
+**Environment set-up _with_ CUDA acelleration**
 
 The last step is to install the deep learning framework:
 
@@ -49,7 +49,7 @@ The last step is to install the deep learning framework:
 > conda install pytorch-lightning tensorboard torchmetrics -c conda-forge
 ```
 
-**2.2. Environment set-up without CUDA acelleration**
+**Environment set-up _without_ CUDA acelleration**
 
 If no CUDA device is available, the recommended installation of the deep learning framework is:
 
@@ -75,15 +75,17 @@ There are many parameters that can be also tuned, though default use is reccomen
 * `--max_coordinators`: Number of maximum coordinators expected. By default, 2. It only affects the range of values assigned to the probes.
 * `--residues`: Number of most likely coordinating residues. By default, 10.
 * `--stride`: Step at which the voxelized representation of the protein should be parsed. By default, 1. The greater the stride, the greater the computational efficiency; however, the resolution of the predictions will be affected.
-* `--pH`: pH of the medium at which the structure is to be evaluated. By default, 7.4.
 * `--cluster_radius`: Radius of the clusters to be generated in armstrongs. By default, 5.
 * `--cnn_threshold`: Threshold for considering CNN points as possible coordinations. Lower values will impact computational efficiency; greater values, may hide possible coordinating regions. By default, 0.5. Values should be within the range [0, 1].
 * `--combined_threshold`: Threshold for considering predictions combining BioMetAll and CNN scores as positive. By default, 0.5. Values should be within the range [0, 1].
-* `--voxelsize`: Resolution of the 3D representation. In Arnstrongs. By default, 1 A.
-* `--cnn_weight`: Importance of the CNN score in the final score in relations to the BioMetAll score. By default, 0.5. Values should be within the range [0, 1].
+* `--threads`: Number of threads available for multithreading calculation. By default it will create 2 threads per physical core.
 * `--verbose`: Information that will be displayed. 0: Only Moleculekit, 1: All. By default, 1.
 * `--residue score`: Scoring function for residue coordination analysis. Can be either `discrete`, that only considers how likely is a residue to bind to a certain metal (more computationally efficient); or `gaussian`, that also considers the fitness of the geometrical descriptors for a certain residue and metal. By default, `gaussian`.
-* `--threads`: Number of threads available for multithreading calculation. By default it will create 2 threads per physical core.
+
+The following parameters can also be tuned, but their modification is **not** reccomended as it may translate in unreliable predictions.
+* `--cnn_weight`: Importance of the CNN score in the final score in relations to the BioMetAll score. By default, 0.5. Values should be within the range [0, 1].
+* `--voxelsize`: Resolution of the 3D representation. In Arnstrongs. By default, 1 A.
+* `--pH`: pH of the medium at which the structure is to be evaluated. By default, 7.4.
 
 **Examples:**
 
@@ -96,7 +98,7 @@ Searching for copper.
 Searching with generic metal.
 
 ```bash
-> biobrigit 1dhy General --outputfile 1dhy_general
+> biobrigit 1dhy generic --outputfile 1dhy_general
 ````
 
 Fast preliminar exploration for binding sites with 4 coordinations, no GPU, and only considering the 4 most likely coordinating residues.
