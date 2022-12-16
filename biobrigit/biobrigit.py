@@ -157,7 +157,7 @@ class Brigit():
         if verbose:
             print(f'\nCoordination analysis of target: {target}', end='\n\n')
 
-        scores, molecule, coordinators = self.coordination_analysis(
+        coor_scores, molecule, coordinators = self.coordination_analysis(
             target, max_coordinators, metal.upper(), scores, cnn_threshold,
             verbose, **kwargs
         )
@@ -165,10 +165,10 @@ class Brigit():
         if verbose:
             print('Clusterizing results', end='\n\n')
         # Selection of best positions
-        best_scores = np.argwhere(scores[:, 3] > combined_threshold)
+        best_scores = np.argwhere(coor_scores[:, 3] > combined_threshold)
         new_scores = np.zeros((len(best_scores), 4))
         for idx, idx_score in enumerate(best_scores):
-            new_scores[idx, :] = scores[idx_score, :]
+            new_scores[idx, :] = coor_scores[idx_score, :]
 
         # Spatial clusterization of best positions
         centers, cluster_scores = self.clusterize(
@@ -480,10 +480,7 @@ class Brigit():
         cluster_radius,
         args
     ):
-        coors = set()
-        for list_coors in coordinators:
-            for coor in list_coors:
-                coors.add(coor)
+        coors = coordinators
         outputfile_name = f'{outputfile}_clusters.txt'
         with open(outputfile_name, 'w') as writer:
             writer.write(f'Configuration: {args}\n')
