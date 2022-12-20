@@ -5,6 +5,7 @@ Copyrigth by Raúl Fernández Díaz
 """
 import argparse
 import multiprocessing
+
 import biobrigit
 
 
@@ -15,8 +16,8 @@ def parse_cli() -> dict:
     p = argparse.ArgumentParser()
     p.add_argument("target", type=str,
                    help="Molecule PDB file to be analysed.")
-    p.add_argument("metal", type=str,
-                   help="Symbol of the metal that is to be located.")
+    p.add_argument("metals", type=str,
+                   help="Symbol of the metal that is to be located. More than one metal can be used by separting them with a comma: METAL1,METAL2")
     p.add_argument("--model", type=str, default='BrigitCNN',
                    help="Name of the model to be used.")
     p.add_argument("--device", type=str, default='cuda',
@@ -58,10 +59,10 @@ def parse_cli() -> dict:
                    help='Number of threads available for multithreading\
                     calculation. By default it will create 2 threads per\
                     physical core.')
-    args = p.parse_args()
-
+    args = vars(p.parse_args())
+    args['metals'] = args['metals'].split(',')
     print()
-    return vars(args)
+    return args
 
 
 def welcome() -> None:

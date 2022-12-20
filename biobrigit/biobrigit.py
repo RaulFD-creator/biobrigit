@@ -61,10 +61,57 @@ class Brigit():
                     accelerate significantly the calculations.')
         self.model = load_model(model, self.device)
 
+    def cnn_evaluation(
+        self,
+        target: str,
+        cnn_threshold: float = 0.5,
+        verbose: bool = True,
+        stride: int = 1,
+        pH: float = 7.4,
+        **kwargs
+    ) -> np.array:
+        """
+        Read a PDB file either from a local path or from the database. Voxelise
+        it and then evaluate its points using the CNN model.
+
+        Args:
+            target (str): PDB ID or path to local PDB file.
+            cnn_threshold (float): Threshold to consider a certain point as
+                positive, i.e., metal-bindingin. Default: 0.5.
+            verbose (bool): How much information should be displayed.
+                Default: True.
+            stride (int): Movement of the sliding window through the voxelised
+                representation of the protein. Default: 1.
+            pH (float): Medium acidity. Default: 7.4.
+
+        Returns:
+            scores (np.array): Matrix with 4 columns where the first 3
+                determine the coordinates of the points and the 4th the score
+                assigned to that location.
+        """
+        if not isinstance(target, str):
+            message = 'Target has to be:\n  a) string with PDB ID or\n'
+            message += '  b) path to local PDB file.'
+            raise TypeError(message)
+
+        # Voxelize the protein
+        if verbose:
+            print(f'Voxelizing target: {target}', end='\n\n')
+
+        vox, p_centers, nvoxels = self.voxelize(target, **kwargs)
+
+        # CNN evaluation
+        if verbose:
+            print(f'\nCNN evaluation of target: {target}', end='\n\n')
+
+        scores = self.cnn(vox, p_centers, stride, **kwargs)
+
+        return scores
+
     def predict(
         self,
         target: str,
-        metal: str,
+        metals: list,
         max_coordinators: int = 4,
         outputfile: str = None,
         cnn_threshold: float = 0.5,
@@ -105,9 +152,9 @@ class Brigit():
         Args:
             target (str): Path to the PDB file or PDB code of the target
                 protein.
-            metal (str): IUPAC symbol of the metal to be evaluated. There is a
-                mode, 'General', that uses statistics built from all metals
-                simultaneously.
+            metals (list): List of IUPAC symbols for the metals to be
+                evaluated. There is a mode, 'GENERIC', that uses statistics
+                built from all metals simultaneously.
             max_coordinators (int, optional): Maximum number of coordinators
                 expected. Value affects the sensibility of the coordination
                 analysis. Defaults to 4.
@@ -135,65 +182,56 @@ class Brigit():
         start = time.time()
         verbose = bool(verbose)
 
-        # Check that target is either a PDB file or PDB code
-        if not isinstance(target, str):
-            message = 'Target has to be:\n  a) string with PDB ID or\n'
-            message += '  b) path to local PDB file.'
-            raise TypeError(message)
-
-        # Voxelize the protein
-        if verbose:
-            print(f'Voxelizing target: {target}', end='\n\n')
-
-        vox, p_centers, nvoxels = self.voxelize(target, **kwargs)
-
-        # CNN evaluation
-        if verbose:
-            print(f'\nCNN evaluation of target: {target}', end='\n\n')
-
-        scores = self.evaluate(vox, p_centers, **kwargs)
+        scores = self.cnn_evaluation(
+            target,
+            cnn_threshold,
+            **kwargs
+        )
 
         # Coordination analysis
         if verbose:
             print(f'\nCoordination analysis of target: {target}', end='\n\n')
 
-        coor_scores, molecule, coordinators = self.coordination_analysis(
-            target, max_coordinators, metal.upper(), scores, cnn_threshold,
-            verbose, **kwargs
-        )
+        for metal in metals:
+            coor_scores, molecule, coordinators = self.coordination_analysis(
+                target, max_coordinators, metal.upper(), scores, cnn_threshold,
+                verbose, **kwargs
+            )
 
-        if verbose:
-            print('Clusterizing results', end='\n\n')
-        # Selection of best positions
-        best_scores = np.argwhere(coor_scores[:, 3] > combined_threshold)
-        new_scores = np.zeros((len(best_scores), 4))
-        for idx, idx_score in enumerate(best_scores):
-            new_scores[idx, :] = coor_scores[idx_score, :]
+            best_scores = self.filter_best_results(
+                coor_scores, combined_threshold
+            )
 
-        # Spatial clusterization of best positions
-        centers, cluster_scores = self.clusterize(
-            new_scores, molecule, cluster_radius
-        )
+            if verbose:
+                print('Clusterizing results', end='\n\n')
 
-        if verbose:
-            print('Preparing and writing output files', end='\n\n')
+            # Spatial clusterization of best positions
+            centers, cluster_scores = self.clusterize(
+                best_scores, molecule, cluster_radius
+            )
 
-        # Preparing and writing output files
-        if outputfile is None:
-            if target.endswith('.pdb'):
-                outputfile = os.path.split(target)[1].split('.')[0]
+            if verbose:
+                print('Preparing and writing output files', end='\n\n')
 
+            # Preparing and writing output files
+            if outputfile is None:
+                if target.endswith('.pdb'):
+                    new_outputfile = os.path.split(target)[1].split('.')[0]
+                    new_outputfile = f'{new_outputfile}_{metal.lower()}'
+
+                else:
+                    new_outputfile = f'{target}_{metal.lower()}'
             else:
-                outputfile = target
+                new_outputfile = f'{outputfile}_{metal.lower()}'
 
-        self.check_clusters(
-            centers, molecule, outputfile, coordinators, cluster_radius,
-            kwargs['args']
-        )
-        self.create_PDB(
-            target, outputfile, new_scores, combined_threshold, cluster_scores,
-            molecule
-        )
+            self.print_clusters(
+                centers, molecule, new_outputfile, coordinators,
+                cluster_radius, kwargs['args']
+            )
+            self.print_PDB(
+                target, new_outputfile, best_scores, combined_threshold,
+                cluster_scores, molecule
+            )
 
         end = time.time()
 
@@ -382,13 +420,13 @@ class Brigit():
 
         return final_vox, p_centers, nvoxels
 
-    def evaluate(
+    def cnn(
         self,
         vox: np.array,
         p_centers: np.array,
+        stride: int = 1,
         voxelsize: float = 1.0,
         region_size: int = 12,
-        stride: int = 1,
         occupancy_restrictions: float = 0.4,
         **kwargs
     ) -> np.array:
@@ -471,7 +509,7 @@ class Brigit():
             mean_clusters[str_mean] = score_mean
         return result, mean_clusters
 
-    def check_clusters(
+    def print_clusters(
         self,
         clusters,
         molecule,
@@ -525,7 +563,7 @@ class Brigit():
                     writer.write(';'.join(res for res in line))
                     writer.write(f"  |  {round(clusters.counts(name), 2)}\n")
 
-    def create_PDB(
+    def print_PDB(
         self,
         target: str,
         outputfile: str,
@@ -614,6 +652,18 @@ class Brigit():
                 score = score if len(score) == 4 else score + '0'
                 fo.write(blank + "%s     %s  1.00  %s          %s\n" %
                          (num_res, prb_str, score, atom))
+
+    def filter_best_results(
+        self,
+        coor_scores: np.array,
+        combined_threshold: float,
+    ) -> np.array:
+        # Selection of best positions
+        best_scores = np.argwhere(coor_scores[:, 3] > combined_threshold)
+        new_scores = np.zeros((len(best_scores), 4))
+        for idx, idx_score in enumerate(best_scores):
+            new_scores[idx, :] = coor_scores[idx_score, :]
+        return new_scores
 
 
 def analyse_probes(
