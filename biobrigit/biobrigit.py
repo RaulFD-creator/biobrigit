@@ -34,9 +34,9 @@ class Brigit():
     """
     def __init__(
         self,
-        device: str,
-        device_id: int,
-        model: str,
+        device: str = 'cuda',
+        device_id: int = 0,
+        model: str = 'BrigitCNN',
         **kwargs
     ):
         """
@@ -194,13 +194,21 @@ class Brigit():
 
         for metal in metals:
             coor_scores, molecule, coordinators = self.coordination_analysis(
-                target, max_coordinators, metal.upper(), scores, cnn_threshold,
+                target, metal.upper(), scores, max_coordinators, cnn_threshold,
                 verbose, **kwargs
             )
 
             best_scores = self.filter_best_results(
                 coor_scores, combined_threshold
             )
+
+            if len(best_scores) < 1:
+                print('No positions are predicted to accomodate metals.')
+                end = time.time()
+                if verbose:
+                    print(f'Computation took {round(end-start, 2)} s.', end='\n\n')
+                return scores
+
 
             if verbose:
                 print('Clusterizing results', end='\n\n')
@@ -224,6 +232,11 @@ class Brigit():
             else:
                 new_outputfile = f'{outputfile}_{metal.lower()}'
 
+            try:
+                a = kwargs['args']
+            except KeyError:
+                kwargs['args'] = None
+
             self.print_clusters(
                 centers, molecule, new_outputfile, coordinators,
                 cluster_radius, kwargs['args']
@@ -242,15 +255,15 @@ class Brigit():
     def coordination_analysis(
         self,
         target: protein,
-        max_coordinators: int,
         metal: str,
         scores: np.array,
-        threshold: float,
-        verbose: bool,
-        residue_score: str,
-        cnn_weight: float,
-        residues: int,
-        threads: int,
+        max_coordinators: int = 2,
+        threshold: float = 0.5,
+        verbose: bool = True,
+        residue_score: str = 'gaussian',
+        cnn_weight: float = 0.5,
+        residues: int = 7,
+        threads: int = 8,
         **kwargs
     ) -> tuple:
         """
@@ -478,9 +491,7 @@ class Brigit():
         try:
             labels = clustering.fit_predict(scores[:, :3])
         except ValueError:
-            raise ValueError('There are not enough predicted points as to\
-                properly clusterize.')
-
+            return [], []
         clusters = {}
         mean_clusters = {}
         result = ordered_list()
@@ -521,7 +532,10 @@ class Brigit():
         coors = coordinators
         outputfile_name = f'{outputfile}_clusters.txt'
         with open(outputfile_name, 'w') as writer:
-            writer.write(f'Configuration: {args}\n')
+            if args is None:
+                writer.write('Warning: Configuration Unknown. Check script.')
+            else:
+                writer.write(f'Configuration: {args}\n')
             writer.write(f'Coordinators: {coordinators}\n')
             title = 'cluster  |  coordinators  |  score\n'
             writer.write(title)
