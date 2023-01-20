@@ -69,7 +69,7 @@ def welcome() -> None:
     """
     Print a welcoming message when the program is executed.
     """
-    message = "Using Brigit by Raúl Fernández-Díaz"
+    message = "Using BioBrigit by Raúl Fernández-Díaz"
     print("-" * (len(message) + 4))
     print("| " + message + " |")
     print("-" * (len(message) + 4))
