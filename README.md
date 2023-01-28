@@ -3,7 +3,7 @@ BioBrigit
 
 BioBrigit is a computational tool designed for the prediction of metal mobility pathways through a protein. It uses a novel scoring function that combines deep learning and previous domain knowledge regarding bioinorganic interactions as described in [Sánchez-Aparicio et al. (2017)](https://chemrxiv.org/engage/chemrxiv/article-details/60c74de1469df46a86f44378). The deep learning part of our hybrid approach consists on a 3D Convolutional Neural Network trained to interpret the biochemical environment to distinguish between metal-binding and non-binding protein regions.
     
-<img src="./docs/figures/BioBrigit_light.png" width="820" class="center" source media="(prefers-color-scheme: dark)"/>
+<img src="./docs/figures/BioBrigit_light.png" width="820" class="center" source media="(prefers-color-scheme: light)"/>
 
 
 Features
