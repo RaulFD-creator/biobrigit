@@ -2,13 +2,11 @@ BioBrigit
 ===============
 
 BioBrigit is a computational tool designed for the prediction of metal mobility pathways through a protein. It uses a novel scoring function that combines deep learning and previous domain knowledge regarding bioinorganic interactions as described in [Sánchez-Aparicio et al. (2017)](https://chemrxiv.org/engage/chemrxiv/article-details/60c74de1469df46a86f44378). The deep learning part of our hybrid approach consists on a 3D Convolutional Neural Network trained to interpret the biochemical environment to distinguish between metal-binding and non-binding protein regions.
-    
-<img src="./docs/figures/BioBrigit_light.png" width="850" class="center"/>
-
+ 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/RaulFD-creator/biobrigit/master/docs/figures/BioBrigit_dark_border.png" width="820" class="center">
-  <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/25423296/163456779-a8556205-d0a5-45e2-ac17-42d089e3c3f8.png">
-  <img alt="Shows an illustrated sun in light mode and a moon with stars in dark mode." src="https://user-images.githubusercontent.com/25423296/163456779-a8556205-d0a5-45e2-ac17-42d089e3c3f8.png">
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/RaulFD-creator/biobrigit/master/docs/figures/BioBrigit_dark_border.png" width="850" class="center">
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/RaulFD-creator/biobrigit/master/docs/figures/BioBrigit_light.png" width="850" class="center">
+  <img alt="Shows an stylised anvil with a neural network upon it." src=""https://raw.githubusercontent.com/RaulFD-creator/biobrigit/master/docs/figures/BioBrigit_light.png">
 </picture>
 
 
