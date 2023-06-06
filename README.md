@@ -9,7 +9,7 @@ BioBrigit is a computational tool designed for the prediction of metal mobility 
   <img alt="Shows an stylised anvil with a neural network upon it." src=""https://raw.githubusercontent.com/RaulFD-creator/biobrigit/master/docs/figures/BioBrigit_light.png">
 </picture>
 
-NOTE: This repository contains the development history of the project and its no longer supported. The new home for the project can be found in: https://github.com/insilichem/BioBrigit
+NOTE: This repository contains the development history of the project and it is no longer supported. The new home for the project can be found in: https://github.com/insilichem/BioBrigit
 
 
 Features
