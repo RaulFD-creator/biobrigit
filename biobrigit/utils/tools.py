@@ -336,7 +336,7 @@ def load_model(model: str, device: str, **kwargs) -> BaseModel:
             path,
             map_location=device,
             learning_rate=2e-4,
-            neurons_layer=16,
+            neurons_layer=32,
             size=12,
             num_dimns=6
         )
